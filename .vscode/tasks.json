@@ -1,25 +1,12 @@
 {
-  "version": "2.0.0",
-  "tasks": [
-    {
-      "label": "compile and run",
-      "type": "shell",
-      "command": "/bin/bash",
-      "args": [
-        "-c",
-        "g++ \"${file}\" -std=c++17 -o \"${fileDirname}/${fileBasenameNoExtension}\" && \"${fileDirname}/${fileBasenameNoExtension}\" < \"${fileDirname}/input.txt\" > \"${fileDirname}/output.txt\" && cat \"${fileDirname}/output.txt\""
-      ],
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      },
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": false,
-        "panel": "shared"
-      },
-      "problemMatcher": ["$gcc"]
-    }
-  ]
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "echo",
+            "type": "shell",
+            "command": "echo Hello"
+        }
+    ]
 }
