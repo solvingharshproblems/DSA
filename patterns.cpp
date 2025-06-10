@@ -262,6 +262,14 @@ void decreasingnumberblockpattern(int n){
             int bottom=(2*n-2)-i;
             cout<<(n-min(min(top,bottom),min(right,left)));
         }
+        cout<<endl; 
+    }
+}
+void newpattern(int n){
+    for(int i=0;i<n;i++){
+        for(int j=0;j<i;j++){
+            cout<<"$";
+        }
         cout<<endl;
     }
 }
@@ -291,7 +299,8 @@ int main(){
         //hollowdiamondpattern(n);
         //butterflypattern(n);
         //boxpattern(n);
-        decreasingnumberblockpattern(n);
+        //decreasingnumberblockpattern(n);
+        newpattern(n);
     }
     return 0;
 }
