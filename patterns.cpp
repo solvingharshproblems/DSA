@@ -161,6 +161,110 @@ void newCharpattern(int n){
         cout<<endl;
     }
 }
+void Charpyramidpattern(int n){
+    for(int i=1;i<=n;i++){
+        for(int space=1;space<=n-i;space++){
+            cout<<" ";
+        }
+        char ch='A';
+        int breakpoint=(2*i-1)/2;
+        for(int j=1;j<=2*i-1;j++){
+            cout<<ch;
+            if(j<=breakpoint)ch++;
+            else ch--;
+        }
+        for(int space=1;space<=n-i;space++){
+            cout<<" ";
+        }
+        cout<<endl;
+    }
+}
+void reverseincreasingcharpattern(int n){
+    for(int i=0;i<n;i++){
+        char ch='E';
+        for(char character=ch-i;character<=ch;character++){
+            cout<<character<<" ";
+        }
+        cout<<endl;
+    }
+}
+void hollowdiamondpattern(int n){
+    for(int i=n;i>0;i--){
+        for(int j=0;j<i;j++){
+            cout<<"*";
+        }
+        for(int space=1;space<=2*(n-i);space++){
+            cout<<" ";
+        }
+        for(int j=0;j<i;j++){
+            cout<<"*";
+        }
+        cout<<endl; 
+    }
+    for(int i=0;i<n;i++){
+        for(int j=0;j<i;j++){
+            cout<<"*";
+        }
+        for(int space=1;space<=2*(n-i);space++){
+            cout<<" ";
+        }
+        for(int j=0;j<i;j++){
+            cout<<"*";
+        }
+        cout<<endl;
+    }
+}
+void butterflypattern(int n){
+    for(int i=0;i<n;i++){
+        for(int j=0;j<i;j++){
+            cout<<"*";
+        }
+        for(int space=1;space<=2*(n-i);space++){
+            cout<<" ";
+        }
+        for(int j=0;j<i;j++){
+            cout<<"*";
+        }
+        cout<<endl;
+    }
+    for(int i=n;i>0;i--){
+        for(int j=0;j<i;j++){
+            cout<<"*";
+        }
+        for(int space=1;space<=2*(n-i);space++){
+            cout<<" ";
+        }
+        for(int j=0;j<i;j++){
+            cout<<"*";
+        }
+        cout<<endl; 
+    }
+}
+void boxpattern(int n){
+    for(int i=1;i<=n;i++){
+        for(int j=1;j<=n;j++){
+            if (i==1||i ==n||j==1||j==n){
+                cout<<"*";
+            }
+            else{
+                cout<<" ";
+            }
+        }
+        cout<<endl;
+    }
+}
+void decreasingnumberblockpattern(int n){
+    for(int i=0;i<2*n-1;i++){
+        for(int j=0;j<2*n-1;j++){
+            int top=i;
+            int left=j;
+            int right=(2*n-2)-j;
+            int bottom=(2*n-2)-i;
+            cout<<(n-min(min(top,bottom),min(right,left)));
+        }
+        cout<<endl;
+    }
+}
 int main(){
     int x;
     cin>>x;
@@ -181,7 +285,13 @@ int main(){
         //newnumberpattern(n);
         //increasingCharpattern(n);
         //decreasingCharpattern(n);
-        newCharpattern(n);
+        //newCharpattern(n);
+        //Charpyramidpattern(n);
+        //reverseincreasingcharpattern(n);
+        //hollowdiamondpattern(n);
+        //butterflypattern(n);
+        //boxpattern(n);
+        decreasingnumberblockpattern(n);
     }
     return 0;
 }
