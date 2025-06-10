@@ -271,7 +271,7 @@ void newpattern(int n){
             cout<<"$";
         }
         cout<<endl;
-    }
+    } 
 }
 int main(){
     int x;
