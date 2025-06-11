@@ -23,7 +23,7 @@ void explainingPairs(){
 //Here we start with containers and iterators 
 void explainingVectors(){
     vector<int> v(5);
-    v.push_back(1); //it adds value in paranthesis as the last element
+    v.push_back(1); //it adds value in paranthesis as the last element 
     v.emplace_back(2); //it increases the size of the vector and pushes paranthesis's value at the back. It is faster than push back
     v.pop_back();//removes the last element from the vector
     v.size();//shows size of vector
