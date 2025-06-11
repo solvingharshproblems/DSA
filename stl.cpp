@@ -181,7 +181,7 @@ void explainingSort(){
     }
 }
 void explainingExtra(){
-    //Printing all the permutations of a string possible
+    //Printing all the permutations of a string possible 
     string s="123";
     do{
         cout<<s<<endl;
