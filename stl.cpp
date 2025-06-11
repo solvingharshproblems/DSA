@@ -20,7 +20,7 @@ void explainingPairs(){
     pair<char,int> arr[]={{'A',1 },{'A',2 },{'B',3}};
     cout<<arr[0].first<<" "<<arr[2].second;
 }
-//Here we start with containers and iterators
+//Here we start with containers and iterators 
 void explainingVectors(){
     vector<int> v(5);
     v.push_back(1); //it adds value in paranthesis as the last element
