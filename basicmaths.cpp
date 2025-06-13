@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cmath>
+#include <algorithm>
 using namespace std;
 void extractingDigits(int n){
     while(n>0){
@@ -91,10 +92,39 @@ void checkingDivisors(int n){
         }
     }
 }
+void checkingHCF(int n1,int n2){
+    int HCF=1;
+    for(int i=min(n1,n2);i>1;i--){
+        if((n1%i==0)&&(n2%i==0)){
+            HCF=i;
+            cout<<HCF;
+            break;
+        }
+    }
+}
+//Or we can use EuclideanAlgorithmn to find it more faster
+void EuclideanAlgorithmn(int n1,int n2){
+    while((n1>0)&&(n2>0)){
+        if(n1>n2){
+            n1=n1%n2;
+        }
+        else{
+            n2=n2%n1;
+        }
+    }
+    if(n1==0){
+        cout<<n2;
+    }
+    else{
+        cout<<n1;
+    }
+}
 int main(){
-    int a;
-    cout<<"Enter a number: ";
+    int a,b;
+    cout<<"Enter 1st number: ";
     cin>>a;
-    checkingDivisors(a);
+    cout<<"Enter 2nd number: ";
+    cin>>b;
+    EuclideanAlgorithmn(a,b);
     return 0;
 }
