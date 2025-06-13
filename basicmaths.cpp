@@ -68,12 +68,33 @@ void checkingPrime(int n){
     }else{
         cout<<"It is not a prime number.";
     }
-   
+}
+void checkingArmstrong(int n){
+    int armstrong=n;
+    int num=0;
+    while(n>0){
+        int digit=n%10;
+        num=num+(digit*digit*digit);
+        n/=10;
+    }
+     if(num==armstrong){
+        cout<<"It is an armstrong number.";
+     }
+     else{
+        cout<<"It is not an armstrong number.";
+    }
+}
+void checkingDivisors(int n){
+    for(int i=1;i<=n;i++){
+        if(n%i==0){
+            cout<<i<<" Is a divisor of: "<<n<<endl;
+        }
+    }
 }
 int main(){
     int a;
     cout<<"Enter a number: ";
     cin>>a;
-    checkingPrime(a);
+    checkingDivisors(a);
     return 0;
 }
