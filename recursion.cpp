@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string.h>
+#include <algorithm>
 using namespace std;
 int mycount=0;//global variable
 void Count(){
@@ -70,11 +71,62 @@ int Summ(int i,int n){ //Functional Recursion
         return i+Summ(i+1,n);
     }
 }
+void ArrayReverse(int arr[],int a,int b){
+    if(a>=b) return;
+    swap(arr[a],arr[b]);
+    ArrayReverse(arr,a+1,b-1);
+}
+void CheckingPalindrome(string n){
+    string original=n;
+    reverse(n.begin(),n.end());
+    if(n==original){
+        cout<<"It is a palindrome.";
+    }
+    else{
+        cout<<"It is not a palindrome.";
+    }
+}/*
+void Fibonacci(int a,int b,int n){
+    if(n==0){
+        return;
+    }else{
+        int next=a+b;
+        cout<<next<<" ";
+        Fibonacci(b,next,n-1);
+    }
+} */
+//OR Position in Fibonacci Series
+int FibonacciPosition(int n){
+    if(n<=1){
+        return n;
+    }
+    int last=FibonacciPosition(n-1);
+    int slast=FibonacciPosition(n-2);
+    return last+slast;
+}
 int main(){
-    int n,summ=0;
+    /*
+    int n;
     cout<<"Enter a number: ";
     cin>>n;
-    Sum(1,n,summ);
-    cout<<summ;
+    int arr[n];
+    cout<<"enter elements of array: ";
+    for(int i=0;i<n;i++){
+        cin>>arr[i];
+    }
+    ArrayReverse(arr,0,n-1);
+    for(int i=0;i<n;i++){
+        cout<<arr[i]<<" ";
+    } 
+    string n;
+    cout<<"Enter a string: ";
+    getline(cin,n);
+    CheckingPalindrome(n); */
+    int n;
+    cout<<"Enter a number: ";
+    cin>>n;
+    //Fibonacci(0,1,n);
+    int result=FibonacciPosition(n);
+    cout<<"The value at "<<n<<" in Fibonacci series is: "<<result<<" ";
     return 0;
 }
