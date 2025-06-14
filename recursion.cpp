@@ -39,10 +39,42 @@ void printingReverseNumbers(int i,int n){
         printingReverseNumbers(i-1,n);
     }
 }
+void BackTracking(int i,int n){
+    if(i<1){
+        return;
+    }
+    BackTracking(i-1,n);
+    cout<<i;
+}
+void ReverseBackTracking(int i,int n){
+    if(i<1){
+        return;
+    }
+    cout<<i;
+    ReverseBackTracking(i-1,n);
+}
+void Sum(int i,int n,int &summ){ //Parameterized Recursion
+    if(i>n){
+        return ;
+    }
+    else{
+        summ+=i;
+        Sum(i+1,n,summ);
+    }
+}
+int Summ(int i,int n){ //Functional Recursion
+    if(i>n){
+        return 0;
+    }
+    else{
+        return i+Summ(i+1,n);
+    }
+}
 int main(){
-    int n;
+    int n,summ=0;
     cout<<"Enter a number: ";
     cin>>n;
-    printingReverseNumbers(n,n);
+    Sum(1,n,summ);
+    cout<<summ;
     return 0;
 }
