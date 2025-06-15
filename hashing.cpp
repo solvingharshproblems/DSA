@@ -28,11 +28,22 @@ void Hashing(int n,int arr[],int hash[],int q){
         cout<<hash[number]<<endl;
     }
 }
+void CharHashing(int n,char arr[],int hashh[],int q){
+    for(int i=0;i<n;i++){
+        hashh[arr[i]]+=1;
+    }
+    while(q--){
+        char ch;
+        cout<<"Enter the character to count: ";
+        cin>>ch;
+        cout<<hashh[ch]<<endl;
+    }
+}
 int main(){
     int n;
     cout<<"Enter the size of an array: ";
     cin>>n;
-    int arr[n];
+    char arr[n];
     cout<<"Enter the array: ";
     for(int i=0;i<n;i++){
         cin>>arr[i];
@@ -41,11 +52,16 @@ int main(){
     int key;
     cout<<"Enter the key you want: ";
     cin>>key;
-    FindingKey(n,arr,key); */
+    FindingKey(n,arr,key); 
     int hash[13]={};
     int q;
     cout<<"Enter the number of queries: ";
     cin>>q;
-    Hashing(n,arr,hash,q);
+    Hashing(n,arr,hash,q); */
+    int hashh[256]={0};
+    int q;
+    cout<<"Enter the number of queries: ";
+    cin>>q;
+    CharHashing(n,arr,hashh,q);
     return 0;
 }
