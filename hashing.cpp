@@ -1,5 +1,6 @@
 #include <iostream>
-
+#include <map>
+#include <unordered_map> //Will work same as map in this situation just not in sorted order
 using namespace std;
 //Initial Approach
 void FindingKey(int size,int arr[],int key){
@@ -28,6 +29,7 @@ void Hashing(int n,int arr[],int hash[],int q){
         cout<<hash[number]<<endl;
     }
 }
+//If we need to store a bigger value than 10^6 for int we can store 10^7 by declaring array as a global variable.
 void CharHashing(int n,char arr[],int hashh[],int q){
     for(int i=0;i<n;i++){
         hashh[arr[i]]+=1;
@@ -37,6 +39,30 @@ void CharHashing(int n,char arr[],int hashh[],int q){
         cout<<"Enter the character to count: ";
         cin>>ch;
         cout<<hashh[ch]<<endl;
+    }
+}
+//If we need to store a bigger value than 10^7 we cannot do that in array that time we use maps and unordered maps
+void MapHashing(int n,int arr[],int q){
+    map<int,int>mp;
+    for(int i=0;i<n;i++){
+        mp[arr[i]]++;
+    }
+    while(q--){
+        int number;
+        cin>>number;
+        cout<<mp[number]<<endl;
+    }
+}
+void MapCharHashing(int n,char arr[],int q){
+    unordered_map<char,int>mpp;
+    for(int i=0;i<n;i++){
+        mpp[arr[i]]++;
+    }
+    while(q--){
+        char ch;
+        cout<<"Enter the character to count: ";
+        cin>>ch;
+        cout<<mpp[ch]<<endl;
     }
 }
 int main(){
@@ -57,11 +83,19 @@ int main(){
     int q;
     cout<<"Enter the number of queries: ";
     cin>>q;
-    Hashing(n,arr,hash,q); */
+    Hashing(n,arr,hash,q); 
     int hashh[256]={0};
     int q;
     cout<<"Enter the number of queries: ";
     cin>>q;
-    CharHashing(n,arr,hashh,q);
+    CharHashing(n,arr,hashh,q); 
+    int q;
+    cout<<"Enter the number of queries: ";
+    cin>>q;
+    MapHashing(n,arr,q); */
+    int q;
+    cout<<"Enter the number of queries: ";
+    cin>>q;
+    MapCharHashing(n,arr,q);
     return 0;
 }
