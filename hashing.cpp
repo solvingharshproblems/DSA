@@ -30,6 +30,7 @@ void Hashing(int n,int arr[],int hash[],int q){
     }
 }
 //If we need to store a bigger value than 10^6 for int we can store 10^7 by declaring array as a global variable.
+//If we need to store a bigger value than 10^7 we cannot do that in array that time we use maps and unordered maps
 void CharHashing(int n,char arr[],int hashh[],int q){
     for(int i=0;i<n;i++){
         hashh[arr[i]]+=1;
@@ -41,7 +42,6 @@ void CharHashing(int n,char arr[],int hashh[],int q){
         cout<<hashh[ch]<<endl;
     }
 }
-//If we need to store a bigger value than 10^7 we cannot do that in array that time we use maps and unordered maps
 void MapHashing(int n,int arr[],int q){
     map<int,int>mp;
     for(int i=0;i<n;i++){
