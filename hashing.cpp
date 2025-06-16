@@ -65,11 +65,43 @@ void MapCharHashing(int n,char arr[],int q){
         cout<<mpp[ch]<<endl;
     }
 }
+void FindingMax(int n,int arr[]){
+    map<int,int>m;
+    for(int i=0;i<n;i++){
+        m[arr[i]]++;
+    }
+    int MaxFreq=0;
+    int MaxElement=-1;
+    for(auto i:m){
+        if(i.second>i.first){
+            MaxFreq=i.second;
+            MaxElement=i.first;
+        }
+    }
+    cout<<"Element with highest frequency is: "<<MaxElement<<endl;
+    cout<<"Frequency: "<<MaxFreq;
+}
+void FindingMin(int n,int arr[]){
+    map<int,int>m;
+    for(int i=0;i<n;i++){
+        m[arr[i]]++;
+    }
+    int MinFreq=INT_MAX;
+    int MinElement=-1;
+    for(auto i:m){
+        if(i.second<MinFreq){
+            MinFreq=i.second;
+            MinElement=i.first;
+        }
+    }
+    cout<<"Element with lowest frequency is: "<<MinElement<<endl;
+    cout<<"Frequency: "<<MinFreq;
+}
 int main(){
     int n;
     cout<<"Enter the size of an array: ";
     cin>>n;
-    char arr[n];
+    int arr[n];
     cout<<"Enter the array: ";
     for(int i=0;i<n;i++){
         cin>>arr[i];
@@ -92,10 +124,11 @@ int main(){
     int q;
     cout<<"Enter the number of queries: ";
     cin>>q;
-    MapHashing(n,arr,q); */
+    MapHashing(n,arr,q); 
     int q;
     cout<<"Enter the number of queries: ";
     cin>>q;
-    MapCharHashing(n,arr,q);
+    MapCharHashing(n,arr,q); */
+    FindingMin(n,arr);
     return 0;
 }
