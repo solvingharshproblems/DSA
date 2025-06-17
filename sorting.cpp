@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 using namespace std;
 void SelectionSort(int n,int arr[]){
     for(int i=0;i<n-1;i++){
@@ -41,6 +42,37 @@ void InsertionSort(int n,int arr[]){
         cout<<arr[i]<<" ";
     }
 }
+void Merge(int arr[],int low,int mid,int high){
+    vector <int> temp;
+    int left=low;
+    int right=mid+1;
+    while(left<=mid && right<=high){
+        if(arr[left]<=arr[right]){
+            temp.push_back(arr[left++]);
+        }
+        else{
+            temp.push_back(arr[right++]);
+        }
+    }
+    while(left<=mid){
+        temp.push_back(arr[left++]);
+    }
+    while(right<=high){
+        temp.push_back(arr[right++]);
+    }
+    for(int i = 0; i < temp.size(); i++) {
+        arr[low + i] = temp[i];
+    }
+}
+void MergeSort(int arr[],int low,int high){ //Divide and Merge
+    if(low>=high){
+        return;
+    }
+    int mid=(low+high)/2;
+    MergeSort(arr,low,mid);
+    MergeSort(arr,mid+1,high);
+    Merge(arr,low,mid,high);
+}
 //Yall crazy IMMA SHOW YOU THE SIMPLE SHIT
 void SortingArray(int n,int arr[]){
     sort(arr, arr + n);
@@ -57,7 +89,11 @@ int main(){
     for(int i=0;i<size;i++){
         cin>>arr[i];
     }
+    MergeSort(arr,0,size-1);
     cout<<"The sorted array is: ";
-    InsertionSort(size,arr);
+    //InsertionSort(size,arr);
+    for(int i=0;i<size;i++){ 
+        cout<<arr[i]<<" ";
+    }
     return 0;
 }
