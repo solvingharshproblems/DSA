@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <list>
 using namespace std;
 void SelectionSort(int n,int arr[]){
     for(int i=0;i<n-1;i++){
@@ -73,7 +74,27 @@ void MergeSort(int arr[],int low,int high){ //Divide and Merge
     MergeSort(arr,mid+1,high);
     Merge(arr,low,mid,high);
 }
-//Yall crazy IMMA SHOW YOU THE SIMPLE SHIT
+int Partition(int arr[],int low,int high){
+    int pivot=arr[high];
+    int i=low-1;
+    for(int j=low;j<high;j++){
+        if(arr[j]<pivot){
+            i++;
+            swap(arr[i],arr[j]);
+        }
+    }
+    swap(arr[i+1],arr[high]);
+    return i+1;
+}
+void QuickSort(int low,int high,int arr[]){ 
+    if(low>=high){
+       return;
+    }
+    int part=Partition(arr,low,high);
+    QuickSort(low,part-1,arr);
+    QuickSort(part+1,high,arr);
+} 
+//sort function is made with insertion,heap and quick sorting used as per situation
 void SortingArray(int n,int arr[]){
     sort(arr, arr + n);
      for(int i=0;i<n;i++){
@@ -89,7 +110,8 @@ int main(){
     for(int i=0;i<size;i++){
         cin>>arr[i];
     }
-    MergeSort(arr,0,size-1);
+    //MergeSort(arr,0,size-1);
+    QuickSort(0,size-1,arr);
     cout<<"The sorted array is: ";
     //InsertionSort(size,arr);
     for(int i=0;i<size;i++){ 
