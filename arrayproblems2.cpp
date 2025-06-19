@@ -28,6 +28,15 @@ void MovingZeros(int n,int arr[]){
         }
     }
 }
+//Problem 3: Linear Search in an array
+void LinearSearch(int n,int arr[],int key){
+    for(int i=0;i<n;i++){
+        if(arr[i]==key){
+            cout<<"Element found at the index: "<<i<<endl;
+            return;
+        }
+    }
+}
 int main(){
     int size;
     cout<<"Enter the size of the array: ";
@@ -40,8 +49,12 @@ int main(){
     int d;
     cout<<"Enter the number of positions to rotate: ";
     cin>>d;
-    LeftRotate(size, arr,d); */
-    MovingZeros(size, arr);
+    LeftRotate(size, arr,d); 
+    MovingZeros(size, arr); */
+    int key;
+    cout<<"Enter the element to search: ";
+    cin>>key;
+    LinearSearch(size, arr,key);
     cout<<"Resultant array: ";
     for(int i=0;i<size;i++){
         cout<<arr[i]<<" ";
