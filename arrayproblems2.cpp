@@ -1,4 +1,5 @@
 #include <iostream>
+#include <set>
 using namespace std;
 //Problem 1: Left rotate the array by d position
 void Reverse(int arr[],int start,int end){
@@ -39,13 +40,30 @@ void LinearSearch(int n,int arr[],int key){
 }
 //Problem 4: Finding intersection of two arrays
 void Intersection(int n1,int arr1[],int n2,int arr2[]){
-    for(int i=0;i<n1;i++){
-        for(int j=0;j<n2;j++){
-            if(arr1[i]==arr2[j]){
-                cout<<arr1[i]<<" ";
-                break; // To avoid printing duplicates from arr2
-            }
+    int i=0,j=0;
+    while(i<n1 && j<n2){
+        if(arr1[i]==arr2[j]){
+            cout<<arr1[i]<<" ";
+            i++;
+            j++;
+        } else if(arr1[i]<arr2[j]){
+            i++;
+        } else {
+            j++;
         }
+    }
+}
+//Problem 5: Finding union of two arrays
+void Union(int n1,int arr1[],int n2,int arr2[]){
+    set<int>us;
+    for(int i=0;i<n1;i++){
+        us.insert(arr1[i]);
+    }
+    for(int j=0;j<n2;j++){
+        us.insert(arr2[j]);
+    }
+    for(auto it:us){
+        cout<<it<<" ";
     }
 }
 int main(){
@@ -76,7 +94,8 @@ int main(){
     cin>>key;
     LinearSearch(size, arr,key); */
     cout<<"Resultant array: ";
-    Intersection(size1,arr1,size2,arr2);
+    //Intersection(size1,arr1,size2,arr2);
+    Union(size1, arr1, size2, arr2);
     /*
     for(int i=0;i<size1;i++){
         cout<<arr[i]<<" ";
