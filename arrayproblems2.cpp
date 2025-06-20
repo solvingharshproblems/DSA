@@ -37,27 +37,49 @@ void LinearSearch(int n,int arr[],int key){
         }
     }
 }
+//Problem 4: Finding intersection of two arrays
+void Intersection(int n1,int arr1[],int n2,int arr2[]){
+    for(int i=0;i<n1;i++){
+        for(int j=0;j<n2;j++){
+            if(arr1[i]==arr2[j]){
+                cout<<arr1[i]<<" ";
+                break; // To avoid printing duplicates from arr2
+            }
+        }
+    }
+}
 int main(){
-    int size;
-    cout<<"Enter the size of the array: ";
-    cin>>size;
-    int arr[size];
-    cout<<"Enter the elements of the array: ";
-    for(int i=0;i<size;i++){
-        cin>>arr[i];
-    } /*
+    int size1;
+    cout<<"Enter the size of 1st array: ";
+    cin>>size1;
+    int arr1[size1];
+    cout<<"Enter the elements of 1st array: ";
+    for(int i=0;i<size1;i++){
+        cin>>arr1[i];
+    }
+    int size2;
+    cout<<"Enter the size of 2nd array: ";
+    cin>>size2;
+    int arr2[size2];
+    cout<<"Enter the elements of 2nd array: ";
+    for(int i=0;i<size2;i++){
+        cin>>arr2[i];
+    }
+     /*
     int d;
     cout<<"Enter the number of positions to rotate: ";
     cin>>d;
     LeftRotate(size, arr,d); 
-    MovingZeros(size, arr); */
+    MovingZeros(size, arr); 
     int key;
     cout<<"Enter the element to search: ";
     cin>>key;
-    LinearSearch(size, arr,key);
+    LinearSearch(size, arr,key); */
     cout<<"Resultant array: ";
-    for(int i=0;i<size;i++){
+    Intersection(size1,arr1,size2,arr2);
+    /*
+    for(int i=0;i<size1;i++){
         cout<<arr[i]<<" ";
-    }
+    } */
     return 0;
 }
