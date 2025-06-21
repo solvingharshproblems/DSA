@@ -1,5 +1,6 @@
 #include <iostream>
 using namespace std;
+//Problem 1: Finding the missing number in an array of size n containing numbers from 1 to n
 void FindingMissingNo(int n,int arr[]){
     int sum=(n*(n+1))/2; // Sum of first n natural numbers
     int s=0;
@@ -8,6 +9,20 @@ void FindingMissingNo(int n,int arr[]){
     }
     int missingNo=sum-s; // The missing number is the difference between the expected sum and the actual sum
     cout<<missingNo<<endl; // Output the missing number
+}
+//Problem 2: Finding maximum consecutive 1's in a binary array
+void FindingMaxConsecutiveOnes(int n,int arr[]){
+    int maxCount=0,count=0;
+    for(int i=0;i<n;i++){
+        if(arr[i]==1){
+            count++;
+            maxCount=max(maxCount, count); // Update maxCount if current count is greater
+        }
+        else{
+            count=0; // Reset count for the next sequence
+        }
+    }
+    cout<<maxCount<<endl; // Output the maximum count of consecutive 1's
 }
 int main(){
     int size;
@@ -19,6 +34,7 @@ int main(){
         cin>>arr[i];
     }
     cout<<"The resultant is: ";
-    FindingMissingNo(size, arr);
+    //FindingMissingNo(size, arr);
+    FindingMaxConsecutiveOnes(size, arr);
     return 0;
 }
