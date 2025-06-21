@@ -24,6 +24,14 @@ void FindingMaxConsecutiveOnes(int n,int arr[]){
     }
     cout<<maxCount<<endl; // Output the maximum count of consecutive 1's
 }
+//Problem 3: Finding number that appeaers only once in an array where every other number appears twice
+void FindingSingleNumber(int n,int arr[]){
+    int count=0;
+    for(int i=0;i<n;i++){
+        count ^= arr[i]; // Using XOR to find the unique number
+    }
+    cout<<count<<endl; // Output the count of unique elements
+}
 int main(){
     int size;
     cout<<"Enter the size of the array: ";
@@ -35,6 +43,7 @@ int main(){
     }
     cout<<"The resultant is: ";
     //FindingMissingNo(size, arr);
-    FindingMaxConsecutiveOnes(size, arr);
+    //FindingMaxConsecutiveOnes(size, arr);
+    FindingSingleNumber(size, arr);
     return 0;
 }
