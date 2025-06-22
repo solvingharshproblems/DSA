@@ -94,8 +94,8 @@ int main(){
     cin>>key;
     LinearSearch(size, arr,key); */
     cout<<"Resultant array: ";
-    Intersection(size1,arr1,size2,arr2);
-    //Union(size1, arr1, size2, arr2);
+    //Intersection(size1,arr1,size2,arr2);
+    Union(size1, arr1, size2, arr2);
     /*
     for(int i=0;i<size1;i++){
         cout<<arr[i]<<" ";
