@@ -3,13 +3,7 @@
 using namespace std;
 //Problem 1: Find the majority element in an array
 void FindingMajorityElement(int n,int arr[]){
-    // We can use a hash map to count the occurrences of each element
-    //But thats not the most optimal solution
     //For optimal solution we will use Boyer-Moore Voting Algorithm
-    //This algorithm works by maintaining a count of the current candidate for majority element
-    //and a count of how many times it has been seen.
-    //If the count reaches zero, we switch to a new candidate.
-    //At the end, the candidate will be the majority element if it exists.
     int count=0,element;
     for(int i=0;i<n;i++){
         if(count == 0){

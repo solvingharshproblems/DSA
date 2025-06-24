@@ -3,10 +3,6 @@ using namespace std;
 //Problem 1: Sort an array just containing 0s, 1s, and 2s
 void Sorting(int n,int arr[]){
     //We gonna use the Dutch National Flag algorithm to sort the array, it states
-    //[0 to low-1] contains 0s extreme left
-    //[low to mid-1] contains 1s
-    //[mid to high] contains random elements (0s, 1s, 2s)
-    //[high+1 to n-1] contains 2s extreme right
     int low=0,mid=0,high=n-1;
     while(mid <= high){
         if(arr[mid] == 0){
