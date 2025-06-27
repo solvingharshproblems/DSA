@@ -11,6 +11,21 @@ void FindingLeaders(int n,int arr[]){
         }
     }
 }
+//Problem 2: Find the longest consecutive subsequence in an array
+void FindingSequence(int n,int arr[]){
+    int count=0,index=0;
+    for(int i=0;i<n;i++){
+        if(arr[i] == arr[i+1] - 1){
+            count++;
+        } else {
+            if(count > index){
+                index = count;
+            }
+            count = 0;
+        }
+    }
+    cout << index + 1; // Adding 1 to include the last element in the sequence
+}
 int main(){
     int size;
     cout << "Enter the size of the array: ";
@@ -21,6 +36,7 @@ int main(){
         cin >> arr[i];
     }
     cout << "The result is: ";
-    FindingLeaders(size, arr);
+    //FindingLeaders(size, arr);
+    FindingSequence(size, arr); 
     return 0;
 }
