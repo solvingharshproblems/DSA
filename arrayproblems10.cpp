@@ -1,4 +1,5 @@
 #include <iostream>
+#include <unordered_set>
 using namespace std;
 //Problem 1: Find leaders in an array
 void FindingLeaders(int n,int arr[]){
@@ -13,18 +14,23 @@ void FindingLeaders(int n,int arr[]){
 }
 //Problem 2: Find the longest consecutive subsequence in an array
 void FindingSequence(int n,int arr[]){
-    int count=0,index=0;
+    unordered_set<int> s;
+    int longest=1;
     for(int i=0;i<n;i++){
-        if(arr[i] == arr[i+1] - 1){
-            count++;
-        } else {
-            if(count > index){
-                index = count;
+        s.insert(arr[i]);
+    }
+    for(auto it : s){
+        if(s.find(it-1) == s.end()){ // Check if it is the start of a sequence
+            int currentNum = it;
+            int currentStreak = 1;
+            while(s.find(currentNum + 1) != s.end()){ // Count the length of the sequence
+                currentNum++;
+                currentStreak++;
             }
-            count = 0;
+            longest = max(longest, currentStreak);
         }
     }
-    cout << index + 1; // Adding 1 to include the last element in the sequence
+    cout<<longest << endl; // Output the length of the longest consecutive subsequence
 }
 int main(){
     int size;
