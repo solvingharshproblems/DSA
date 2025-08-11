@@ -21,6 +21,30 @@ void RotateMatrixBrute(int arr[][100],int n,int m){
         cout<<endl;
     }
 }
+//Optimal approach
+void TransposeMatrix(int arr[][100],int n,int m){
+    for(int i=0;i<n;i++){
+        for(int j=i+1;j<m;j++){
+            if(i != j) {
+                swap(arr[i][j], arr[j][i]);
+            }
+        }
+    }
+}
+void RotateMatrixOptimal(int arr[][100], int n, int m) {
+    TransposeMatrix(arr, n, m);
+    for(int i=0;i<n;i++){
+        for(int j=0;j<m/2;j++){
+            swap(arr[i][j], arr[i][m-1-j]);
+        }
+    }
+    for(int i=0;i<n;i++){
+        for(int j=0;j<m;j++){
+            cout<<arr[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+}
 int main(){
     int n, m;
     cout << "Enter number of rows: ";
@@ -35,6 +59,7 @@ int main(){
         }
     }
     cout << "Matrix after rotation by 90 degrees clockwise:" << endl;
-    RotateMatrixBrute(arr, n, m);
+    //RotateMatrixBrute(arr, n, m);
+    RotateMatrixOptimal(arr, n, m);
     return 0;
 }
