@@ -51,7 +51,41 @@ void SubarraySumKOptimal(int arr[],int n,int k){
     }
     cout << "Total subarrays with sum equal to " << k << ": " << count << endl;
 } //Note: Printing the subarrays might increase complexity, so it's not included in the optimal solution
+//Pascal Triangle Problems:
+//1. Print element at row r and column c in Pascal's Triangle
+void PascalTriangleElement(int n,int r) {
+    //We'll use nCr formula to calculate the value
+    int value=1;
+    for(int i=0;i<r;i++){
+        value=value*(n-i);
+        value=value/(i+1);
+    }
+    cout<<value<<" ";
+}
+//2. Print row of Pascal's Triangle
+void PascalTriangleRow(int n){
+    int value=1;
+    for(int i=0;i<=n;i++){
+        cout<<value<<" ";
+        value=value*(n-i);
+        value=value/(i+1);
+    }
+}
+//3. Print Pascal's Triangle up to n rows
+void PascalTriangle(int n){
+    int value=1;
+    for(int i=0;i<n;i++){
+        for(int j=0;j<=i;j++){
+            cout<<value<<" ";
+            value=value*(i-j);
+            value=value/(j+1);
+        }
+        cout<<endl;
+        value=1; // Reset value for the next row
+    }
+}
 int main(){
+    /*
     int size;
     cout<<"Enter size of array: ";
     cin>>size;
@@ -66,5 +100,15 @@ int main(){
     //SubarraySumKBruteForce(arr, size, k);
     //SubarraySumKBetter(arr, size, k);
     SubarraySumKOptimal(arr, size, k);
+    */
+    int rows;
+    cout<<"Enter row for Pascal's Triangle: ";
+    cin>>rows;
+    int cols;
+    //cout<<"Enter column for Pascal's Triangle: ";
+    //cin>>cols;
+    //PascalTriangleElement(rows,cols);
+    //PascalTriangleRow(rows);
+    PascalTriangle(rows);
     return 0;
 }
