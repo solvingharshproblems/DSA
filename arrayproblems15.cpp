@@ -90,6 +90,50 @@ void MajorityElementOptimal(int n,int arr[]){
         cout<<result[i]<<" ";
     }
 }
+//Problem 2: Count subarrays with XOR as k
+void XORSubarrayBruteForce(int arr[],int n,int k){
+    int count=0;
+    for(int i=0;i<n;i++){
+        for(int j=i;j<n;j++){
+            int xorSum=0;
+            for(int l=i;l<=j;l++){
+                xorSum ^= arr[l];
+            }
+            if(xorSum == k){
+                count++;
+            }
+        }
+    }
+    cout << "Total subarrays with XOR equal to " << k << ": " << count << endl;
+}
+//For better solution, we can simply remove the inner loop and use a prefix XOR array
+void XORSubarrayBetter(int arr[],int n,int k){
+    int count=0;
+    for(int i=0;i<n;i++){
+        int xorSum=0;
+        for(int j=i;j<n;j++){
+            xorSum ^= arr[j];
+            if(xorSum == k){
+                count++;
+            }
+        }
+    }
+    cout << "Total subarrays with XOR equal to " << k << ": " << count << endl;
+}
+//For optimal solution, we can use a hash map to store the prefix XOR sums
+void XORSubarrayOptimal(int arr[],int n,int k){
+    int count=0;
+    int prefixXor=0;
+    unordered_map<int, int> prefixMap;
+    prefixMap[0] = 1; // To handle the case when prefix XOR equals k
+    for(int i=0;i<n;i++){
+        prefixXor^=arr[i];
+        int remove=prefixXor^k; // XOR with k to find the required prefix
+        count+=prefixMap[remove]; // Count how many times this prefix XOR has occurred
+        prefixMap[prefixXor]++; // Store the current prefix XOR in the map
+    }
+    cout << "Total subarrays with XOR equal to " << k << ": " << count << endl;
+} //Note: Printing the subarrays might increase complexity, so it's not included in the optimal solution
 int main(){
     int size;
     cout<<"Enter the size of the array: ";
@@ -101,6 +145,12 @@ int main(){
     }
     //MajorityElementBruteForce(size,arr);
     //MajorityElementBetter(size,arr);
-    MajorityElementOptimal(size,arr);
+    //MajorityElementOptimal(size,arr);
+    int variable;
+    cout<<"Enter the variable for XOR subarray: ";
+    cin>>variable;
+    XORSubarrayBruteForce(arr, size, variable);
+    XORSubarrayBetter(arr, size, variable);
+    XORSubarrayOptimal(arr, size, variable);
     return 0;
 }
