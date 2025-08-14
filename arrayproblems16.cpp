@@ -48,6 +48,32 @@ void TwoSumOptimal(int n,int arr[],int target){
     }
     cout << "No such indices found" << endl;
 }
+//Variety 2: Find the positions of the two numbers that add up to the target sum.
+//Brute force solution is already implemented in TwoSumBruteForce.
+void TwoSumPositionsBruteForce(int n,int arr[],int target){
+    for(int i=0;i<n;i++){
+        for(int j=i+1;j<n;j++){
+            if(arr[i]+arr[j]==target){
+                cout<<"Positions found: "<<i+1<<" and "<<j+1<<endl; // +1 for 1-based index
+                return;
+            }
+        }
+    }
+    cout<<"No such positions found"<<endl;
+}
+//Optimal solution for position is similar to better solution, but we will store the positions instead of indices.
+void TwoSumPositionsOptimal(int n,int arr[],int target){
+    unordered_map<int,int>ump;
+    for(int i=0;i<n;i++){
+        int complement=target-arr[i];
+        if(ump.find(complement)!=ump.end()){
+            cout<<"Positions found: "<<ump[complement]+1<<" and "<<i+1<<endl; // +1 for 1-based index
+            return;
+        }
+        ump[arr[i]] = i;
+    }
+    cout<<"No such positions found"<<endl;
+}
 int main(){
     int size,target;
     cout<<"Enter the size of the array: ";
@@ -62,5 +88,7 @@ int main(){
     TwoSumBruteForce(size, arr, target);
     TwoSumBetter(size, arr, target);
     TwoSumOptimal(size, arr, target);
+    TwoSumPositionsBruteForce(size, arr, target);
+    TwoSumPositionsOptimal(size, arr, target);
     return 0;
 }
