@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
+#include <unordered_map>
 using namespace std;
+int count=0;
 //Problem 1: Find the repeating and missing numbers in an array
 void FindingNumbersInArrayBruteForce(int arr[],long long n){
     int repeating=-1,missing=-1;
@@ -93,6 +95,59 @@ void FindingNumbersInArrayOptimal2(int arr[],long long n){
         cout<<"Repeating number: "<<one<<"\t Missing number: "<<zero;
     }
 }
+//Problem 2: Count inversions in an array
+void CountInversionsBruteForce(int n,int arr[]){
+    int count=0;
+    for(int i=0;i<n-1;i++){
+        for(int j=i+1;j<n;j++){
+            if(arr[i]>arr[j]){
+                count++;
+            }
+        }
+    }
+    cout<<"No. of pairs are: "<<count<<endl;
+}
+//For optimal approach, we'll use merge sorting with slightest of modifications
+//int cnt=0; Note: In interviews, global variables are highly discouraged so avoid using them
+int Merge(int arr[],int low,int mid,int high){
+    int cnt=0;
+    vector <int> temp;
+    int left=low;
+    int right=mid+1;
+    while(left<=mid && right<=high){
+        if(arr[left]<=arr[right]){
+            temp.push_back(arr[left++]);
+        }
+        else{
+            temp.push_back(arr[right++]);
+            cnt+=(mid-left+1);
+        }
+    }
+    while(left<=mid){
+        temp.push_back(arr[left++]);
+    }
+    while(right<=high){
+        temp.push_back(arr[right++]);
+    }
+    for(int i = 0; i < temp.size(); i++) {
+        arr[low + i] = temp[i];
+    }
+    return cnt;
+}
+int MergeSort(int arr[],int low,int high){ //Divide and Merge
+    int cnt=0;
+    if(low>=high){
+        return cnt;
+    }
+    int mid=(low+high)/2;
+    cnt+=MergeSort(arr,low,mid);
+    cnt+=MergeSort(arr,mid+1,high);
+    cnt+=Merge(arr,low,mid,high);
+    return cnt;
+}
+void CountInversionsOptimal(int n,int arr[]){
+    cout<<"No. of pairs are: "<<MergeSort(arr,0,n-1)<<endl;
+}
 int main(){
     long long size;
     cout<<"Enter the size of array: ";
@@ -102,9 +157,13 @@ int main(){
     for(int i=0;i<size;i++){
         cin>>arr[i];
     }
+    /*
     FindingNumbersInArrayBruteForce(arr,size);
     FindingNumbersInArrayBetter(arr,size);
     FindingNumbersInArrayOptimal1(arr,size);
     FindingNumbersInArrayOptimal2(arr,size);
+    */
+    CountInversionsBruteForce(size,arr);
+    CountInversionsOptimal(size,arr);
     return 0;
 }
