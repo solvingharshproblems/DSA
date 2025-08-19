@@ -102,6 +102,24 @@ void UpperBoundSTL(int n,int arr[],int key){
         cout<<"Upper bound of "<<key<<" is at index: "<<it-arr<<endl;
     }
 } //TC=O(log n)
+//Problem 3: Find the search insert position of an element in a sorted array
+//For every Brute Force approach in binary search problems, you can use linear search
+//For Optimal approach, it is exactly same as lower bound problem.
+void SearchInsertPosition(int n,int arr[],int key){
+    int low=0,mid,high=n-1;
+    int ans=n;
+    while(low<=high){
+        mid=(low+high)/2;
+        if(arr[mid]>=key){
+            ans=mid;
+            high=mid-1;
+        }
+        else{
+            low=mid+1;
+        }
+    }
+    cout<<"Search insert position of "<<key<<" is at index: "<<ans<<endl;
+}
 int main(){
     int size;
     cout<<"Enter the size of an array: ";
@@ -119,8 +137,9 @@ int main(){
     BinarySearch2(size,arr,0,key);
     LowerBound(size,arr,key);
     LowerBoundSTL(size,arr,key);
-    */
     UpperBound(size,arr,key);
     UpperBoundSTL(size,arr,key);
+    */
+    SearchInsertPosition(size,arr,key);
     return 0;
 }
