@@ -69,6 +69,39 @@ void LowerBoundSTL(int n,int arr[],int key){
         cout<<"Lower bound of "<<key<<" is at index: "<<it-arr<<endl;
     }
 } //TC=O(log n)
+//Problem 2: Find upper bound of an element in a sorted array
+//For Brute Force approach, you can use Linear search to find the first element greater than the given element.
+//For Optimal approach, you can use binary search.
+void UpperBound(int n,int arr[],int key){
+    int low=0,mid,high=n-1;
+    int ans=n;
+    while(low<=high){
+        mid=(low+high)/2;
+        if(arr[mid]>key){
+            ans=mid;
+            high=mid-1;
+        }
+        else{
+            low=mid+1;
+        }
+    }
+    if(ans==n){
+        cout<<"Element not found!"<<endl;
+    }
+    else{
+        cout<<"Upper bound of "<<key<<" is at index: "<<ans<<endl;
+    }
+} //TC=O(log n)
+//For simplier implementation, you can use the upper_bound function from the STL.
+void UpperBoundSTL(int n,int arr[],int key){
+    auto it=upper_bound(arr,arr+n,key);
+    if(it==arr+n){
+        cout<<"Element not found!"<<endl;
+    }
+    else{
+        cout<<"Upper bound of "<<key<<" is at index: "<<it-arr<<endl;
+    }
+} //TC=O(log n)
 int main(){
     int size;
     cout<<"Enter the size of an array: ";
@@ -84,8 +117,10 @@ int main(){
     /*
     BinarySearch1(size,arr,key);
     BinarySearch2(size,arr,0,key);
-    */
     LowerBound(size,arr,key);
     LowerBoundSTL(size,arr,key);
+    */
+    UpperBound(size,arr,key);
+    UpperBoundSTL(size,arr,key);
     return 0;
 }
