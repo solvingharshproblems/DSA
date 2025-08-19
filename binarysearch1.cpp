@@ -120,6 +120,50 @@ void SearchInsertPosition(int n,int arr[],int key){
     }
     cout<<"Search insert position of "<<key<<" is at index: "<<ans<<endl;
 }
+//TC = O(log n)
+//Problem 4: Find floor and ceil of an element in a sorted array
+//Floor is the largest element less than or equal to the given element.
+//Ceil is the smallest element greater than or equal to the given element.
+void Floor(int n,int arr[],int key){
+    int low=0,mid,high=n-1;
+    int ans=-1;
+    while(low<=high){
+        mid=(low+high)/2;
+        if(arr[mid]<=key){
+            ans=arr[mid];
+            low=mid+1; //We want the largest element less than or equal to key
+        }
+        else{
+            high=mid-1; //We want the smallest element greater than or equal to key
+        }
+    }
+    if(ans==-1){
+        cout<<"Floor of "<<key<<" not found!"<<endl;
+    }
+    else{
+        cout<<"Floor of "<<key<<" is: "<<ans<<endl;
+    }
+} // TC = O(log n)
+void Ceil(int n,int arr[],int key){
+    int low=0,mid,high=n-1;
+    int ans=-1;
+    while(low<=high){
+        mid=(low+high)/2;
+        if(arr[mid]>=key){
+            ans=arr[mid];
+            high=mid-1; //We want the smallest element greater than or equal to key
+        }
+        else{
+            low=mid+1; //We want the largest element less than or equal to key
+        }
+    }
+    if(ans==-1){
+        cout<<"Ceil of "<<key<<" not found!"<<endl;
+    }
+    else{
+        cout<<"Ceil of "<<key<<" is: "<<ans<<endl;
+    }
+} //TC = O(log n)
 int main(){
     int size;
     cout<<"Enter the size of an array: ";
@@ -139,7 +183,9 @@ int main(){
     LowerBoundSTL(size,arr,key);
     UpperBound(size,arr,key);
     UpperBoundSTL(size,arr,key);
-    */
     SearchInsertPosition(size,arr,key);
+    */
+    Floor(size,arr,key);
+    Ceil(size,arr,key);
     return 0;
 }
