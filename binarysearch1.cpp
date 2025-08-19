@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm> //For using lower_bound and upper_bound functions
 using namespace std;
 //Binary Searching in array using for loop
 void BinarySearch1(int n,int arr[],int key){
@@ -35,6 +36,39 @@ void BinarySearch2(int high,int arr[],int low,int key){
         BinarySearch2(mid-1,arr,low,key);
     }
 } //TC=O(log n)
+//Problem 1: Find lower bound of an element in a sorted array
+//For Brute Force approach, you can use linear search to find the first occurence of the element.
+//For Optimal approach, you can use binary search.
+void LowerBound(int n,int arr[],int key){
+    int low=0,mid,high=n-1;
+    int ans=n;
+    while(low<=high){
+        mid=(low+high)/2;
+        if(arr[mid]>=key){
+            ans=mid;
+            high=mid-1;
+        }
+        else{
+            low=mid+1;
+        }
+    }
+    if(ans==n){
+        cout<<"Element not found!"<<endl;
+    }
+    else{
+        cout<<"Lower bound of "<<key<<" is at index: "<<ans<<endl;
+    }
+} //TC=O(log n)
+//For simplier implementation, you can use the lower_bound function from the STL.
+void LowerBoundSTL(int n,int arr[],int key){
+    auto it=lower_bound(arr,arr+n,key);
+    if(it==arr+n){
+        cout<<"Element not found!"<<endl;
+    }
+    else{
+        cout<<"Lower bound of "<<key<<" is at index: "<<it-arr<<endl;
+    }
+} //TC=O(log n)
 int main(){
     int size;
     cout<<"Enter the size of an array: ";
@@ -47,7 +81,11 @@ int main(){
     int key;
     cout<<"Enter the key to search: ";
     cin>>key;
+    /*
     BinarySearch1(size,arr,key);
     BinarySearch2(size,arr,0,key);
+    */
+    LowerBound(size,arr,key);
+    LowerBoundSTL(size,arr,key);
     return 0;
 }
