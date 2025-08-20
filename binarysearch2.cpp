@@ -85,6 +85,34 @@ void LastOccurence(int n,int arr[],int key){
     }
     cout<<"Last occurence of "<<key<<" is at index: "<<last<<endl;
 } //TC=O(log n)
+//Problem 2: Find the element in a rotated sorted array
+void FindingElement(int n,int arr[],int key){
+    int low=0,mid,high=n-1;
+    while(low<=high){
+        mid=(low+high)/2;
+        if(arr[mid]==key){
+            cout<<"Element found at index: "<<mid<<endl;
+            return;
+        }
+        if(arr[low]<=arr[mid]){
+            if(arr[low]<=key && key<arr[mid]){
+                high=mid-1;
+            }
+            else{
+                low=mid+1;
+            }
+        }
+        else{
+            if(arr[mid]<key && key<=arr[high]){
+                low=mid+1;
+            }
+            else{
+                high=mid-1;
+            }
+        }
+    }
+    cout<<"Element not found!"<<endl;
+} //TC=O(log n)
 int main(){
     int size;
     cout<<"Enter the size of array: ";
@@ -97,8 +125,11 @@ int main(){
     int key;
     cout<<"Enter the key to search: ";
     cin>>key;
+    /*
     FirstNLastOccurence(size,arr,key);
     FirstOccurence(size,arr,key);
     LastOccurence(size,arr,key);
+    */
+    FindingElement(size,arr,key);
     return 0;
 }
