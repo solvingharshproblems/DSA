@@ -53,6 +53,42 @@ void MinimumElement(int n,int arr[]){
     }
     cout<<"Minimum element is: "<<ans<<endl;
 }
+//TC = O(log n) 
+//Problem 3: Find out how many times a sorted array is rotated
+// we just need to find the index of the minimum element
+// and that will be the number of rotations
+// This is because the array is sorted and then rotated, so the minimum element's index gives the number of rotations.
+// If the array is not rotated, the minimum element will be the first element.
+void CountRotations(int n,int arr[]){
+    int low=0,mid,high=n-1;
+    int ans=INT_MAX;
+    int index=-1;
+    while(low<=high){
+        mid=(low+high)/2;
+        if(arr[low]<=arr[high]){
+            if(arr[low]<ans){
+                ans=arr[low];
+                index=low; // Found the minimum element at index low
+            }
+            break; // Array is not rotated, so the first element is the minimum
+        }
+        if(arr[low]<=arr[mid]){
+            if(arr[low]<ans){
+                ans=arr[low];
+                index=low; // Found the minimum element at index low
+            }
+            low=mid+1; // Move to the right side
+        }
+        else{
+            if(arr[mid]<ans){
+                ans=arr[mid];
+                index=mid; // Found the minimum element at index mid
+            }
+            high=mid-1; // Move to the left side
+        }
+    }
+    cout<<"Number of rotations: "<<index<<endl;
+} //TC = O(log n)
 int main(){
     int size;
     cout<<"Enter the size of array: ";
@@ -67,7 +103,8 @@ int main(){
     cout<<"Enter key to search: ";
     cin>>key;
     FindingElement(arr,size,key);
-    */
     MinimumElement(size, arr);
+    */
+    CountRotations(size, arr);
     return 0;
 }
