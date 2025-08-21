@@ -32,6 +32,27 @@ void FindingElement(int arr[],int n,int key){
         }
     }
 } //TC = O(log n) in average case, O(n/2) in worst case due to duplicates
+//Problem 2: Find the minimum element in a rotated sorted array
+void MinimumElement(int n,int arr[]){
+    int low=0,mid,high=n-1;
+    int ans=INT_MAX;
+    while(low<=high){
+        mid=(low+high)/2;
+        if(arr[low]<=arr[high]){
+            ans=min(ans,arr[low]);
+            break; // Array is not rotated, so the first element is the minimum
+        }
+        if(arr[low]<=arr[mid]){
+            ans=min(ans,arr[low]);
+            low=mid+1; // Move to the right side
+        }
+        else{
+            ans=min(ans,arr[mid]);
+            high=mid-1; // Move to the left side
+        }
+    }
+    cout<<"Minimum element is: "<<ans<<endl;
+}
 int main(){
     int size;
     cout<<"Enter the size of array: ";
@@ -41,9 +62,12 @@ int main(){
     for(int i=0;i<size;i++){
         cin>>arr[i];
     }
+    /*
     int key;
     cout<<"Enter key to search: ";
     cin>>key;
     FindingElement(arr,size,key);
+    */
+    MinimumElement(size, arr);
     return 0;
 }
