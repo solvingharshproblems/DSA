@@ -29,6 +29,35 @@ void FindingSingleElement(int n,int arr[]){
         }
     }
 } //TC = O(log n)
+//Problem 2: Find peak element in an array
+void FindingPeakElement(int n,int arr[]){
+    if(n==1){
+        cout<<arr[0];
+        return;
+    }
+    if(arr[0]>=arr[1]){
+        cout<<arr[0];
+        return;
+    }
+    if(arr[n-1]>=arr[n-2]){
+        cout<<arr[n-1];
+        return;
+    }
+    int low=1,mid,high=n-2;
+    while(low<=high){
+        mid=(low+high)/2;
+        if(arr[mid]>=arr[mid-1] && arr[mid]>=arr[mid+1]){
+            cout<<"The peak element is: "<<arr[mid];
+            return;
+        }
+        else if(arr[mid-1]>arr[mid]){
+            high=mid-1;
+        }
+        else{
+            low=mid+1;
+        }
+    }
+} //TC = O(log n)
 int main(){
     int size;
     cout<<"Enter the size of array: ";
@@ -39,5 +68,7 @@ int main(){
         cin>>arr[i];
     }
     FindingSingleElement(size,arr);
+    cout<<endl;
+    FindingPeakElement(size,arr);
     return 0;
 }
