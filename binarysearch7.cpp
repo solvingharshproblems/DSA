@@ -33,6 +33,22 @@ void LeastCapacity(int n,int arr[],int days){
     }
     cout<<"Least capacity to ship packages within "<<days<<" days is: "<<result<<endl;
 } //TC = O(n log m) + O(n) 
+//Problem 2: Find kth missing positive integer
+void FindingMissinNo(int n,int arr[],int k){
+    int low=0,mid,high=n-1;
+    int missing=0,result=-1;
+    while(low<=high){
+        mid=(low+high)/2;
+        missing=arr[mid]-(mid+1);
+        if(missing<k){
+            low=mid+1;
+        }
+        else{
+            high=mid-1;
+        }
+    }
+    cout<<"The "<<k<<"th missing positive integer is: "<<(low+k)<<endl;
+} //TC = O(log n)
 int main(){
     int size;
     cout<<"Enter the size of array: ";
@@ -42,9 +58,15 @@ int main(){
     for(int i=0;i<size;i++){
         cin>>arr[i];
     }
+    /*
     int days;
     cout<<"Enter the number of days: ";
     cin>>days;
     LeastCapacity(size,arr,days);
+    */
+    int k;
+    cout<<"Enter the missing index: ";
+    cin>>k;
+    FindingMissinNo(size,arr,k);
     return 0;
 }
