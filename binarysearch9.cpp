@@ -34,6 +34,38 @@ void PaintersPartition(int arr[],int n,int k){
     }
     cout<<"The minimum time to paint all boards is: "<<result<< endl;
 } //TC=O(n log m)+O(n) 
+//Problem 2: Minimise the maximum distance between gas stations
+int CanWePlace(int arr[],int n,long double minDist){
+    int count=0;
+    for(int i=1;i<n;i++){
+        int num=(arr[i]-arr[i-1])/minDist;
+        if(num==num*minDist){
+            num--;
+        }
+        count+=num;
+    }
+    return count;
+}
+void MinimiseMaxDistance(int n,int arr[],int k){
+    sort(arr,arr+n);
+    long double low=0;
+    long double high=0;
+    for(int i=0;i<n-1;i++){
+        high=max(high,((long double)(arr[i+1]-arr[i])));
+    }
+    long double diff=1e-6;
+    while(high-low>diff){
+        long double mid=(low+high)/2.0;
+        int count=CanWePlace(arr,n,mid);
+        if(count>k){
+            low=mid;
+        }
+        else {
+            high=mid;
+        }
+    }
+    cout<<"The minimum distance between gas stations is: "<<high<<endl;
+} //TC=O(n log m)+O(n)
 int main(){
     int size;
     cout<<"Enter the size of array: ";
@@ -44,8 +76,13 @@ int main(){
         cin>>arr[i];
     }
     int k;
+    /*
     cout<<"Enter the number of painters: ";
     cin>>k;
     PaintersPartition(arr,size,k);
+    */
+    cout<<"Enter the number of gas stations: ";
+    cin>>k;
+    MinimiseMaxDistance(size,arr,k);
     return 0;
 }
