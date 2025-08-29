@@ -50,6 +50,24 @@ void BinarySearch(int n,int m,int arr[][100],int key){
     }
     cout<<"Element not found"<<endl;
 } //TC=O(log(N*M))
+//Problem 3: Binary search in 2D sorted matrix where each row is sorted in ascending from left to right
+//and each column is sorted in ascending from top to bottom.
+void BinarySearch2(int n,int m,int arr[][100],int key){
+    int row=0,col=m-1;
+    while(row<n && col>=0){
+        if(arr[row][col]==key){
+            cout<<"Element found at index: ("<<row<<","<<col<<")"<<endl;
+            return;
+        }
+        else if(arr[row][col]<key){
+            row++;
+        }
+        else{
+            col--;
+        }
+    }
+    cout<<"Element not found"<<endl;
+} //TC=O(N+M)
 int main(){
     int rows;
     cout<<"Enter the number of rows: ";
@@ -71,5 +89,6 @@ int main(){
     cout<<"Enter the element to be searched: ";
     cin>>key;
     BinarySearch(rows,cols,arr,key);
+    BinarySearch2(rows,cols,arr,key);
     return 0;
 }
