@@ -30,6 +30,26 @@ void RowWithMax1s(int n,int m,int arr[][100]){
     }
     cout<<"Row with maximum 1's is: "<<index<<endl;
 } //TC=O(N*log(M))
+//Problem 2: Binary search in 2D sorted matrix
+void BinarySearch(int n,int m,int arr[][100],int key){
+    int low=0,high=n*m-1,mid;
+    while(low<=high){
+        mid=(low+high)/2;
+        int row=mid/m;
+        int col=mid%m;
+        if(arr[row][col]==key){
+            cout<<"Element found at index: ("<<row<<","<<col<<")"<<endl;
+            return;
+        }
+        else if(arr[row][col]<key){
+            low=mid+1;
+        }
+        else{
+            high=mid-1;
+        }
+    }
+    cout<<"Element not found"<<endl;
+} //TC=O(log(N*M))
 int main(){
     int rows;
     cout<<"Enter the number of rows: ";
@@ -44,6 +64,12 @@ int main(){
             cin>>arr[i][j];
         }
     }
+    /*
     RowWithMax1s(rows,cols,arr);
+    */
+    int key;
+    cout<<"Enter the element to be searched: ";
+    cin>>key;
+    BinarySearch(rows,cols,arr,key);
     return 0;
 }
