@@ -34,6 +34,28 @@ void FindPeak(int n, int m, int arr[][100]){
     }
     cout << "No peak element found" << endl;
 } //TC=O(N*log(M))
+//Problem 2: Find median in a row wise sorted 2D array
+int BlackBox(int n,int m,int arr[][100],int x){
+    int count=0;
+    for(int i=0;i<n;i++){
+        count+=upper_bound(arr[i],arr[i]+m,x)-arr[i];
+    }
+    return count;
+}
+void FindMedian(int arr[][100],int n,int m) {
+    int low=0,mid,high=n*m-1;
+    int MedianPosition=(n*m+1)/2;
+    while(low<=high){
+        mid=(low+high)/2;
+        if(BlackBox(n,m,arr,mid)<MedianPosition){
+            low=mid+1;
+        }
+        else{
+            high=mid-1;
+        }
+    }
+    cout<<"Median is: "<<low<<endl;
+} //TC=O(N*log(M))
 int main(){
     int n,m;
     cout<<"Enter the number of rows: ";
@@ -47,6 +69,7 @@ int main(){
             cin>>arr[i][j];
         }
     }
-    FindPeak(n,m,arr);
+    //FindPeak(n,m,arr);
+    FindMedian(arr,n,m);
     return 0;
 }
