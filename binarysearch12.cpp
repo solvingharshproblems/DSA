@@ -43,7 +43,7 @@ int BlackBox(int n,int m,int arr[][100],int x){
     return count;
 }
 void FindMedian(int arr[][100],int n,int m) {
-    int low=0,mid,high=n*m-1;
+    long long low=0,mid,high=1e9;
     int MedianPosition=(n*m+1)/2;
     while(low<=high){
         mid=(low+high)/2;
