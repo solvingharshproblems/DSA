@@ -19,8 +19,8 @@ void FindPeak(int n, int m, int arr[][100]){
     while(low<=high){
         mid=(low+high)/2;
         int row=FindPeakUtil(n,m,arr,mid);
-        int left=mid-1>=0?arr[row][left]:-1;
-        int right=mid+1<m?arr[row][right]:-1;
+        int left=(mid-1>=0)?arr[row][mid-1]:-1;
+        int right=(mid+1<m)?arr[row][mid+1]:-1;
         if(arr[row][mid]>left && arr[row][mid]>right){
             cout<<"Peak element found at index: ("<<row<<","<<mid<<") with value: "<<arr[row][mid]<<endl;
             return;
@@ -69,7 +69,7 @@ int main(){
             cin>>arr[i][j];
         }
     }
-    //FindPeak(n,m,arr);
+    FindPeak(n,m,arr);
     FindMedian(arr,n,m);
     return 0;
 }
