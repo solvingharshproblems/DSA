@@ -37,26 +37,6 @@ Node* SearchinginLL(Node* head,int key){
     }
     return nullptr;
 }
-//Deleting an element in a Linked List
-Node* DeletinginLL(Node* head,int key){
-    Node* temp=head;
-    Node* prev=nullptr;
-    while(temp!=nullptr){
-        if(temp->data==key){
-            if(prev==nullptr){
-                head=temp->next;
-            }
-            else{
-                prev->next=temp->next;
-            }
-            delete temp;
-            return head;
-        }
-        prev=temp;
-        temp=temp->next;
-    }
-    return head;
-}
 int main(){
     int n;
     cout<<"Enter the size of the array: ";
@@ -86,15 +66,6 @@ int main(){
     }
     else{
         cout<<"Element not found"<<endl;
-    }
-    cout<<"Enter the element to be deleted: ";
-    cin>>key;
-    y=DeletinginLL(y,key);
-    temp=y;
-    cout<<"The elements of the linked list after deletion are: ";
-    while(temp!=nullptr){
-        cout<<temp->data<<" ";
-        temp=temp->next;
     }
     return 0;
 }
