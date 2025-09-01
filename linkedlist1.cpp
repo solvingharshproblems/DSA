@@ -26,6 +26,37 @@ Node* ConverArray2LL(vector<int> arr){
     }
     return head;
 }
+//Search an element in a Linked List
+Node* SearchinginLL(Node* head,int key){
+    Node* temp=head;
+    while(temp!=nullptr){
+        if(temp->data==key){
+            return temp;
+        }
+        temp=temp->next;
+    }
+    return nullptr;
+}
+//Deleting an element in a Linked List
+Node* DeletinginLL(Node* head,int key){
+    Node* temp=head;
+    Node* prev=nullptr;
+    while(temp!=nullptr){
+        if(temp->data==key){
+            if(prev==nullptr){
+                head=temp->next;
+            }
+            else{
+                prev->next=temp->next;
+            }
+            delete temp;
+            return head;
+        }
+        prev=temp;
+        temp=temp->next;
+    }
+    return head;
+}
 int main(){
     int n;
     cout<<"Enter the size of the array: ";
@@ -38,6 +69,29 @@ int main(){
     Node* y=ConverArray2LL(arr);
     Node* temp=y;
     cout<<"The elements of the linked list are: ";
+    //Finding length of a Linked List
+    int count=0;
+    while(temp!=nullptr){
+        cout<<temp->data<<" ";
+        temp=temp->next;
+        count++;
+    }
+    cout<<endl<<"The length of the linked list is: "<<count<<endl;
+    int key;
+    cout<<"Enter the element to be searched: ";
+    cin>>key;
+    Node* result=SearchinginLL(y,key);
+    if(result!=nullptr){
+        cout<<"Element found: "<<result->data<<endl;
+    }
+    else{
+        cout<<"Element not found"<<endl;
+    }
+    cout<<"Enter the element to be deleted: ";
+    cin>>key;
+    y=DeletinginLL(y,key);
+    temp=y;
+    cout<<"The elements of the linked list after deletion are: ";
     while(temp!=nullptr){
         cout<<temp->data<<" ";
         temp=temp->next;
