@@ -75,6 +75,26 @@ Node* deleteKthElement(Node* head,int k){
     delete todelete;
     return head;
 }
+//Problem 4: Delete element of a specific value from the linked list
+Node* deleteElement(Node* head, int value) {
+    if (head == nullptr) {
+        return head;
+    }
+    if (head->data == value) {
+        return deleteHead(head);
+    }
+    Node* temp = head;
+    while (temp->next != nullptr) {
+        if (temp->next->data == value) {
+            Node* todelete = temp->next;
+            temp->next = temp->next->next;
+            delete todelete;
+            return head;
+        }
+        temp = temp->next;
+    }
+    return head;
+}
 int main(){
     int size;
     cout<<"Enter the size of linked list: ";
@@ -85,7 +105,6 @@ int main(){
         cin>>arr[i];
     }
     Node* head=ConverArray2LL(arr);
-    cout<<endl;
     cout<<"After deleting head: ";
     head=deleteHead(head);
     Node* temp=head;
@@ -106,6 +125,16 @@ int main(){
     cout<<"Enter the position of the element to delete: ";
     cin>>k;
     head=deleteKthElement(head,k);
+    temp=head;
+    while(temp!=nullptr){
+        cout<<temp->data<<" ";
+        temp=temp->next;
+    }
+    cout<<endl;
+    int value;
+    cout<<"Enter the value of the element to delete: ";
+    cin>>value;
+    head=deleteElement(head,value);
     temp=head;
     while(temp!=nullptr){
         cout<<temp->data<<" ";
