@@ -18,7 +18,7 @@ class Node{
         prev=nullptr;
     }
 };
-Node* ConvertArray2LL(vector<int> arr){
+Node* ConvertArray2DLL(vector<int> arr){
     Node *head=new Node(arr[0]);
     Node *prev=head;
     for(int i=1;i<arr.size();i++){
@@ -94,7 +94,7 @@ int main(){
     for(int i=0;i<size;i++){
         cin>>arr[i];
     }
-    Node* head=ConvertArray2LL(arr);
+    Node* head=ConvertArray2DLL(arr);
     cout<<"The elements of the linked list are: ";
     Node* temp=head;
     while(temp!=nullptr){
