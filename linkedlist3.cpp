@@ -58,6 +58,81 @@ Node* AddTwoNumbers(Node* head1,Node* head2){
     }
     return DummyNode->next;
 } //TC=O(max(m,n)) SC=O(max(m,n)) for storing the result
+//Problem 2: Group the odd and then even elements of the Linked List
+//For Brute Force Approach, we can move the data of odd indexed nodes to a separate list and then append the even indexed nodes
+Node* GroupOddEvenBruteForce(Node* head){
+    if(head==nullptr || head->next==nullptr){
+        return head;
+    }
+    vector<int> list;
+    Node* temp=head;
+    while(temp!=nullptr && temp->next!=nullptr){
+        list.push_back(temp->data);
+        temp=temp->next->next;
+    }
+    if(temp){
+        list.push_back(temp->data);
+    }
+    temp=head->next;
+    while(temp!=nullptr && temp->next!=nullptr){
+        list.push_back(temp->data);
+        temp=temp->next->next;
+    }
+    if(temp){
+        list.push_back(temp->data);
+    }
+    int i=0;
+    temp=head;
+    while(temp!=nullptr){
+        temp->data=list[i];
+        temp=temp->next;
+        i++;
+    }
+    return head;
+} //TC=O(3n) SC=O(n)
+//Optimal Approach: We can maintain 2 pointers,one for odd indexed nodes and one for even indexed nodes 
+Node* GroupOddEvenOptimal(Node* head){
+    if(head==nullptr || head->next==nullptr){
+        return head;
+    }
+    Node* oddHead=nullptr;
+    Node* oddTail=nullptr;
+    Node* evenHead=nullptr;
+    Node* evenTail=nullptr;
+    Node* curr=head;
+    int pos=1;
+    while(curr!=nullptr){
+        if(pos%2==1){
+            if(oddHead==nullptr){
+                oddHead=curr;
+                oddTail=curr;
+            }
+            else{
+                oddTail->next=curr;
+                oddTail=curr;
+            }
+        }
+        else{
+            if(evenHead==nullptr){
+                evenHead=curr;
+                evenTail=curr;
+            }
+            else{
+                evenTail->next=curr;
+                evenTail=curr;
+            }
+        }
+        curr=curr->next;
+        pos++;
+    }
+    if(oddTail!=nullptr){
+        oddTail->next=evenHead;
+    }
+    if(evenTail!=nullptr){
+        evenTail->next=nullptr;
+    }
+    return oddHead;
+} //TC=O(n)
 int main(){
     int size1;
     cout<<"Enter the size of first linked list: ";
@@ -77,6 +152,7 @@ int main(){
         cin>>arr2[i];
     }
     Node* head2=CovertArray2LL(arr2);
+    /*
     Node* head=AddTwoNumbers(head1,head2);
     cout<<"The elements of the resulting linked list are: ";
     Node* temp=head;
@@ -84,5 +160,22 @@ int main(){
         cout<<temp->data<<" ";
         temp=temp->next;
     }
+    */
+    Node* head3=GroupOddEvenBruteForce(head1);
+    cout<<"The elements of the resulting linked list are: ";
+    Node* temp=head3;
+    while(temp!=nullptr){
+        cout<<temp->data<<" ";
+        temp=temp->next;
+    }
+    cout<<endl;
+    Node* head4=GroupOddEvenOptimal(head2);
+    cout<<"The elements of the resulting linked list are: ";
+    temp=head4;
+    while(temp!=nullptr){
+        cout<<temp->data<<" ";
+        temp=temp->next;
+    }
+    cout<<endl;
     return 0;
 }
