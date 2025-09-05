@@ -64,6 +64,47 @@ Node* ReverseRecursive(Node* head){
     head->next=nullptr;
     return newHead;
 } //TC=O(n) SC=O(n) due to recursion stack
+//Problem 2: Check if a linked list is a palindrome
+//For Brute Force we can store the elements of the linked list in a stack and then pop the elements from the stack and compare with the linked list
+bool CheckPalindromeBruteForce(Node* head){
+    stack<int> s;
+    Node* temp=head;
+    while(temp!=nullptr){
+        s.push(temp->data);
+        temp=temp->next;
+    }
+    temp=head;
+    while(temp!=nullptr){
+        if(temp->data!=s.top()){
+            return false;
+        }
+        s.pop();
+        temp=temp->next;
+    }
+    return true;
+} //TC=O(2n) SC=O(n)
+//For Optimal Approach we can find the middle of the linked list and reverse the second half of the linked list and then compare the first half and the reversed second half
+bool CheckPalindromeOptimal(Node* head){
+    Node* slow=head;
+    Node* fast=head;
+    while(fast->next!=nullptr && fast->next->next!=nullptr){
+        slow=slow->next;
+        fast=fast->next->next;
+    }
+    Node* newHead=ReverseOptimal(slow->next);
+    Node* first=head;
+    Node* second=newHead;
+    while(second!=nullptr){
+        if(first->data!=second->data){
+            ReverseOptimal(newHead); //Reversing back the second half to restore the original linked list
+            return false;
+        }
+        first=first->next;
+        second=second->next;
+    }
+    ReverseOptimal(newHead); //Reversing back the second half to restore the original linked list
+    return true;
+} //TC=O(2n)
 int main(){
     int size;
     cout<<"Enter size of linked list: ";
@@ -97,5 +138,19 @@ int main(){
         temp=temp->next;
     }
     cout<<endl;
+    bool isPalindrome1=CheckPalindromeBruteForce(ConvertArray2LL(arr));
+    if(isPalindrome1){
+        cout<<"The linked list is a palindrome"<<endl;
+    }
+    else{
+        cout<<"The linked list is not a palindrome"<<endl;
+    }
+    bool isPalindrome2=CheckPalindromeOptimal(ConvertArray2LL(arr));
+    if(isPalindrome2){
+        cout<<"The linked list is a palindrome"<<endl;
+    }
+    else{
+        cout<<"The linked list is not a palindrome"<<endl;
+    }
     return 0;
 }
