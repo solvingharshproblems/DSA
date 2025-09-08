@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <unordered_map>
 using namespace std;
 class Node{
     public:
@@ -64,6 +65,42 @@ Node* DeleteMiddleOptimal(Node* head){
     delete slow;
     return head;
 } //TC=O(n)
+//Problem 2: Find the starting point of the loop/cycle of a linked list
+//Note: If there is no loop in the linked list, return null
+//For Brute Force Approach we can use a hash map to store the visited nodes
+Node* StartingPointBruteForce(Node* head){
+    unordered_map<Node*,bool> visited;
+    Node* temp=head;
+    while(temp!=nullptr){
+        if(visited[temp]){
+            return temp;
+        }
+        visited[temp]=true;
+        temp=temp->next;
+    }
+    return nullptr;
+} //TC=O(n) SC=O(n)
+//For Optimal Approach we will use Tortoise and Hare Algorithm
+Node* StartingPointOptimal(Node* head){
+    if(head==nullptr || head->next==nullptr){
+        return nullptr;
+    }
+    Node* slow=head;
+    Node* fast=head;
+    while(fast!=nullptr && fast->next!=nullptr){
+        slow=slow->next;
+        fast=fast->next->next;
+        if(slow==fast){
+            slow=head;
+            while(slow!=fast){
+                slow=slow->next;
+                fast=fast->next;
+            }
+            return slow;
+        }
+    }
+    return nullptr;
+} //TC=O(n)
 int main(){
     int size;
     cout<<"Enter size of linked list: ";
@@ -73,6 +110,7 @@ int main(){
     for(int i=0;i<size;i++){
         cin>>arr[i];
     }
+    /*
     Node* head1=ConvertArray2LL(arr);
     cout<<"Linked list after deleting middle node: ";
     head1=DeleteMiddleOptimal(head1);
@@ -83,5 +121,23 @@ int main(){
     }
     delete head1;
     cout<<endl;
+    */
+    Node* head1=ConvertArray2LL(arr);
+    head1->next->next->next = head1->next;
+    Node* temp=head1;
+    Node* start1 = StartingPointBruteForce(head1);
+    if(start1){
+        cout<<"Loop starts at node with value: "<< start1->data<<endl;
+    } 
+    else{
+        cout<<"No loop"<<endl;
+    }
+    Node* start2=StartingPointOptimal(head1);
+    if (start2){
+        cout<<"Loop starts at node with value: "<<start2->data<<endl;
+    } 
+    else{
+        cout<<"No loop"<<endl;
+    }
     return 0;
 }
