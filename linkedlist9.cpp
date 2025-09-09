@@ -55,6 +55,46 @@ Node* DeleteAllOccurences(Node* head,int value){
     }
     return head;
 } //TC=O(n) 
+//Problem 2: Find all pairs with a given sum in a doubly linked list
+//For Brute Force Approach we can use 2 nested loops to find all pairs with a given sum with the help of 2 pointers
+Node* FindPairsBruteForce(Node* head,int sum){
+    Node* temp1=head;
+    while(temp1!=nullptr){
+        Node* temp2=temp1->next;
+        while(temp2!=nullptr){
+            if(temp1->data+temp2->data==sum){
+                cout<<"("<<temp1->data<<","<<temp2->data<<") ";
+            }
+            temp2=temp2->next;
+        }
+        temp1=temp1->next;
+    }
+    cout<<endl;
+    return head;
+} //TC=O(n^2)
+//For Optimal Approach we can use 2 pointers left and right to find all pairs with a given sum
+Node* FindPairsOptimal(Node* head,int sum){
+    Node* left=head;
+    Node* right=head;
+    while(right->next!=nullptr){
+        right=right->next;
+    }
+    while(left!=right && right->next!=left){
+        if(left->data+right->data==sum){
+            cout<<"("<<left->data<<","<<right->data<<") ";
+            left=left->next;
+            right=right->prev;
+        }
+        else if(left->data+right->data<sum){
+            left=left->next;
+        }
+        else{
+            right=right->prev;
+        }
+    }
+    cout<<endl;
+    return head;
+} //TC=O(2n)
 int main(){
     int size;
     cout<<"Enter the size of the linked list: ";
@@ -65,6 +105,7 @@ int main(){
         cin>>arr[i];
     }
     Node* head=ConvertArray2DLL(arr);
+    /*
     int value;
     cout<<"Enter the value to be deleted: ";
     cin>>value;
@@ -76,5 +117,13 @@ int main(){
         temp=temp->next;
     }
     cout<<endl;  
+    */
+    int sum;
+    cout<<"Enter the sum: ";
+    cin>>sum;
+    cout<<"The pairs are: ";
+    Node* temp1=FindPairsBruteForce(head,sum);
+    cout<<"The pairs are: ";
+    Node* temp2=FindPairsOptimal(head,sum);
     return 0;
 }
