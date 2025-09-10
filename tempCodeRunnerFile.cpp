@@ -1,20 +1,11 @@
-void UpperBound(int n,int arr[],int key){
-    int low=0,mid,high=n-1;
-    int ans=n;
-    while(low<=high){
-        mid=(low+high)/2;
-        if(arr[mid]<key){
-            low=mid+1;
+Node* nextNode=temp->next;
+        while(nextNode!=nullptr && nextNode->data==temp->data){
+            Node* todelete=nextNode;
+            nextNode=nextNode->next;
+            delete todelete;
         }
-        else{
-            ans=mid;
-            high=mid-1;
+        temp->next=nextNode;
+        if(nextNode!=nullptr){
+            nextNode->prev=temp;
         }
-    }
-    if(ans==n){
-        cout<<"Element not found!"<<endl;
-    }
-    else{
-        cout<<"Upper bound of "<<key<<" is at index: "<<ans<<endl;
-    }
-}
+        temp=temp->next;
