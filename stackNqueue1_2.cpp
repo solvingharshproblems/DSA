@@ -53,6 +53,59 @@ class Stack{
             return size;
         } // TC=O(1) SC=O(1)    
 };
+//Implementing queue using linked list
+class Queue{
+    public:
+        Node* front;
+        Node* rear;
+        int size=0;
+        int Enqueue(int x){
+            Node* newNode=new Node(x);
+            if(!newNode){
+                cout<<"Queue Overflow"<<endl;
+            }
+            else{
+                if(front==NULL){
+                    front=rear=newNode;
+                }
+                else{
+                    rear->next=newNode;
+                    rear=newNode;
+                }
+                size++;
+            }
+            return x;
+        } // TC=O(1) SC=O(1)
+        int Dequeue(){
+            if(front==NULL){
+                cout<<"Queue Underflow"<<endl;
+                return -1;
+            }
+            else{
+                int x=front->data;
+                Node* temp=front;
+                front=front->next;
+                delete temp;
+                size--;
+                if(front==NULL){
+                    rear=NULL;
+                }
+                return x;
+            }
+        } // TC=O(1) SC=O(1)
+        int Front(){
+            if(front==NULL){
+                cout<<"Queue is empty"<<endl;
+                return -1;
+            }
+            else{
+                return front->data;
+            }
+        } // TC=O(1) SC=O(1)
+        int Size(){
+            return size;
+        } // TC=O(1) SC=O(1)
+};
 int main(){
     Stack s;
     s.top=NULL;
@@ -63,5 +116,14 @@ int main(){
     cout<<"The size of the stack is: "<<s.Size()<<endl; 
     cout<<"Popped element is: "<<s.Pop()<<endl; 
     cout<<"The size of the stack is: "<<s.Size()<<endl; 
+    Queue q;
+    q.front=q.rear=NULL;
+    q.Enqueue(10);
+    q.Enqueue(20);
+    q.Enqueue(30);
+    cout<<"The front element is: "<<q.Front()<<endl;
+    cout<<"The size of the queue is: "<<q.Size()<<endl; 
+    cout<<"Dequeued element is: "<<q.Dequeue()<<endl; 
+    cout<<"The size of the queue is: "<<q.Size()<<endl;
     return 0;
 }
