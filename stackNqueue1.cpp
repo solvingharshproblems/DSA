@@ -52,6 +52,53 @@ class Stack{
         } // TC=O(1)
 };
 
+//Implementing queue using array
+class Queue{
+    public:
+        int front=-1,rear=-1;
+        int qu[100]; // TC=O(1) SC=O(n)
+        int Enqueue(int x){
+            if(rear==99){
+                cout<<"Queue Overflow"<<endl;
+            }
+            else{
+                if(front==-1){
+                    front=0;
+                }
+                rear++;
+                qu[rear]=x;
+            }
+            return x;
+        } // TC=O(1)
+        int Dequeue(){
+            if(front==-1 || front>rear){
+                cout<<"Queue Underflow"<<endl;
+                return -1;
+            }
+            else{
+                int x=qu[front];
+                front++;
+                return x;
+            }
+        } // TC=O(1)
+        int Front(){
+            if(front==-1 || front>rear){
+                cout<<"Queue is empty"<<endl;
+                return -1;
+            }
+            else{
+                return qu[front];
+            }
+        } // TC=O(1)
+        int Size(){
+            if(front==-1 || front>rear){    
+                return 0;
+            }
+            else{
+                return rear-front+1;
+            }
+        } // TC=O(1)
+};
 int main(){
     Stack s;
     s.top=-1;
@@ -63,5 +110,14 @@ int main(){
     cout<<"Popped element is: "<<s.Pop()<<endl;
     cout<<"Top element is: "<<s.Top()<<endl;
     cout<<"Stack size is: "<<s.Size()<<endl;
+    Queue q;
+    q.Enqueue(10);
+    q.Enqueue(20);
+    q.Enqueue(30);
+    cout<<"Front element is: "<<q.Front()<<endl;
+    cout<<"Queue size is: "<<q.Size()<<endl;
+    cout<<"Dequeued element is: "<<q.Dequeue()<<endl;
+    cout<<"Front element is: "<<q.Front()<<endl;
+    cout<<"Queue size is: "<<q.Size()<<endl;
     return 0;
 }
