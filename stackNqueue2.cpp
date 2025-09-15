@@ -167,6 +167,7 @@ string PrefixToPostfix(string s){
     }
     return st.top();
 } //TC=O(n) SC=O(n)
+//Postfix to Prefix conversion
 string PostfixToPrefix(string s){
     stack<string> st;
     for(int i=0;i<s.length();i++){
