@@ -148,6 +148,25 @@ string PrefixToInfix(string s){
     }
     return st.top();
 } //TC=O(n) SC=O(n)
+//Prefix to Postfix conversion
+string PrefixToPostfix(string s){
+    stack<string> st;
+    for(int i=s.length()-1;i>=0;i--){
+        if((s[i]>='a' && s[i]<='z')||(s[i]>='A' && s[i]<='Z')||(s[i]>='0' && s[i]<='9')){
+            string op(1,s[i]);  
+            st.push(op);
+        }
+        else{
+            string op1=st.top();
+            st.pop();
+            string op2=st.top();
+            st.pop();
+            string temp=op1+op2+s[i];
+            st.push(temp);
+        }
+    }
+    return st.top();
+} //TC=O(n) SC=O(n)
 int main(){
     string s="a+b*(c^d-e)^(f+g*h)-i";
     cout<<"Infix Expression: "<<s<<endl;
@@ -163,5 +182,7 @@ int main(){
     cout<<"Prefix Expression: "<<q<<endl;
     cout<<"Infix Expression: ";
     cout<<PrefixToInfix(q)<<endl;
+    cout<<"Postfix Expression: ";
+    cout<<PrefixToPostfix(q)<<endl;
     return 0;
 }
