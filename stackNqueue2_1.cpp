@@ -64,10 +64,58 @@ string InfixToPostfix(string s){
     }
     return ans;
 } //TC=O(2n) SC=O(2n)
+//Infix to Prefix conversion
+string InfixToPrefix(string s){
+    int i=0;
+    stack<char> st;
+    string ans="";
+    reverse(s.begin(),s.end());
+    for(int i=0;i<s.length();i++){
+        if(s[i]=='('){
+            s[i]=')';
+        }
+        else if(s[i]==')'){
+            s[i]='(';
+        }
+    }
+    while(i<s.length()){
+        if((s[i]>='a' && s[i]<='z')||(s[i]>='A' && s[i]<='Z')||(s[i]>='0' && s[i]<='9')){
+            ans+=s[i];
+            i++;
+        }
+        else if(s[i]=='('){
+            st.push(s[i]);
+            i++;
+        }
+        else if(s[i]==')'){
+            while(!st.empty() && st.top()!='('){
+                ans+=st.top();
+                st.pop();
+            }
+            i++;
+        }
+        else{
+            while(!st.empty() && priority(s[i])<priority(st.top())){
+                ans+=st.top();
+                st.pop();
+            }
+            st.push(s[i]);
+            i++;
+        }
+    }
+    while(!st.empty()){
+        ans+=st.top();
+        st.pop();
+    }
+    reverse(ans.begin(),ans.end());
+    return ans;
+} //TC=O(3n) SC=O(n)
 int main(){
     string s="a+b*(c^d-e)^(f+g*h)-i";
     cout<<"Infix Expression: "<<s<<endl;
     cout<<"Postfix Expression: ";
     cout<<InfixToPostfix(s)<<endl;
+    cout<<"Prefix Expression: ";
+    cout<<InfixToPrefix(s)<<endl;
     return 0;
 }
