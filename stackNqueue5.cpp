@@ -63,6 +63,43 @@ void trappingRainWaterOptimal(int arr[], int n){
     }
     cout<<water;
 } //TC=O(n) SC=O(1)
+//Problem 2: Sum of Subarray Minimums
+//We need to find the sum of the minimums of all subarrays of the given array
+//Note: If you have a large output, take modulo 10^9+7
+//For Brute Force Approach we will generate all subarrays and find the minimum of each subarray and add it to the sum.
+void sumOfSubarrayMinimumsBruteForce(int arr[], int n){
+    long long sum=0;
+    for(int i=0;i<n;i++){
+        int mini=arr[i];
+        for(int j=i;j<n;j++){
+            mini=min(mini, arr[j]);
+            sum+=mini;
+        }
+    }
+    cout<<sum%(1000000007);
+} //TC=O(n^2) 
+ //For Optimal Approach we will use a stack to keep track of the elements for which we haven't found the next smaller element yet.
+void sumOfSubarrayMinimumsOptimal(int arr[], int n){
+    stack<int> st;
+    long long sum=0;
+    for(int i=0;i<=n;i++){
+        while(!st.empty() && (i==n || arr[st.top()]>=arr[i])){
+            int j=st.top();
+            st.pop();
+            int k;
+            if(st.empty()){
+                k=-1;
+            }
+            else{
+                k=st.top();
+            }
+            sum+=arr[j]*(i-j)*(j-k);
+            sum%=1000000007;
+        }
+        st.push(i);
+    }
+    cout<<sum;
+} //TC=O(2n) SC=O(n)
 int main(){
     int n;
     cout<<"Enter the size of the array: ";
@@ -72,6 +109,7 @@ int main(){
     for(int i=0;i<n;i++){
         cin>>arr[i];
     }
+    /*
     cout<<"Trapped water : ";
     trappingRainWaterBruteForce(arr,n);
     cout<<endl;
@@ -80,6 +118,13 @@ int main(){
     cout<<endl;
     cout<<"Trapped water : ";
     trappingRainWaterOptimal(arr,n);
+    cout<<endl;
+    */
+    cout<<"Sum of Subarray Minimums : ";
+    sumOfSubarrayMinimumsBruteForce(arr,n);
+    cout<<endl;
+    cout<<"Sum of Subarray Minimums : ";
+    sumOfSubarrayMinimumsOptimal(arr,n);
     cout<<endl;
     return 0;
 }
