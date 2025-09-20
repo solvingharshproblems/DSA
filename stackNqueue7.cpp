@@ -48,7 +48,38 @@ int MaximalRectangleOptimal(vector<vector<int>>& matrix){
     }
     return maxArea;
 } //TC=O(n*m)+O(n*2m) SC=O(n*m)
+//Problem 2: Remove K Digits
+//We need to remove k digits from the number such that the new number is the smallest possible
+//For Optimal Approach we will keep smaller digits at the top of the stack and remove larger digits from the top of the stack until we have removed k digits.
+string removeKdigits(string num,int k){
+    stack<char> s;
+    for(int i=0;i<num.length();i++){
+        while(!s.empty() && k>0 && s.top()-'0'>num[i]-'0'){
+            s.pop();
+            k--;
+        }
+        s.push(num[i]);
+    }
+    while(k>0 && !s.empty()){
+        s.pop();
+        k--;
+    }
+    string res="";
+    while(!s.empty()){
+        res+=s.top();
+        s.pop();
+    }
+    while(res.length()>1 && res.back()=='0'){
+        res.pop_back();
+    }
+    reverse(res.begin(),res.end());
+    if(res.length()==0){
+        return "0";
+    }
+    return res;
+} //TC=O(4n) SC=O(2n)
 int main(){
+    /*
     int rows,cols;
     cout<<"Enter the rows of the matrix: ";
     cin>>rows;
@@ -62,5 +93,13 @@ int main(){
         }
     }
     cout<<"The maximal rectangle in the binary matrix is: "<<MaximalRectangleOptimal(matrix);
+    */
+    string num;
+    int k;
+    cout<<"Enter the number: ";
+    cin>>num;
+    cout<<"Enter the value of k: ";
+    cin>>k;
+    cout<<"The smallest number after removing k digits is: "<<removeKdigits(num,k);
     return 0;
 }
