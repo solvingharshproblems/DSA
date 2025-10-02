@@ -37,10 +37,70 @@ class StockSpanner2{
             return ans;
         }
 }; //TC=Θ(1) or O(n) || SC=O(n)
+//Problem 2: Sliding Window Maximum
+//Given an array and an integer k, we need to find the maximum for each and every contiguous subarray of size k
+//For Brute Force Approach we can use two loops to iterate through the array and find the maximum for each subarray of size k
+void SlidingWindowMaximumBruteForce(int n,int arr[],int k){
+    for(int i=0;i<=n-k;i++){
+        int max=arr[i];
+        for(int j=i;j<i+k;j++){
+            if(arr[j]>max){
+                max=arr[j];
+            }
+        }
+        cout<<max<<" ";
+    }
+    cout<<endl;
+} //TC=O(n*k) || SC=O(1)
+//For Optimal Approach we will use stack to store the next greater element for each element in the array and then use that to find the maximum for each subarray of size k
+void SlidingWindowMaximumOptimal1(int n,int arr[],int k){
+    int nge[n]; //next greater element
+    stack<int> s; //stack to store the indices of the elements
+    s.push(n-1);
+    nge[n-1]=n; //no next greater element for the last element
+    for(int i=n-2;i>=0;i--){
+        while(!s.empty() && arr[s.top()]<=arr[i]){
+            s.pop();
+        }
+        nge[i]=s.empty()?n:s.top();
+        s.push(i);
+    }
+    for(int i=0;i<=n-k;i++){
+        int j=i;
+        while(nge[j]<i+k){
+            j=nge[j];
+        }
+        cout<<arr[j]<<" ";
+    }
+    cout<<endl;
+} //TC=O(n) || SC=O(n)
+//For Optimal Approach part 2 we can use deque to store the indices of the elements in the current window and maintain the maximum at the front of the deque
+void SlidingWindowMaximumOptimal2(int n,int arr[],int k){
+    deque<int> dq; //deque to store the indices of the elements
+    for(int i=0;i<k;i++){
+        while(!dq.empty() && arr[dq.back()]<=arr[i]){
+            dq.pop_back();
+        }
+        dq.push_back(i);
+    }
+    cout<<arr[dq.front()]<<" ";
+    for(int i=k;i<n;i++){
+        while(!dq.empty() && dq.front()<=i-k){
+            dq.pop_front();
+        }
+        while(!dq.empty() && arr[dq.back()]<=arr[i]){
+            dq.pop_back();
+        }
+        dq.push_back(i);
+        cout<<arr[dq.front()]<<" ";
+    }
+    cout<<endl;
+} //TC=O(n) || SC=O(k)
 int main(){
     int size;
     cout<<"Enter the size of array: ";
     cin>>size;
+    /*
     StockSpanner2* obj=new StockSpanner2();
     for(int i=0;i<size;i++){
         int price;
@@ -49,5 +109,20 @@ int main(){
         cout<<"The stock span for day "<<i+1<<" is: "<<obj->next(price)<<endl;
     }
     delete obj;
+    */
+    int arr[size];
+    cout<<"Enter the elements of array: ";
+    for(int i=0;i<size;i++){
+        cin>>arr[i];
+    }
+    int k;
+    cout<<"Enter the size of subarray: ";
+    cin>>k;
+    cout<<"The maximum element in each subarray is: ";
+    SlidingWindowMaximumBruteForce(size,arr,k);
+    cout<<"The maximum element in each subarray is: ";
+    SlidingWindowMaximumOptimal1(size,arr,k);
+    cout<<"The maximum element in each subarray is: ";
+    SlidingWindowMaximumOptimal2(size,arr,k);
     return 0;
 }
