@@ -93,6 +93,30 @@ void NumberofSubarrays(vector<int> arr,int k){
     }
     cout<<count;
 } // TC=O(2n) SC=O(1)
+//4. Shortest/minimum window with <condition> using pattern 2.
+//Shortest subarray with sum>=k
+//This problem can be solved using the same approach as pattern 2, but we need to modify the condition to check if the sum is greater than or equal to k and update the minimum length
+void ShortestSubarray(vector<int> arr,int k){
+    int n=arr.size();
+    int l=0,r=0;
+    int sum=0;
+    int minLength=n+1;
+    while(r<n){
+        sum+=arr[r];
+        while(sum>=k){
+            minLength=min(minLength,r-l+1);
+            sum-=arr[l];
+            l++;
+        }
+        r++;
+    }
+    if(minLength==n+1){
+        cout<<"No such subarray exists";
+    }
+    else{
+        cout<<minLength;
+    }
+} // TC=O(2n) SC=O(1)
 int main(void){
     int n;
     cout<<"Enter the size of array: ";
@@ -114,4 +138,6 @@ int main(void){
     LongestSubarrayOptimal(arr,k);
     cout<<endl;
     NumberofSubarrays(arr,k);
+    cout<<endl;
+    ShortestSubarray(arr,k);
 }
