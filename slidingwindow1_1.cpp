@@ -75,6 +75,24 @@ void LongestSubarrayOptimal(vector<int> arr,int k){
     }
     cout<<maxLength;
 } // TC=O(n) SC=O(1)
+//3. Number of subarrays where <condition> using pattern 2.
+//No. of subarrays with sum<=k
+void NumberofSubarrays(vector<int> arr,int k){
+    int n=arr.size();
+    int l=0,r=0;
+    int sum=0;
+    int count=0;
+    while(r<n){
+        sum+=arr[r];
+        while(sum>k){
+            sum-=arr[l];
+            l++;
+        }
+        count+=r-l+1;
+        r++;
+    }
+    cout<<count;
+} // TC=O(2n) SC=O(1)
 int main(void){
     int n;
     cout<<"Enter the size of array: ";
@@ -94,4 +112,6 @@ int main(void){
     LongestSubarrayBetter(arr,k);
     cout<<endl; 
     LongestSubarrayOptimal(arr,k);
+    cout<<endl;
+    NumberofSubarrays(arr,k);
 }
