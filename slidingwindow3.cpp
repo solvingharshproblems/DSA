@@ -81,7 +81,84 @@ void FruitIntoBasketsOptimal(int n,int arr[]){
     }
     cout<<"Length of longest subarray with at most 2 distinct characters is: "<<maxLength<<endl;
 }
+// TC=O(n) SC=O(n)
+//Problem 2: Longest Substring with at most K distinct characters
+//For Brute Force Approach, we can generate all subarrays and check if they have at most k distinct characters. If they do, we can update the maxLength
+void LongestSubstringBruteForce(string s,int k){
+    int n=s.size();
+    int maxLength=0;
+    for(int i=0;i<n;i++){
+        int hash[256]={0};
+        int distinctCount=0;
+        for(int j=i;j<n;j++){
+            if(hash[s[j]]==0){
+                distinctCount++;
+            }
+            hash[s[j]]++;
+            if(distinctCount>k){
+                break;
+            }
+            int length=j-i+1;
+            maxLength=max(maxLength,length);
+        }
+    }
+    cout<<"Length of longest substring with at most "<<k<<" distinct characters is: "<<maxLength<<endl;
+} // TC=O(n^2) SC=O(n)
+//For Better Approach, we can use sliding window technique
+//We can maintain a window with at most k distinct characters and update the maxLength
+void LongestSubstringBetter(string s,int k){
+    int n=s.size();
+    int maxLength=0;
+    int left=0;
+    int right=0;    
+    int hash[256]={0};
+    int distinctCount=0;
+    while(right<n){
+        if(hash[s[right]]==0){
+            distinctCount++;
+        }
+        hash[s[right]]++;
+        while(distinctCount>k){
+            hash[s[left]]--;
+            if(hash[s[left]]==0){
+                distinctCount--;
+            }
+            left++;
+        }
+        int length=right-left+1;
+        maxLength=max(maxLength,length);
+        right++;
+    }
+    cout<<"Length of longest substring with at most "<<k<<" distinct characters is: "<<maxLength<<endl;
+} // TC=O(2n) SC=O(n)
+//For Optimal Approach, we will try to remove the inner while loop
+void LongestSubstringOptimal(string s,int k){
+    int n=s.size();
+    int maxLength=0;    
+    int left=0;
+    int right=0;
+    int hash[256]={0};
+    int distinctCount=0;
+    while(right<n){
+        if(hash[s[right]]==0){
+            distinctCount++;
+        }
+        hash[s[right]]++;
+        if(distinctCount>k){
+            hash[s[left]]--;
+            if(hash[s[left]]==0){
+                distinctCount--;
+            }
+            left++;
+        }
+        int length=right-left+1;
+        maxLength=max(maxLength,length);
+        right++;
+    }
+    cout<<"Length of longest substring with at most "<<k<<" distinct characters is: "<<maxLength<<endl;
+} // TC=O(n) SC=O(n)
 int main(){
+    /*
     int n;
     cout<<"Enter the size of array: ";
     cin>>n;
@@ -96,5 +173,15 @@ int main(){
     FruitIntoBasketsBruteForce(n,arr);
     FruitIntoBasketsBetter(n,arr);
     FruitIntoBasketsOptimal(n,arr);
+    */
+    string s;
+    cout<<"Enter the string: ";
+    cin>>s;
+    int k;
+    cout<<"Enter the value of k: ";
+    cin>>k;
+    LongestSubstringBruteForce(s,k);
+    LongestSubstringBetter(s,k);
+    LongestSubstringOptimal(s,k);
     return 0;
 }
