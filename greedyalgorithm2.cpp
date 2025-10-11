@@ -15,6 +15,24 @@ bool JumpGameOptimal(vector<int> nums){
     }
     return true;
 } // TC=O(n) SC=O(1)
+//Problem 2: Jump Game II
+//Return the minimum number of jumps to reach the last index where it is guaranteed that you can reach the last index.
+//For Optimal Approach, we will keep track of the maximum reachable index at each step and the end of the current jump
+//When we reach the end of the current jump, we increase the jump count and update the end to the maximum reachable index
+int JumpGame2Optimal(vector<int> nums){
+    int n=nums.size();
+    int jumps=0;
+    int maxReach=0;
+    int end=0;
+    for(int i=0;i<n-1;i++){
+        maxReach=max(maxReach,i+nums[i]);
+        if(i==end){
+            jumps++;
+            end=maxReach;
+        }
+    }
+    return jumps;
+} // TC=O(n) SC=O(1)
 int main(){
     int n;
     cout<<"Enter the number of elements in the array: ";
@@ -30,5 +48,6 @@ int main(){
     else{
         cout<<"You cannot reach the last index."<<endl;
     }
+    cout<<"Minimum jumps required to reach the last index: "<<JumpGame2Optimal(nums)<<endl;
     return 0;
 }
