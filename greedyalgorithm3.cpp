@@ -48,6 +48,39 @@ void JobSequencing(vector<Job> arr){
     cout<<"Number of jobs done: "<<countJobs<<endl;
 } // TC=O(n^2+nlogn) SC=O(n)
 // Note: We can optimize the time complexity to O(nlogn) using Disjoint Set Union (DSU) but it is a topic of Graphs so we will study it later
+//Problem 3: N meetings in one room 
+//Given start and end times of N meetings in one room, we need to find the maximum number of meetings that can be accommodated in the room
+//For Optimal Approach, we will sort the meetings by their end times and select the meetings which start after the end of the last selected meeting
+struct Meeting{
+    int start;
+    int end;
+    int pos;
+};
+bool Compare(Meeting a, Meeting b){
+    if(a.end==b.end){
+        return a.pos<b.pos;
+    }
+    return a.end<b.end;
+}
+void NMeetingsInOneRoom(vector<Meeting> arr){
+    int n=arr.size();
+    sort(arr.begin(),arr.end(),Compare);
+    vector<int> ans;
+    ans.push_back(arr[0].pos);
+    int limit=arr[0].end;
+    for(int i=1;i<n;i++){
+        if(arr[i].start>limit){
+            ans.push_back(arr[i].pos);
+            limit=arr[i].end;
+        }
+    }
+    cout<<"Maximum number of meetings: "<<ans.size()<<endl;
+    cout<<"Meetings are: ";
+    for(int i=0;i<ans.size();i++){
+        cout<<ans[i]<<" ";
+    }
+    cout<<endl;
+} // TC=O(nlogn+2n) SC=O(2n)
 int main(){
     /*
     int n;
@@ -59,7 +92,6 @@ int main(){
         cin>>arr[i];
     }
     SJFScheduling(arr);
-    */
     int m;
     cout<<"Enter the number of jobs: ";
     cin>>m;
@@ -69,5 +101,16 @@ int main(){
         cin>>arr[i].id>>arr[i].deadline>>arr[i].profit;
     }
     JobSequencing(arr);
+    */
+    int k;
+    cout<<"Enter the number of meetings: ";
+    cin>>k;
+    vector<Meeting> arr(k);
+    cout<<"Enter the start and end times of the meetings: ";
+    for(int i=0;i<k;i++){
+        cin>>arr[i].start>>arr[i].end;
+        arr[i].pos=i+1;
+    }
+    NMeetingsInOneRoom(arr);
     return 0;
 }
