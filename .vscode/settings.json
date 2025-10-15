@@ -17,5 +17,6 @@
         "unordered_map": "cpp",
         "unordered_set": "cpp",
         "__config": "cpp"
-    }
+    },
+    "C_Cpp.default.compilerPath": "/usr/bin/gcc"
 }
