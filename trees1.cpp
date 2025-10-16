@@ -23,6 +23,14 @@ struct Node{
         right=NULL;
     }
 };
+//Binary Tree Traversal:
+//There are 2 main types of tree traversal:
+//1. Depth First Search (DFS): In this traversal, we go as deep as possible along each branch before backtracking.
+//There are 3 types of DFS traversal:
+//a. Inorder Traversal (Left, Root, Right)
+//b. Preorder Traversal (Root, Left, Right)
+//c. Postorder Traversal (Left, Right, Root)
+//2. Breadth First Search (BFS) or Level Order Traversal: In this traversal, we visit all the nodes at the present depth level before moving on to the nodes at the next depth level.
 int main(){
     struct Node* root=new Node(1);
     root->left=new Node(2);
