@@ -12,7 +12,25 @@ using namespace std;
 //3. Perfect Binary Tree: A binary tree in which all internal nodes have two children and all leaf nodes are at the same level.
 //4. Balanced Binary Tree: A binary tree in which the height of the tree can maximum be log(n) where n is the number of nodes in the tree.
 //5. Degenerate (or pathological) Tree: A binary tree in which each parent node has only one child. This essentially makes it a linked list.
+//Binary Tree Representation:
+struct Node{
+    int data;
+    struct Node* left;
+    struct Node* right;
+    Node(int val){
+        data=val;
+        left=NULL;
+        right=NULL;
+    }
+};
 int main(){
-    
+    struct Node* root=new Node(1);
+    root->left=new Node(2);
+    root->right=new Node(3);
+    root->left->left=new Node(4);
+    root->left->right=new Node(5);
+    cout<<root->left->left->data<<endl;
+    cout<<root->right->data<<endl;
+    cout<<root->data;
     return 0;
 }
