@@ -1,6 +1,5 @@
 #include <iostream>
 using namespace std;
-//1. Pre-order Traversal (Root, Left, Right)
 typedef struct Node{
     int data;
     struct Node* left;
@@ -11,6 +10,7 @@ typedef struct Node{
         right=NULL;
     }
 }Node;
+//1. Pre-order Traversal (Root, Left, Right)
 void PreOrder(Node* root){
     if(root==NULL){
         return;
@@ -19,6 +19,15 @@ void PreOrder(Node* root){
     PreOrder(root->left);
     PreOrder(root->right);
 } // TC=O(n), SC=O(h) where h is the height of the tree
+//2. Inorder Traversal (Left, Root, Right)
+void InOrder(Node* root){
+    if(root==NULL){
+        return;
+    }
+    InOrder(root->left);
+    cout<<root->data<<" ";
+    InOrder(root->right);
+}
 int main(){
     Node* root=new Node(1);
     root->left=new Node(2);
@@ -31,5 +40,7 @@ int main(){
     root->right->right->left=new Node(9);
     root->right->right->right=new Node(10);
     PreOrder(root);
+    cout<<endl;
+    InOrder(root);
     return 0;
 }
