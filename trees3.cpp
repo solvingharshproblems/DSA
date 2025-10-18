@@ -61,6 +61,21 @@ void PreOrder(Node* root){
         }
     }
 } // TC=O(n) SC=O(h) where h is the height of the tree
+//3. Inorder Traversal (Left, Root, Right) (Iterative)
+void InOrder(Node* root){
+    stack<Node*> s;
+    Node* currentNode=root;
+    while(currentNode!=nullptr || !s.empty()){
+        while(currentNode!=nullptr){
+            s.push(currentNode);
+            currentNode=currentNode->left;
+        }
+        currentNode=s.top();
+        s.pop();
+        cout<<currentNode->data<<" ";
+        currentNode=currentNode->right;
+    }
+} // TC=O(n) SC=O(h) where h is the height of the tree
 int main(){
     Node* root=new Node(1);
     root->left=new Node(2);
@@ -71,5 +86,7 @@ int main(){
     root->right->right=new Node(7);
     LevelOrder(root);
     PreOrder(root);
+    cout<<endl;
+    InOrder(root);
     return 0;
 }
