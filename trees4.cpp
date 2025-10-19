@@ -33,6 +33,32 @@ void PostOrder1(Node* root){
         s2.pop();
     }
 } // TC=O(n) SC=O(n) where n is the number of nodes
+//2. Post-order Traversal (Left, Right, Root) (Iterative using 1 stack)
+void PostOrder2(Node* root){
+    if(root==nullptr){
+        return;
+    }
+    stack<Node*> s;
+    Node* currentNode=root;
+    Node* lastVisitedNode=nullptr;
+    while(!s.empty() || currentNode!=nullptr){
+        if(currentNode!=nullptr){   
+            s.push(currentNode);
+            currentNode=currentNode->left;
+        }
+        else{
+            Node* peekNode=s.top();
+            if(peekNode->right!=nullptr && lastVisitedNode!=peekNode->right){
+                currentNode=peekNode->right;
+            }
+            else{
+                cout<<peekNode->data<<" ";
+                lastVisitedNode=peekNode;
+                s.pop();
+            }
+        }
+    }
+} // TC=O(n) SC=O(h) where h is the height of the tree
 int main(){
     Node* root=new Node(1);
     root->left=new Node(2);
@@ -45,5 +71,7 @@ int main(){
     root->right->right->left=new Node(9);
     root->right->right->right=new Node(10);
     PostOrder1(root);
+    cout<<endl;
+    PostOrder2(root);
     return 0;
 }
