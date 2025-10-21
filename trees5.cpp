@@ -22,6 +22,20 @@ int maxDepth(Node* root){
     int rightDepth=maxDepth(root->right);
     return max(leftDepth,rightDepth)+1;
 } // TC=O(n) SC=O(h) where h is the height of the tree
+//Problem 2: Check if a Binary Tree is Height-Balanced
+//A height-balanced binary tree is defined as a binary tree in which the depth of the two subtrees of every node never differs by more than one.
+//For Optimal Approach, we can use a recursive function that returns the height of the tree if it is balanced, and -1 if it is not balanced.
+bool isBalanced(Node* root){
+    if(root==nullptr){
+        return true;
+    }
+    int leftHeight=maxDepth(root->left);
+    int rightHeight=maxDepth(root->right);
+    if(abs(leftHeight-rightHeight)>1){
+        return false;
+    }
+    return true;
+}
 int main(){
     Node* root=new Node(1);
     root->left=new Node(2);
@@ -33,5 +47,12 @@ int main(){
     root->right->right=new Node(8);
     root->right->right->left=new Node(9);
     root->right->right->right=new Node(10);
+    cout<<"Maximum Depth of Binary Tree: "<<maxDepth(root)<<endl;
+    if(isBalanced(root)){
+        cout<<"The Binary Tree is Height-Balanced"<<endl;
+    }
+    else{
+        cout<<"The Binary Tree is not Height-Balanced"<<endl;
+    }
     return 0;
 }
