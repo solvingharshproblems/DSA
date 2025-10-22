@@ -49,7 +49,28 @@ void DiameterOptimal(Node* root){
     height(root,diameter);
     cout<<diameter<<endl;
 } // TC=O(n) SC=O(h) where h is the height of the tree
+//Problem 2: Maximum Path Sum in Binary Tree
+//A path in a binary tree is a sequence of nodes where each pair of adjacent nodes in the sequence has an edge connecting them. A node can only appear in the sequence at most once. Note that the path does not need to pass through the root.
+//For Optimal Approach, we can use the max depth function with slight modification to calculate the maximum path sum.
+int maxDepthPath(Node* root,int &maxSum){
+    if(root==nullptr){
+        return 0;
+    }
+    int leftSum=max(0,maxDepthPath(root->left,maxSum));
+    int rightSum=max(0,maxDepthPath(root->right,maxSum));
+    maxSum=max(maxSum,root->data+leftSum+rightSum);
+    return root->data+max(leftSum,rightSum);
+}
+void MaxPathSumOptimal(Node* root){
+    if(root==nullptr){
+        return;
+    }
+    int maxSum=INT_MIN;
+    maxDepthPath(root,maxSum);
+    cout<<maxSum<<endl;
+} // TC=O(n) SC=O(h) where h is the height of the tree
 int main(){
+    /*
     Node* root=new Node(1);
     root->left=new Node(2);
     root->right=new Node(3);
@@ -62,5 +83,12 @@ int main(){
     int diameter1=DiameterBruteForce(root);
     cout<<diameter1<<endl;
     DiameterOptimal(root);
+    */
+    Node* root=new Node(-10);
+    root->left=new Node(9);
+    root->right=new Node(20);
+    root->right->left=new Node(15);
+    root->right->right=new Node(7);
+    MaxPathSumOptimal(root);
     return 0;
 }
