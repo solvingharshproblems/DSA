@@ -100,6 +100,31 @@ void VerticalOrder(Node* root){
     }
 } // TC=O(n) SC=O(n) where n is the number of nodes
 //Note: We are not considering the TC of map and multiset insertions and output nested loop here.
+//Problem 3: Top view of a binary tree
+//For Optimal Approach, we can use level order traversal while keeping track of horizontal distance of each node from the root node. We will store only the first node at each horizontal distance.
+void TopView(Node* root){
+    map<int,int> topNode;
+    queue<pair<Node*,int>> q;
+    q.push({root,0});
+    while(!q.empty()){
+        auto p=q.front();
+        q.pop();
+        Node* temp=p.first;
+        int hd=p.second;
+        if(topNode.find(hd)==topNode.end()){
+            topNode[hd]=temp->data;
+        }
+        if(temp->left){
+            q.push({temp->left,hd-1});
+        }
+        if(temp->right){
+            q.push({temp->right,hd+1});
+        }
+    }
+    for(auto p:topNode){
+        cout<<p.second<<" ";
+    }
+} // TC=O(n) SC=O(n) where n is the number of nodes
 int main(){
     /*
     Node* root=new Node(1);
@@ -114,7 +139,6 @@ int main(){
     root->right->right->left->left=new Node(10);
     root->right->right->left->right=new Node(11);
     BoundaryTraversal(root);
-    */
     Node* root=new Node(1);
     root->left=new Node(2);
     root->right=new Node(3);
@@ -125,5 +149,14 @@ int main(){
     root->right->left=new Node(9);
     root->right->right=new Node(10);
     VerticalOrder(root);
+    */
+    Node* root=new Node(1);
+    root->left=new Node(2);
+    root->right=new Node(3);
+    root->left->left=new Node(4);
+    root->left->right=new Node(5);
+    root->left->right->left=new Node(6);
+    root->right->right=new Node(7);
+    TopView(root);
     return 0;
 }
