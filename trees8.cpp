@@ -125,6 +125,29 @@ void TopView(Node* root){
         cout<<p.second<<" ";
     }
 } // TC=O(n) SC=O(n) where n is the number of nodes
+//Problem 4: Bottom view of a binary tree
+//For Optimal Approach, we can use level order traversal while keeping track of horizontal distance of each node from the root node. We will store the last node at each horizontal distance.
+void BottomView(Node* root){
+    map<int,int> bottomNode;
+    queue<pair<Node*,int>> q;
+    q.push({root,0});
+    while(!q.empty()){
+        auto p=q.front();
+        q.pop();    
+        Node* temp=p.first;
+        int hd=p.second;
+        bottomNode[hd]=temp->data;
+        if(temp->left){
+            q.push({temp->left,hd-1});
+        }
+        if(temp->right){
+            q.push({temp->right,hd+1});
+        }
+    }
+    for(auto p:bottomNode){
+        cout<<p.second<<" ";
+    }
+} // TC=O(n) SC=O(n) where n is the number of nodes
 int main(){
     /*
     Node* root=new Node(1);
@@ -158,5 +181,7 @@ int main(){
     root->left->right->left=new Node(6);
     root->right->right=new Node(7);
     TopView(root);
+    cout<<endl;
+    BottomView(root);
     return 0;
 }
