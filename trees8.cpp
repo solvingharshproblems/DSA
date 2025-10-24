@@ -1,4 +1,8 @@
 #include <iostream>
+#include <vector>
+#include <map>
+#include <queue>
+#include <set>
 using namespace std;
 typedef struct Node{
     int data;
@@ -60,7 +64,44 @@ void BoundaryTraversal(Node* root){
         cout<<val<<" ";
     }
 } // TC=O(n) SC=O(h) where h is the height of the tree
+//Problem 2: Vertical order traversal of a binary tree
+//For Optimal Approach, we can use level order traversal while keeping track of horizontal distance of each node from the root node.
+void VerticalOrder(Node* root){
+    map<int,map<int,multiset<int>>> mp;
+    queue<pair<Node*,pair<int,int>>> q;
+    q.push({root,{0,0}});
+    while(!q.empty()){
+        auto p=q.front();
+        q.pop();
+        Node* temp=p.first;
+        int x=p.second.first;  
+        int y=p.second.second; 
+        mp[x][y].insert(temp->data);
+        if(temp->left){
+            q.push({temp->left,{x-1,y+1}});
+        }
+        if(temp->right){
+            q.push({temp->right,{x+1,y+1}});
+        }
+    }
+    vector<vector<int>> ans;
+    for(auto p: mp){
+        vector<int> col;
+        for(auto q:p.second){
+            col.insert(col.end(), q.second.begin(), q.second.end());
+        }
+        ans.push_back(col);
+    }
+    for(const auto& vec:ans){
+        for(int val:vec){
+            cout<<val<<" ";
+        }
+        cout<<endl;
+    }
+} // TC=O(n) SC=O(n) where n is the number of nodes
+//Note: We are not considering the TC of map and multiset insertions and output nested loop here.
 int main(){
+    /*
     Node* root=new Node(1);
     root->left=new Node(2);
     root->left->left=new Node(3);
@@ -73,5 +114,16 @@ int main(){
     root->right->right->left->left=new Node(10);
     root->right->right->left->right=new Node(11);
     BoundaryTraversal(root);
+    */
+    Node* root=new Node(1);
+    root->left=new Node(2);
+    root->right=new Node(3);
+    root->left->left=new Node(4);
+    root->left->right=new Node(10);
+    root->left->left->right=new Node(5);
+    root->left->left->right->right=new Node(6);
+    root->right->left=new Node(9);
+    root->right->right=new Node(10);
+    VerticalOrder(root);
     return 0;
 }
