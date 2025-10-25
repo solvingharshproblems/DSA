@@ -51,7 +51,29 @@ void LeftView(Node* root){
         cout<<val<<" ";
     }
 } // TC=O(n) SC=O(h)
+//Problem 2: Symmetric binary tree
+//If a binary tree is mirror image of itself, then it is a symmetric binary tree.
+//For Optimal Approach, we can use recursion to check if left subtree is mirror image of right subtree.
+bool isMirror(Node* left,Node* right){
+    if(left==nullptr && right==nullptr){    
+        return true;
+    }
+    if(left==nullptr || right==nullptr){
+        return false;
+    }
+    if(left->data!=right->data){
+        return false;
+    }
+    return isMirror(left->left,right->right) && isMirror(left->right,right->left);
+}
+bool isSymmetric(Node* root){
+    if(root==nullptr){
+        return true;
+    }
+    return isMirror(root->left,root->right);
+} // TC=O(n) SC=O(h)
 int main(){
+    /*
     Node* root=new Node(1);
     root->left=new Node(2);
     root->right=new Node(3);
@@ -63,5 +85,19 @@ int main(){
     RightView(root);
     cout<<"\nLeft View: ";
     LeftView(root);
+    */
+    Node* root=new Node(1);
+    root->left=new Node(2);
+    root->right=new Node(2);
+    root->left->left=new Node(3);
+    root->left->right=new Node(4);
+    root->right->right=new Node(3);
+    root->right->left=new Node(4);
+    if(isSymmetric(root)){
+        cout<<"It is a symmetric binary tree!"<<endl;
+    }
+    else{
+        cout<<"It is not a symmetric binary tree!"<<endl;
+    }
     return 0;
 }
