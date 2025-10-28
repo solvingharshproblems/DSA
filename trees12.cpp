@@ -67,6 +67,45 @@ void printKDistance(Node* root,Node* target,int k){
         q.pop();
     }
 } // TC=O(n) SC=O(n) here we can consider hash map space too which is O(log n) in balanced tree
+//Problem 2: Minimum time to burn a tree from a given target node
+//For Optimal Approach, we will first map all the parent nodes using DFS traversal and then use BFS to traverse level by level from target node and count the levels
+//Note: This problem is similar to the previous one, just need to count levels instead of printing nodes
+int minTime(Node* root,Node* target){
+    unordered_map<Node*,Node*> parent_track;
+    markParents(root,parent_track);
+    unordered_map<Node*,bool> visited;
+    queue<Node*> q;
+    q.push(target);
+    visited[target]=true;
+    int time=0;
+    while(!q.empty()){
+        int size=q.size();
+        bool flag=false;
+        for(int i=0;i<size;i++){
+            Node* current=q.front();
+            q.pop();
+            if(current->left && !visited[current->left]){
+                flag=true;
+                q.push(current->left);
+                visited[current->left]=true;
+            }
+            if(current->right && !visited[current->right]){
+                flag=true;
+                q.push(current->right);
+                visited[current->right]=true;
+            }
+            if(parent_track[current] && !visited[parent_track[current]]){
+                flag=true;
+                q.push(parent_track[current]);
+                visited[parent_track[current]]=true;
+            }
+        }
+        if(flag){
+            time++;
+        }
+    }
+    return time;
+} // TC=O(n) SC=O(n) here we can consider hash map space too which is O(log n) in balanced tree
 int main(){
     Node* root=new Node(1);
     root->left=new Node(2);
@@ -77,6 +116,9 @@ int main(){
     root->right->right=new Node(7);
     Node* target=root->left;
     int k=2;
+    cout<<"Nodes at distance "<<k<<" from target node "<<target->data<<": ";
     printKDistance(root,target,k);
+    cout<<endl;
+    cout<<"Minimum Time Required to Burn the Tree: "<<minTime(root,target)<<" Seconds";
     return 0;
 }
