@@ -47,6 +47,31 @@ int CountNodesOptimal(Node* root){
         return CountNodesOptimal(root->left)+CountNodesOptimal(root->right)+1;
     }
 } // TC=O(log n*log n) SC=O(log n) due to recursive stack space
+//Problem 2: Construct a binary tree from the given inorder and preorder traversals
+//For Optimal Approach, we will use a hash map to store the indices of inorder elements for O(1) access and recursively build the tree
+Node* BuildTreeHelper(vector<int>& preorder,vector<int>& inorder,int& preIndex,int inStart,int inEnd,unordered_map<int,int>& inorderMap){
+    if(preIndex>=preorder.size() || inStart>inEnd){
+        return nullptr;
+    }
+    int rootValue=preorder[preIndex++];
+    Node* root=new Node(rootValue);
+    int midIndex=inorderMap[rootValue];
+    root->left=BuildTreeHelper(preorder,inorder,preIndex,inStart,midIndex-1,inorderMap);
+    root->right=BuildTreeHelper(preorder,inorder,preIndex,midIndex+1,inEnd,inorderMap);
+    return root;
+}
+Node* BuildTree(vector<int>& preorder,vector<int>& inorder){
+    if(preorder.size()==0 || inorder.size()==0){
+        return nullptr;
+    }
+    unordered_map<int,int> inorderMap;
+    for(int i=0;i<inorder.size();i++){
+        inorderMap[inorder[i]]=i;
+    }
+    int preIndex=0;
+    Node* root=BuildTreeHelper(preorder,inorder,preIndex,0,inorder.size()-1,inorderMap);
+    return root;
+} // TC=O(n) SC=O(2n) due to hash map and recursive stack space
 int main(){
     Node* root=new Node(1);
     root->left=new Node(2);
@@ -60,5 +85,10 @@ int main(){
     cout<<count;
     cout<<endl;
     cout<<CountNodesOptimal(root);
+    cout<<endl;
+    vector<int> preorder={10,20,40,50,30,60};
+    vector<int> inorder={40,20,50,10,60,30};
+    Node* root1=BuildTree(preorder,inorder);
+    cout<<"New tree: "<<root1->data<<" "<<root1->left->data<<" "<<root1->right->data<<" "<<root1->left->left->data<<" "<<root1->left->right->data<<" "<<root1->right->left->data;
     return 0;
 }
