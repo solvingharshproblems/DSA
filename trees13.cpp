@@ -1,4 +1,6 @@
 #include <iostream>
+#include <vector>
+#include <unordered_map>
 using namespace std;
 typedef struct Node{
     int data;
@@ -72,6 +74,37 @@ Node* BuildTree(vector<int>& preorder,vector<int>& inorder){
     Node* root=BuildTreeHelper(preorder,inorder,preIndex,0,inorder.size()-1,inorderMap);
     return root;
 } // TC=O(n) SC=O(2n) due to hash map and recursive stack space
+//Problem 3: Construct a binary tree from the given inorder and postorder traversals
+//Similar to Problem 2, we can use a hash map and recursively build the tree using postorder traversal
+Node* BuildTreeHelper2(vector<int>& inorder,vector<int>& postorder,int& postIndex,int inStart,int inEnd,unordered_map<int,int>& inorderMap){
+    if(postIndex<0 || inStart>inEnd){
+        return nullptr;
+    }
+    int rootValue=postorder[postIndex--];
+    Node* root=new Node(rootValue);
+    int midIndex=inorderMap[rootValue];
+    root->right=BuildTreeHelper2(inorder,postorder,postIndex,midIndex+1,inEnd,inorderMap);
+    root->left=BuildTreeHelper2(inorder,postorder,postIndex,inStart,midIndex-1,inorderMap);
+    return root;
+}
+Node* BuildTree2(vector<int>& inorder,vector<int>& postorder){
+    if(inorder.size()==0 || postorder.size()==0){
+        return nullptr;
+    }
+    unordered_map<int,int> inorderMap;
+    for(int i=0;i<inorder.size();i++){
+        inorderMap[inorder[i]]=i;
+    }
+    int postIndex=postorder.size()-1;
+    Node* root=BuildTreeHelper2(inorder,postorder,postIndex,0,inorder.size()-1,inorderMap);
+    return root;
+} // TC=O(n) SC=O(2n) due to hash map and recursive stack space
+void Inorder(Node* root) {
+    if (!root) return;
+    Inorder(root->left);
+    cout << root->data << " ";
+    Inorder(root->right);
+}
 int main(){
     Node* root=new Node(1);
     root->left=new Node(2);
@@ -90,5 +123,12 @@ int main(){
     vector<int> inorder={40,20,50,10,60,30};
     Node* root1=BuildTree(preorder,inorder);
     cout<<"New tree: "<<root1->data<<" "<<root1->left->data<<" "<<root1->right->data<<" "<<root1->left->left->data<<" "<<root1->left->right->data<<" "<<root1->right->left->data;
+    cout<<endl;
+    vector<int> inorder2={40,20,50,10,60,30};
+    vector<int> postorder={40,50,20,60,30,10};
+    Node* root2=BuildTree2(inorder2,postorder);
+    cout<<"New tree: ";
+    Inorder(root2);
+    cout<<endl;
     return 0;
 }
