@@ -69,13 +69,83 @@ Node* Deserialize(string data){
     }
     return root;
 } // TC=O(n) SC=O(n) due to queue space
+//Problem 2: Flatten a binary tree to a linked list in-place
+//For Brute Force Approach, we can perform a reverse preorder traversal (root, right, left) and keep track of the previously visited node
+void FlattenBruteForce(Node* root){
+    static Node* prev=nullptr;
+    if(root==nullptr){
+        return;
+    }
+    FlattenBruteForce(root->right);
+    FlattenBruteForce(root->left);
+    root->right=prev;
+    root->left=nullptr;
+    prev=root;
+} // TC=O(n) SC=O(log n) due to recursive stack space
+//For Better Approach, we can use a stack to perform an iterative preorder traversal of brute force
+void FlattenBetter(Node* root){
+    if(root==nullptr){
+        return;
+    }
+    stack<Node*> st;
+    st.push(root);
+    Node* prev=nullptr;
+    while(!st.empty()){
+        Node* currentNode=st.top();
+        st.pop();
+        if(prev){
+            prev->right=currentNode;
+            prev->left=nullptr;
+        }
+        if(currentNode->right){
+            st.push(currentNode->right);
+        }
+        if(currentNode->left){
+            st.push(currentNode->left);
+        }
+        prev=currentNode;
+    }
+} // TC=O(n) SC=O(log n) due to stack space
+//For Optimal Approach, we can use Morris Traversal technique to flatten the tree in-place without extra space
+void FlattenOptimal(Node* root){
+    Node* current=root;
+    while(current){
+        if(current->left){
+            Node* predecessor=current->left;
+            while(predecessor->right){
+                predecessor=predecessor->right;
+            }
+            predecessor->right=current->right;
+            current->right=current->left;
+            current->left=nullptr;
+        }
+        current=current->right;
+    }
+} // TC=O(n) SC=O(1)
 void Inorder(Node* root) {
     if (!root) return;
     Inorder(root->left);
     cout << root->data << " ";
     Inorder(root->right);
 }
+void PreOrder(Node* root){
+    if(root==NULL){
+        return;
+    }
+    cout<<root->data<<" ";
+    PreOrder(root->left);
+    PreOrder(root->right);
+}
+void PrintFlattenedTree(Node* root){
+    Node* current=root;
+    while(current){
+        cout<<current->data<<" ";
+        current=current->right;
+    }
+    cout<<endl;
+}
 int main(){
+    /*
     Node* root=new Node(1);
     root->left=new Node(2);
     root->right=new Node(3);
@@ -86,5 +156,20 @@ int main(){
     Node* deserializedTree=Deserialize(serializedTree);
     cout<<"Deserialized Tree: ";
     Inorder(deserializedTree);
+    */
+    Node* root=new Node(1);
+    root->left=new Node(2);
+    root->right=new Node(5);
+    root->left->left=new Node(3);
+    root->left->right=new Node(4);
+    cout<<"Original Tree Inorder: ";
+    Inorder(root);
+    cout<<endl;
+    FlattenBruteForce(root);
+    PrintFlattenedTree(root);
+    FlattenBetter(root);
+    PrintFlattenedTree(root);
+    FlattenOptimal(root);
+    PrintFlattenedTree(root);
     return 0;
 }
