@@ -26,6 +26,26 @@ Node* SearchInBST(Node* root,int key){
     }
     return root;
 } // TC=O(h) SC=O(1), h is the height of the tree
+//Problem 2: Ceil in a BST
+//Ceil of a key in BST is the smallest element in the BST which is greater than or equal to the key.
+//For Optimal Approach, we will use the property of BST to find the ceil value and return the minimum candidate found
+int CeilInBST(Node* root,int key){
+    int ceil=-1;
+    while(root){
+        if(root->data==key){
+            ceil=root->data;
+            return ceil;
+        }
+        if(key>root->data){
+            root=root->right;
+        }
+        else{
+            ceil=root->data;
+            root=root->left;
+        }
+    }
+    return ceil;
+} // TC=O(h) SC=O(1), h is the height of the tree
 int main(){
     Node* root=new Node(8);
     root->left=new Node(3);
@@ -43,6 +63,16 @@ int main(){
     }
     else{
         cout<<"Key "<<key<<" not found in BST."<<endl;
+    }
+    int ceil;
+    cout<<"Enter key to find ceil in BST: ";
+    cin>>ceil;
+    int ceilValue=CeilInBST(root,ceil);
+    if(ceilValue!=-1){
+        cout<<"Ceil of "<<ceil<<" in BST is: "<<ceilValue<<endl;
+    }
+    else{
+        cout<<"Ceil of "<<ceil<<" does not exist in BST."<<endl;
     }
     return 0;
 }
