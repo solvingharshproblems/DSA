@@ -46,6 +46,26 @@ int CeilInBST(Node* root,int key){
     }
     return ceil;
 } // TC=O(h) SC=O(1), h is the height of the tree
+//Problem 3: Floor in a BST
+//Floor of a key in BST is the largest element in the BST which is smaller than or equal to the key.
+//For Optimal Approach, we will use the property of BST to find the floor value and return the maximum candidate found
+int FloorInBST(Node* root,int key){
+    int floor=-1;
+    while(root){
+        if(root->data==key){
+            floor=root->data;
+            return floor;
+        }
+        if(key<root->data){
+            root=root->left;
+        }
+        else{
+            floor=root->data;
+            root=root->right;
+        }
+    }
+    return floor;
+} // TC=O(h) SC=O(1), h is the height of the tree
 int main(){
     Node* root=new Node(8);
     root->left=new Node(3);
@@ -73,6 +93,16 @@ int main(){
     }
     else{
         cout<<"Ceil of "<<ceil<<" does not exist in BST."<<endl;
+    }
+    int floor;
+    cout<<"Enter key to find floor in BST: ";
+    cin>>floor;
+    int floorValue=FloorInBST(root,floor);
+    if(floorValue!=-1){
+        cout<<"Floor of "<<floor<<" in BST is: "<<floorValue<<endl;
+    }
+    else{
+        cout<<"Floor of "<<floor<<" does not exist in BST."<<endl;
     }
     return 0;
 }
