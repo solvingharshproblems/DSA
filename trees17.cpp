@@ -62,6 +62,25 @@ int KthSmallestOptimal(Node* root,int k){
     }
     return -1;
 } // TC=O(n) SC=O(1)
+//Problem 2: Validate BST
+//For Optimal Approach, we will use inorder traversal to check if the elements are in sorted order
+bool ValidateBST(Node* root,Node*& prev){
+    if(root==nullptr){
+        return true;
+    }
+    if(!ValidateBST(root->left,prev)){
+        return false;
+    }
+    if(prev!=nullptr && root->data<=prev->data){
+        return false;
+    }
+    prev=root;
+    return ValidateBST(root->right,prev);
+}
+bool IsValid(Node* root){
+    Node* prev=nullptr;
+    return ValidateBST(root,prev);
+} // TC=O(n) SC=O(h), h is the height of the tree
 int main(){
     Node* root=new Node(5);
     root->left=new Node(3);
@@ -70,6 +89,7 @@ int main(){
     root->left->right=new Node(4);
     root->right->left=new Node(6);
     root->right->right=new Node(8);
+    /*
     int k;
     cout<<"Enter the value of k: ";
     cin>>k;
@@ -86,6 +106,13 @@ int main(){
     }
     else{
         cout<<"Invalid value of k"<<endl;
+    }
+    */
+    if(IsValid(root)){
+        cout<<"The tree is a valid BST"<<endl;
+    }
+    else{
+        cout<<"The tree is not a valid BST"<<endl;
     }
     return 0;
 }
