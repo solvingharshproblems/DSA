@@ -10,7 +10,7 @@ typedef struct Node{
         left=nullptr;
     }
 }Node;
-//Problem 4: Insert in a BST
+//Problem 1: Insert in a BST
 //For Optimal Approach, we will use the property of BST to find the correct position to insert the new node
 Node* InsertInBST(Node* root,int key){
     Node* newNode=new Node(key);
