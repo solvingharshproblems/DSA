@@ -27,7 +27,50 @@ Node* findLCA(Node* root,Node* p,Node* q){
         return root;
     }
 } // TC=O(h) SC=O(h) where h is the height of the tree
+ //Problem 2: Construct BST from preorder traversal
+//For Brute Force Approach, we can compare the element to root, if the element is smaller we go to left subtree else we go to right subtree
+//We keep doing this until we find a NULL position to insert the new node
+void insertBST(Node*& root,int val){
+    if(root==nullptr){
+        root=new Node(val);
+        return;
+    }
+    if(val<root->data){
+        insertBST(root->left,val);
+    }
+    else{
+        insertBST(root->right,val);
+    }
+}
+Node* constructBSTBruteForce(vector<int>& preorder){
+    Node* root=nullptr;
+    for(int val:preorder){
+        insertBST(root,val);
+    }
+    return root;
+} // TC=O(n^2) SC=O(n)
+//For Optimal Approach, we will use a recursive function with bounds to construct the BST
+Node* constructBSTHelper(vector<int>& preorder,int& index,int bound){
+    if(index==preorder.size() || preorder[index]>bound){
+        return nullptr;
+    }
+    Node* root=new Node(preorder[index++]);
+    root->left=constructBSTHelper(preorder,index,root->data);
+    root->right=constructBSTHelper(preorder,index,bound);
+    return root;
+}
+Node* constructBSTOptimal(vector<int>& preorder){
+    int index=0;
+    return constructBSTHelper(preorder,index,INT_MAX);
+} // TC=O(n) SC=O(1)
+void Inorder(Node* root) {
+    if (!root) return;
+    Inorder(root->left);
+    cout << root->data << " ";
+    Inorder(root->right);
+}
 int main(){
+    /*
     Node* root = new Node(5);
     root->left = new Node(3);
     root->right = new Node(8);
@@ -44,5 +87,10 @@ int main(){
     else{
         cout<<"LCA not found"<<endl;
     }
+    */
+    vector<int> preorder={8,5,1,7,10,12};
+    Node* bstRoot=constructBSTOptimal(preorder);
+    cout<<"BST constructed from preorder traversal."<<endl;
+    Inorder(bstRoot);
     return 0;
 }
