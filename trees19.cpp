@@ -44,6 +44,37 @@ Node* InorderSuccessorOptimal(Node* root,int key){
     }
     return successor;
 } // TC=O(h) SC=O(1)
+//Problem 2: BST Iterator
+//Youre given with a BST with root node, you need to construct the next which returns the next element in inorder everytime you call it 
+//AND a hasNext function which returns if there exists a next element in the inorder traversal
+//Note: Youre not allowed to store the inorder traversal
+//For Optimal Approach, we will use a stack to store the leftmost nodes of the tree
+class BSTIterator{
+    stack<Node*> st;
+public:
+    BSTIterator(Node* root){
+        while(root!=nullptr){
+            st.push(root);
+            root=root->left;
+        }
+    }
+    int next(){
+        Node* topNode=st.top();
+        st.pop();
+        int result=topNode->data;
+        if(topNode->right!=nullptr){
+            Node* temp=topNode->right;
+            while(temp!=nullptr){
+                st.push(temp);
+                temp=temp->left;
+            }
+        }
+        return result;
+    }
+    bool hasNext(){
+        return !st.empty();
+    }
+}; // TC=O(1) amortized for next() and O(1) for hasNext() SC=O(h) where h is the height of the tree
 int main(){
     Node* root = new Node(5);
     root->left = new Node(3);
@@ -52,6 +83,7 @@ int main(){
     root->left->right = new Node(4);
     root->right->left = new Node(6);
     root->right->right = new Node(8);
+    /*
     int key;
     cout<<"Enter the key: ";
     cin>>key;
@@ -63,5 +95,11 @@ int main(){
     else{
         cout<<"\nNo Successor found for "<<key;;
     }
+    */
+    BSTIterator iterator(root);
+    while(iterator.hasNext()){
+        cout<<iterator.next()<<" ";
+    }
+    
     return 0;
 }
