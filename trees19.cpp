@@ -67,69 +67,44 @@ public:
         return !st.empty(); 
     }
     int next(){
-        Node* tmpNode = st.top(); 
+        Node* tmpNode=st.top(); 
         st.pop();
-        if (!reverse) {
-            // If not in reverse mode,
-            // add nodes from the right subtree
+        if(!reverse){
             pushAll(tmpNode->right); 
-        } else {
-            // If in reverse mode,
-            // add nodes from the left subtree
+        } 
+        else{
             pushAll(tmpNode->left); 
         }
-        // Return the value of the retrieved node
         return tmpNode->data; 
     }
-    void pushAll(Node* node) {
-        while (node != nullptr) {
-            // Push the node onto the stack
+    void pushAll(Node* node){
+        while (node != nullptr){
             st.push(node); 
-            if (reverse) {
-                // Move to the right child
-                // if in reverse mode
-                node = node->right; 
-            } else {
-                // Move to the left child
-                // if not in reverse mode
-                node = node->left;
+            if(reverse){
+                node=node->right; 
+            } 
+            else{
+                node=node->left;
             }
         }
     }
-    bool findTarget(Node* root, int k) {
-        if (!root) {
-            // If the root is empty,
-            // return false
+    bool findTarget(Node* root,int k){
+        if(!root){
             return false; 
         }
-
-        // Initialize two BSTIterators for
-        // traversal in different directions
-        
-        // Left iterator
-        BSTIterator l(root, false); 
-         // Right iterator
-        BSTIterator r(root, true);
-        
-        // Get the next element from the left iterator
-        int i = l.next(); 
-        // Get the next element from the right iterator
-        int j = r.next(); 
-
-        // Loop to find the pair with the given sum
-        while (i < j) {
-            if (i + j == k) {
-                // If the sum is found,
-                // return true
+        BSTIterator l(root,false); 
+        BSTIterator r(root,true);
+        int i=l.next(); 
+        int j=r.next(); 
+        while(i<j){
+            if(i+j==k){
                 return true; 
-            } else if (i + j < k) {
-                // Move to the next element
-                // from the left iterator
-                i = l.next(); 
-            } else {
-                // Move to the next element
-                // from the right iterator
-                j = r.next();
+            } 
+            else if(i+j<k){
+                i=l.next(); 
+            } 
+            else{
+                j=r.next();
             }
         }
         return false; 
@@ -172,8 +147,8 @@ bool TwoSumOptimal(Node* root,int k){
     if(root==nullptr){
         return false;
     }
-    BSTIterator l(root,false); //For next smallest element
-    BSTIterator r(root,true); //For next largest element
+    BSTIterator l(root,false); 
+    BSTIterator r(root,true); 
     int i=l.next();
     int j=r.next();
     while(i<j){
