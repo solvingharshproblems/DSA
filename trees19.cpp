@@ -1,4 +1,5 @@
 #include <iostream>
+#include <set>
 using namespace std;
 typedef struct Node{
     int data;
@@ -51,6 +52,7 @@ Node* InorderSuccessorOptimal(Node* root,int key){
 //For Optimal Approach, we will use a stack to store the leftmost nodes of the tree
 class BSTIterator{
     stack<Node*> st;
+    bool reverse=true;
 public:
     BSTIterator(Node* root){
         while(root!=nullptr){
@@ -58,23 +60,136 @@ public:
             root=root->left;
         }
     }
-    int next(){
-        Node* topNode=st.top();
-        st.pop();
-        int result=topNode->data;
-        if(topNode->right!=nullptr){
-            Node* temp=topNode->right;
-            while(temp!=nullptr){
-                st.push(temp);
-                temp=temp->left;
-            }
-        }
-        return result;
+    BSTIterator(Node* root,bool isReverse):reverse(isReverse){
+        pushAll(root); 
     }
     bool hasNext(){
-        return !st.empty();
+        return !st.empty(); 
+    }
+    int next(){
+        Node* tmpNode = st.top(); 
+        st.pop();
+        if (!reverse) {
+            // If not in reverse mode,
+            // add nodes from the right subtree
+            pushAll(tmpNode->right); 
+        } else {
+            // If in reverse mode,
+            // add nodes from the left subtree
+            pushAll(tmpNode->left); 
+        }
+        // Return the value of the retrieved node
+        return tmpNode->data; 
+    }
+    void pushAll(Node* node) {
+        while (node != nullptr) {
+            // Push the node onto the stack
+            st.push(node); 
+            if (reverse) {
+                // Move to the right child
+                // if in reverse mode
+                node = node->right; 
+            } else {
+                // Move to the left child
+                // if not in reverse mode
+                node = node->left;
+            }
+        }
+    }
+    bool findTarget(Node* root, int k) {
+        if (!root) {
+            // If the root is empty,
+            // return false
+            return false; 
+        }
+
+        // Initialize two BSTIterators for
+        // traversal in different directions
+        
+        // Left iterator
+        BSTIterator l(root, false); 
+         // Right iterator
+        BSTIterator r(root, true);
+        
+        // Get the next element from the left iterator
+        int i = l.next(); 
+        // Get the next element from the right iterator
+        int j = r.next(); 
+
+        // Loop to find the pair with the given sum
+        while (i < j) {
+            if (i + j == k) {
+                // If the sum is found,
+                // return true
+                return true; 
+            } else if (i + j < k) {
+                // Move to the next element
+                // from the left iterator
+                i = l.next(); 
+            } else {
+                // Move to the next element
+                // from the right iterator
+                j = r.next();
+            }
+        }
+        return false; 
     }
 }; // TC=O(1) amortized for next() and O(1) for hasNext() SC=O(h) where h is the height of the tree
+//Problem 3: 2Sum in BST
+//For Brute Force Approach, we can store the elements in a vector and use 2 pointer approach to find the pair with given sum
+void Inorder2Sum(Node* root,vector<int>& v){
+    if(root==nullptr){
+        return;
+    }
+    Inorder2Sum(root->left,v);
+    v.push_back(root->data);
+    Inorder2Sum(root->right,v);
+}
+bool TwoSumBruteForce(Node* root,int k){
+    if(root==nullptr){
+        return false;
+    }
+    vector<int> v;
+    Inorder2Sum(root,v);
+    int left=0;
+    int right=v.size()-1;;
+    while(left<right){
+        int sum=v[left]+v[right];
+        if(sum==k){
+            return true;
+        }
+        else if(sum<k){
+            left++;
+        }
+        else{
+            right--;
+        }
+    }
+    return false;
+} // TC=O(n) SC=O(n)
+//For Optimal Approach, we will use the next and before functions to simulate the 2 pointer approach without storing the elements
+bool TwoSumOptimal(Node* root,int k){
+    if(root==nullptr){
+        return false;
+    }
+    BSTIterator l(root,false); //For next smallest element
+    BSTIterator r(root,true); //For next largest element
+    int i=l.next();
+    int j=r.next();
+    while(i<j){
+        int sum=i+j;
+        if(sum==k){
+            return true;
+        }
+        else if(sum<k){
+            i=l.next();
+        }
+        else{
+            j=r.next();
+        }
+    }
+    return false;
+} // TC=O(n) SC=O(h) where h is the height of the tree 
 int main(){
     Node* root = new Node(5);
     root->left = new Node(3);
@@ -95,11 +210,28 @@ int main(){
     else{
         cout<<"\nNo Successor found for "<<key;;
     }
-    */
     BSTIterator iterator(root);
     while(iterator.hasNext()){
         cout<<iterator.next()<<" ";
     }
-    
+    cout<<endl;
+    */
+    int sum;
+    cout<<"Enter the sum to find in BST: ";
+    cin>>sum;
+    if(TwoSumBruteForce(root,sum)){
+        cout<<"Pair with given sum "<<sum<<" exists in BST.";
+    }
+    else{
+        cout<<"No such pair with given sum "<<sum<<" exists in BST.";
+    }
+    cout<<endl;
+    if(TwoSumOptimal(root,sum)){
+        cout<<"Pair with given sum "<<sum<<" exists in BST.";
+    }
+    else{
+        cout<<"No such pair with given sum "<<sum<<" exists in BST.";
+    }
+    cout<<endl;
     return 0;
 }
