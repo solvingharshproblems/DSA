@@ -82,6 +82,21 @@ void AdjacencyListWeighted(){
         cout<<endl;
     }
 } // TC=O(v+e) SC=O(e)
+//Connected Components: A connected component is a subgraph in which any two vertices are connected to each other by paths, 
+//and which is connected to no additional vertices in the supergraph.
+//A graph is said to be connected if there is a path between every pair of vertices.
+//If there is at least one pair of vertices without a path between them, the graph is said to be disconnected.
+void ConnectedComponents(){
+    int V=4;
+    int visited[V];
+    for(int i=0;i<V;i++){
+        if(!visited[i]){
+            cout<<"Connected component: ";
+            //DFS(i, visited);
+            cout<<endl;
+        }
+    }
+} // TC=O(v+e) SC=O(v)
 int main(){
     AdjacencyMatrix();
     AdjacencyList();
