@@ -25,6 +25,24 @@ vector<int> BFS(int v,vector<int> graph[],int n){
     }
     return bfs;
 } // TC=O(v+2e) SC=O(3v)
+//DFS in Graphs
+//Here we traverse the graph depth-wise starting from a given source vertex.
+//We use recursion to explore as far as possible along each branch before backtracking.
+void DFSHelper(int node,vector<int> graph[],vector<int> &visited,vector<int> &dfs){
+    visited[node]=1;
+    dfs.push_back(node);
+    for(auto it:graph[node]){
+        if(!visited[it]){
+            DFSHelper(it,graph,visited,dfs);
+        }
+    }
+}
+vector<int> DFS(int v,vector<int> graph[],int n){
+    vector<int> visited(n,0);
+    vector<int> dfs;
+    DFSHelper(v,graph,visited,dfs);
+    return dfs;
+} // TC=O(v+2e) SC=O(3v)
 int main(){
     int n=5;
     vector<int> graph[n];
@@ -37,5 +55,11 @@ int main(){
     for(auto it:bfs){
         cout<<it<<" ";
     }
+    cout<<endl;
+    vector<int> dfs=DFS(0,graph,n);
+    for(auto it:dfs){
+        cout<<it<<" ";
+    }
+    cout<<endl;
     return 0;
 }
