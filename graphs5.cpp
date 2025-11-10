@@ -36,6 +36,35 @@ bool isCycleUniBFS(int n,vector<int> adj[]){
     }
     return false;
 } // TC=O(n+2e), SC=O(2n)
+//Problem 2: Detect a cycle in a UnDirected Graph (using DFS)
+//For Optimal Approach, we will use a recursive DFS function to traverse the graph and keep track of the nodes in the current recursion stack using a separate array.
+//If we encounter a node that is already in the recursion stack, then we have found a cycle in the graph.
+bool detectUniCycleDFS(int node,int parent,vector<int> adj[],vector<bool> &visited){
+    visited[node]=true;
+    for(auto it: adj[node]){
+        if(!visited[it]){
+            if(detectUniCycleDFS(it,node,adj,visited)){
+                return true;
+            }
+        }
+        else if(it!=parent){
+            return true; 
+        }
+    }
+    return false; 
+}
+//what if the graph is disconnected? Then we need to call the DFS function for all unvisited nodes.
+bool isCycleUniDFS(int n,vector<int> adj[]){
+    vector<bool> visited(n,false);
+    for(int i=0;i<n;i++){
+        if(!visited[i]){
+            if(detectUniCycleDFS(i,-1,adj,visited)){
+                return true;
+            }
+        }
+    }
+    return false;
+} // TC=O(n+2e), SC=O(2n)
 int main(){
     int n;
     cout<<"Enter number of nodes: ";
@@ -53,6 +82,13 @@ int main(){
     }
     bool cycleFound=isCycleUniBFS(n,adj);
     if(cycleFound){
+        cout<<"Theres a cycle."<<endl;
+    }
+    else{
+        cout<<"There is no cycle."<<endl;
+    }
+    bool cycleFoundDFS=isCycleUniDFS(n,adj);
+    if(cycleFoundDFS){
         cout<<"Theres a cycle."<<endl;
     }
     else{
