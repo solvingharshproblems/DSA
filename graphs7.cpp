@@ -1,4 +1,5 @@
 #include <iostream>
+#include <set>
 using namespace std;
 //Problem 1: Number of Enclaves
 //Given a binary matrix containing 0s and 1s, find the number of 1s that are not connected to the boundary of the matrix.
@@ -42,6 +43,42 @@ int numEnclaves(vector<vector<int>>& grid){
     }
     return enclaveCount;
 } // TC=O(n*m) SC=O(n*m) for visited matrix + O(n*m) for queue 
+//Problem 2: Number of Distinct Islands
+//Two islands are considered to be the same if one island can be translated (not rotated or reflected) to equal the other.
+//For Optimal Approach, we will use DFS to explore each island and record its shape relative to its starting point.
+void DFS(int row,int col,vector<vector<int>>& grid,vector<vector<bool>>& visited,vector<pair<int,int>>& shape,int baseRow,int baseCol){
+    int n=grid.size();
+    int m=grid[0].size();
+    if(row<0 || row>=n || col<0 || col>=m){
+        return;
+    }
+    if(grid[row][col]==0 || visited[row][col]){
+        return;
+    }
+    visited[row][col]=true;
+    shape.push_back({row-baseRow,col-baseCol});
+    DFS(row+1,col,grid,visited,shape,baseRow,baseCol);
+    DFS(row-1,col,grid,visited,shape,baseRow,baseCol);
+    DFS(row,col+1,grid,visited,shape,baseRow,baseCol);
+    DFS(row,col-1,grid,visited,shape,baseRow,baseCol);
+}
+int distinctIslands(vector<vector<int>>& grid){
+    int n=grid.size();
+    if(n==0) return 0;
+    int m=grid[0].size();
+    vector<vector<bool>> visited(n,vector<bool>(m,false));
+    set<vector<pair<int,int>>> islandShapes;
+    for(int i=0;i<n;i++){
+        for(int j=0;j<m;j++){
+            if(grid[i][j]==1 && !visited[i][j]){
+                vector<pair<int,int>> shape;
+                DFS(i,j,grid,visited,shape,i,j);
+                islandShapes.insert(shape);
+            }
+        }
+    }
+    return islandShapes.size();
+} // TC=O(n*m) SC=O(n*m) for visited matrix + O(k*l) for set where k is number of islands and l is average size of island
 int main(){
     int v=4,e=4;
     vector<vector<int>> graph(v);
@@ -58,7 +95,11 @@ int main(){
         {0,1,1,0},
         {0,0,0,0}
     };
+    /*
     int result=numEnclaves(grid);
     cout<<"Number of Enclaves: "<<result<<endl;
+    */
+    int result=distinctIslands(grid);
+    cout<<"Number of Distinct Islands: "<<result<<endl;
     return 0;
 }
