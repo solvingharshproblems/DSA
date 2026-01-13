@@ -29,6 +29,33 @@ bool isBipartiteBFS(int V,vector<vector<int>>& adj){
     }
     return true;
 } // TC=O(V+E) SC=O(V) for color array + O(V) for queue
+//Problem 2: Bipartite Graph Check (Using DFS)
+//For Optimal Approach, we will start DFS from each uncolored node and try to color the graph using two colors.
+bool DFS(int node,int c,vector<vector<int>>& adj,vector<int>& color){
+    color[node]=c;
+    for(auto neighbor:adj[node]){
+        if(color[neighbor]==-1){
+            if(!DFS(neighbor,1-c,adj,color)){
+                return false;
+            }
+        }
+        else if(color[neighbor]==color[node]){
+            return false;
+        }
+    }
+    return true;
+}
+bool isBipartiteDFS(int V,vector<vector<int>>& adj){
+    vector<int> color(V,-1); 
+    for(int start=0;start<V;start++){
+        if(color[start]==-1){
+            if(!DFS(start,0,adj,color)){
+                return false;
+            }
+        }
+    }
+    return true;
+} // TC=O(V+E) SC=O(V) for color array + O(V) for recursion stack
 int main(){
     int v=5;
     vector<vector<int>> adj(v);
@@ -38,6 +65,12 @@ int main(){
     adj[3]={0,4};
     adj[4]={2,3};
     if(isBipartiteBFS(v,adj)){
+        cout<<"The graph is Bipartite"<<endl;
+    }
+    else{
+        cout<<"The graph is not Bipartite"<<endl;
+    }
+    if(isBipartiteDFS(v,adj)){
         cout<<"The graph is Bipartite"<<endl;
     }
     else{
