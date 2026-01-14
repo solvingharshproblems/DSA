@@ -33,6 +33,42 @@ bool isCyclicDirectedDFS(int V,vector<vector<int>>& adj){
     }
     return false;
 } // TC=O(V+E) SC=O(V) for visited + O(V) for recStack + O(V) for recursion stack
+//Problem 2: Find Eventual Safe States (Using DFS)
+//Eventual Safe States are those nodes from which we cannot reach any cycle.
+//For Optimal Approach, we will use DFS traversal to find all eventual safe states in a directed graph.
+bool DFSHelper(int node,int V,vector<vector<int>>& adj,vector<int>& visited,vector<int>& pathVisited,vector<int>& safe){
+    visited[node]=1;
+    pathVisited[node]=1;
+    safe[node]=0;
+    for(auto neighbor:adj[node]){
+        if(!visited[neighbor]){
+            if(!DFSHelper(neighbor,V,adj,visited,pathVisited,safe)){
+                return false;
+            }
+        }
+        else if(!safe[neighbor]){
+            return false;
+        }
+    }
+    pathVisited[node]=0;
+    safe[node]=1;
+    return true;
+}
+void findSafeStatesDFS(int V,vector<vector<int>>& adj){
+    vector<int> visited(V,0);
+    vector<int> safe(V,0);
+    vector<int> pathVisited(V,0);
+    for(int start=0;start<V;start++){
+        if(!visited[start]){
+            DFSHelper(start,V,adj,visited,pathVisited,safe);
+        }
+    }
+    for(int i=0;i<V;i++){
+        if(safe[i]){
+            cout<<i<<" ";
+        }
+    }
+} // TC=O(V+E) SC=O(V) for visited + O(V) for safe + O(V) for recursion stack
 int main(){
     int V=4;
     vector<vector<int>> adj(V);;
@@ -46,5 +82,8 @@ int main(){
     else{
         cout<<"Graph doesn't contain cycle"<<endl;
     }
+    cout<<"Eventual Safe States are: ";
+    findSafeStatesDFS(V,adj);
+    cout<<endl;
     return 0;
 }
