@@ -46,7 +46,7 @@ bool DFSHelper(int node,int V,vector<vector<int>>& adj,vector<int>& visited,vect
                 return false;
             }
         }
-        else if(!safe[neighbor]){
+        else if(pathVisited[neighbor]){
             return false;
         }
     }
