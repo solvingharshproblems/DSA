@@ -34,6 +34,16 @@ bool DetectCycleDAG(int V,vector<vector<int>>& adj){
         return true; // Cycle exists
     }
 } // TC=O(V+E) SC=O(V) for indegree + O(V) for queue
+//Problem 2: Course Schedule I and II
+//Given the number of courses and a list of prerequisite pairs, determine if it's possible to finish all courses (Course Schedule I) and provide an order to finish them (Course Schedule II).
+//For Optimal Approach, we can use Kahn's Algorithm for Topological Sort to solve both problems.
+bool isPossible(int numCourses, vector<vector<int>>& prerequisites) {
+    vector<vector<int>> adj(numCourses);
+    for(auto pre:prerequisites){
+        adj[pre[1]].push_back(pre[0]);
+    }
+    return !DetectCycleDAG(numCourses,adj);
+} // TC=O(V+E) SC=O(V) for indegree + O(V) for queue + O(V+E) for adjacency list
 int main(){
     int V=4;
     vector<vector<int>> adj(V);;
@@ -46,6 +56,13 @@ int main(){
     }
     else{
         cout<<"Graph does not contain a cycle."<<endl;
+    }
+    vector<vector<int>> prerequisites={{1,0},{2,1},{3,2}};
+    if(isPossible(4,prerequisites)){
+        cout<<"All courses can be finished."<<endl;
+    }
+    else{
+        cout<<"All courses cannot be finished."<<endl;
     }
     return 0;
 }
