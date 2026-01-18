@@ -35,6 +35,25 @@ vector<int> shortestPathDAG(int V,int source,vector<vector<pair<int,int>>>& adj)
     }
     return distance;
 } // TC=O(V+E) SC=O(V) for visited + O(V) for stack + O(V) for distance + O(E) for adjacency list
+//Problem 2: Shorterst Path in Undirected Graph with Unit Weights (Using BFS)
+//Given an undirected graph with unit weights and a source vertex, find the shortest path from the source to all other vertices.
+vector<int> shortestPathUG(int V,int source,vector<vector<int>>& adj){
+    vector<int> distance(V,INT_MAX);
+    distance[source]=0;
+    queue<int> q;
+    q.push(source);
+    while(!q.empty()){
+        int node=q.front();
+        q.pop();
+        for(auto neighbor:adj[node]){
+            if(distance[node]+1<distance[neighbor]){
+                distance[neighbor]=distance[node]+1;
+                q.push(neighbor);
+            }
+        }
+    }
+    return distance; 
+} // TC=O(V+E) SC=O(V) for distance + O(V) for queue + O(E) for adjacency list
 int main(){
     int V=6;
     vector<vector<pair<int,int>>> adj(V);
@@ -48,6 +67,23 @@ int main(){
     int source=0;
     vector<int> distances=shortestPathDAG(V,source,adj);
     cout<<"Shortest distances from source vertex "<<source<<":"<<endl;
+    for(int i=0;i<V;i++){
+        if(distances[i]==INT_MAX){
+            cout<<"Vertex "<<i<<": "<<"Infinity"<<endl;
+        }else{
+            cout<<"Vertex "<<i<<": "<<distances[i]<<endl;
+        }
+    }
+    V=5;
+    vector<vector<int>> adjUG(V);;
+    adjUG[0]={1,2};
+    adjUG[1]={0,3,4};
+    adjUG[2]={0,4};
+    adjUG[3]={1};
+    adjUG[4]={1,2};
+    source=0;
+    distances=shortestPathUG(V,source,adjUG);
+    cout<<"Shortest distances from source vertex "<<source<<" in Undirected Graph with Unit Weights:"<<endl;
     for(int i=0;i<V;i++){
         if(distances[i]==INT_MAX){
             cout<<"Vertex "<<i<<": "<<"Infinity"<<endl;
