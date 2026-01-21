@@ -58,6 +58,41 @@ vector<int> dijkstraUsingSet(int V,vector<vector<pair<int,int>>>& adj,int source
     }
     return dist;
 } //TC=O(E log V) SC=O(V)
+//Problem 3: Print Shortest Path from Source to Target Node Using Dijkstra's Algorithm
+//To print the shortest path from the source to a target node, we will maintain a parent array to reconstruct the path after computing the shortest distances.
+vector<int> dijkstraWithPath(int V,vector<vector<pair<int,int>>>& adj,int source,int target){
+    priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>> pq;
+    vector<int> dist(V,INT_MAX);
+    vector<int> parent(V,-1);
+    pq.push({0,source});
+    dist[source]=0;
+    while(!pq.empty()){
+        int distance=pq.top().first;
+        int node=pq.top().second;
+        pq.pop();  
+        if(distance>dist[node]){
+            continue;
+        }
+        for(auto neighbor:adj[node]){
+            int edgeWeight=neighbor.second;
+            int adjNode=neighbor.first;
+            if(distance+edgeWeight<dist[adjNode]){
+                dist[adjNode]=distance+edgeWeight;
+                parent[adjNode]=node;
+                pq.push({dist[adjNode],adjNode});
+            }
+        }
+    }   
+    vector<int> path;
+    for(int v=target; v!=-1; v=parent[v]){  
+        path.push_back(v);
+    }
+    reverse(path.begin(), path.end());
+    if(path[0]!=source){
+        path.clear();
+    }
+    return path;
+} // TC=O(E log V) SC=O(V)
 int main(){
     int V=5;
     vector<vector<pair<int,int>>> adj(V);
@@ -79,6 +114,18 @@ int main(){
     vector<int> distancesSet=dijkstraUsingSet(V,adj,source);
     for(int i=0;i<V;i++){
         cout<<"Distance from source "<<source<<" to node "<<i<<" is "<<distancesSet[i]<<endl;
+    }
+    cout<<endl;
+    int target=4;
+    vector<int> path=dijkstraWithPath(V,adj,source,target);
+    if(!path.empty()){
+        cout<<"Shortest path from node "<<source<<" to node "<<target<<" is: ";
+        for(int node:path){
+            cout<<node<<" ";
+        }
+        cout<<endl;
+    } else {
+        cout<<"No path exists from node "<<source<<" to node "<<target<<endl;
     }
     return 0;
 }
