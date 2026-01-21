@@ -92,8 +92,8 @@ vector<int> dijkstraWithPath(int V,vector<vector<pair<int,int>>>& adj,int source
         path.clear();
     }
     return path;
-} // TC=O(E log V) SC=O(V)
-int main(){
+} // TC=O(E log V) SC=O(V) 
+int main(void){
     int V=5;
     vector<vector<pair<int,int>>> adj(V);
     adj[0].push_back({1,10});
@@ -127,5 +127,4 @@ int main(){
     } else {
         cout<<"No path exists from node "<<source<<" to node "<<target<<endl;
     }
-    return 0;
 }
