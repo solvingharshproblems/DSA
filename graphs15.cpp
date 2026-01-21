@@ -2,6 +2,7 @@
 #include <unordered_map>
 #include <vector>
 #include <queue>
+#include <set>
 using namespace std;
 //Problem 1: Dijkstra's Algorithm for Shortest Path in Weighted Graph Using Priority Queue
 //In Dijkstra's algorithm, we use a priority queue (min-heap) to efficiently fetch the next node with the smallest tentative distance.
@@ -30,6 +31,33 @@ vector<int> dijkstra(int V,vector<vector<pair<int,int>>>& adj,int source){
     }
     return dist;
 } // TC=O(E log V) SC=O(V) 
+//Problem 2: Dijkstra's Algorithm for Shortest Path in Weighted Graph Using Set
+//In this implementation, we use a set to maintain the nodes to be processed, sorted by their tentative distances.
+// This allows us to efficiently fetch and remove the node with the smallest distance.
+vector<int> dijkstraUsingSet(int V,vector<vector<pair<int,int>>>& adj,int source){
+    set<pair<int,int>> st;
+    vector<int> dist(V,INT_MAX);
+    st.insert({0,source});
+    dist[source]=0;
+    while(!st.empty()){
+        auto it=st.begin();
+        int distance=it->first;
+        int node=it->second;
+        st.erase(it);
+        if(distance>dist[node]){
+            continue;
+        }
+        for(auto neighbor:adj[node]){
+            int edgeWeight=neighbor.second;
+            int adjNode=neighbor.first;
+            if(distance+edgeWeight<dist[adjNode]){
+                dist[adjNode]=distance+edgeWeight;
+                st.insert({dist[adjNode],adjNode}); 
+            }
+        }
+    }
+    return dist;
+} //TC=O(E log V) SC=O(V)
 int main(){
     int V=5;
     vector<vector<pair<int,int>>> adj(V);
@@ -46,6 +74,11 @@ int main(){
     vector<int> distances=dijkstra(V,adj,source);
     for(int i=0;i<V;i++){
         cout<<"Distance from source "<<source<<" to node "<<i<<" is "<<distances[i]<<endl;
+    }
+    cout<<endl;
+    vector<int> distancesSet=dijkstraUsingSet(V,adj,source);
+    for(int i=0;i<V;i++){
+        cout<<"Distance from source "<<source<<" to node "<<i<<" is "<<distancesSet[i]<<endl;
     }
     return 0;
 }
