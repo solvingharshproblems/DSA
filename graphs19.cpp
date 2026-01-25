@@ -37,6 +37,42 @@ void floydWarshall(vector<vector<int>>& graph){
         }
     }
 } // TC=O(N^3) SC=O(N^2)
+//Problem 2: Find the City with the Smallest Number of Neighbors at a Threshold Distance
+//You are given an integer n representing the number of cities and a 2D array edges where edges[i] = [u, v, weight] indicates that there is a bidirectional road between cities u and v with a distance equal to weight.
+//You are also given an integer distanceThreshold. The task is to find the city with the smallest number of neighbors at a distance less than or equal to distanceThreshold. If there are multiple such cities, return the city with the greatest number.
+//For Optimal Approach, we will use Floyd Warshall Algorithm to find all pairs shortest paths and then count the number of reachable cities for each city.
+int findTheCity(int n,vector<vector<int>>& edges,int distanceThreshold){
+    vector<vector<int>> dist(n,vector<int>(n,1e9));
+    for(auto edge:edges){
+        dist[edge[0]][edge[1]]=edge[2];
+        dist[edge[1]][edge[0]]=edge[2]; 
+    }
+    for(int i=0;i<n;i++){
+        dist[i][i]=0;
+    }
+    for(int k=0;k<n;k++){
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){   
+                dist[i][j]=min(dist[i][j],dist[i][k]+dist[k][j]);
+            }   
+        }
+    }
+    int minCount=n;
+    int resultCity=-1;
+    for(int i=0;i<n;i++){
+        int count=0;
+        for(int j=0;j<n;j++){
+            if(dist[i][j]<=distanceThreshold){
+                count++;
+            }
+        }
+        if(count<=minCount){
+            minCount=count; 
+            resultCity=i;
+        }
+    }
+    return resultCity;
+} // TC=O(N^3) SC=O(N^2)
 int main(){
     int n=4;
     vector<vector<int>> graph={
@@ -53,5 +89,14 @@ int main(){
         }
         cout<<endl;
     }
+    vector<vector<int>> edges={
+        {0,1,3},
+        {1,2,1},
+        {1,3,4},
+        {2,3,1}
+    };
+    int distanceThreshold=4;
+    int city=findTheCity(n,edges,distanceThreshold);
+    cout<<"City with the smallest number of neighbors at distance threshold "<<distanceThreshold<<": "<<city<<endl;
     return 0;
 }
