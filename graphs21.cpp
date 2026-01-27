@@ -94,6 +94,35 @@ int numProvinces(int n,vector<vector<int>>& isConnected){
     }
     return count;
 } // TC=O(N^2 * alpha(N)) SC=O(N)
+//Problem 3: Number of Operations to Make Network Connected
+//You are given n computers numbered from 0 to n-1 connected by ethernet cables connections where connections[i] = [a, b] represents a connection between computers a and b.
+//Find the minimum number of operations needed to connect all the computers. If it is not possible, return -1.
+//For Optimal Approach, we will use Disjoint Set (Union-Find) data structure to find the number of connected components in the graph and the number of extra edges.
+int makeConnected(int n,vector<vector<int>>& connections){
+    DisjointSet ds(n);
+    int extraEdges=0;
+    for(auto it:connections){
+        int u=it[0];
+        int v=it[1];
+        if(ds.findUPar(u)==ds.findUPar(v)){
+            extraEdges++;
+        }
+        else{
+            ds.unionBySize(u,v);
+        }
+    }
+    int components=0;
+    for(int i=0;i<n;i++){
+        if(ds.findUPar(i)==i){
+            components++;
+        }
+    }
+    int requiredEdges=components-1;
+    if(extraEdges>=requiredEdges){
+        return requiredEdges;
+    }
+    return -1;
+} // TC=O(E * alpha(N)) SC=O(N)
 int main(){
     int n=6;
     vector<vector<int>> edges={
@@ -115,5 +144,12 @@ int main(){
         {0,0,1}
     };
     cout<<"Number of Provinces: "<<numProvinces(m,isConnected)<<endl;
+    int computers=4;
+    vector<vector<int>> connections={
+        {0,1},
+        {0,2},
+        {1,2}
+    };
+    cout<<"Minimum number of operations to connect all computers: "<<makeConnected(computers,connections)<<endl;
     return 0;
 }
