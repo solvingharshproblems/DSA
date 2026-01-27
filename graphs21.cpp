@@ -74,6 +74,26 @@ int kruskalMST(int n,vector<vector<int>>& edges){
     }
     return mstWeight;
 } // TC=O(E log E + E * alpha(V)) SC=O(V)
+//Problem 2: Number of Provinces
+//A province is a group of directly or indirectly connected cities and non other cities outside of the group.
+//For Optimal Approach, we will use Disjoint Set (Union-Find) data structure to find the number of connected components in the graph.
+int numProvinces(int n,vector<vector<int>>& isConnected){
+    DisjointSet ds(n);
+    for(int i=0;i<n;i++){
+        for(int j=0;j<n;j++){
+            if(isConnected[i][j]==1){
+                ds.unionBySize(i+1,j+1);
+            }
+        }
+    }
+    int count=0;
+    for(int i=1;i<=n;i++){
+        if(ds.findUPar(i)==i){
+            count++;    
+        }
+    }
+    return count;
+} // TC=O(N^2 * alpha(N)) SC=O(N)
 int main(){
     int n=6;
     vector<vector<int>> edges={
@@ -88,5 +108,12 @@ int main(){
         {9,4,5}
     };
     cout<<"Minimum Spanning Tree weight: "<<kruskalMST(n,edges)<<endl;
+    int m=3;
+    vector<vector<int>> isConnected={
+        {1,1,0},
+        {1,1,0},
+        {0,0,1}
+    };
+    cout<<"Number of Provinces: "<<numProvinces(m,isConnected)<<endl;
     return 0;
 }
