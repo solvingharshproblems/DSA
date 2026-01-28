@@ -86,7 +86,43 @@ vector<vector<string>> accountsMerge(vector<vector<string>>& accounts){
         result.push_back(temp);
     }
     return result;
-}
+} // TC = O(N * K log K) SC=O(N * K) where N is the number of accounts and K is the maximum number of emails in an account.
+//Problem 2: Number of Islands II 
+//You are given a 2D grid of size m x n initially filled with water. The grid represents a map where 0's represent water and 1's represent land. Initially, all the cells of grid are water cells (i.e., all the cells are 0's).
+//We are given a list of positions where land should be added to the grid. After each addition of land, we need to count the number of islands present in the grid. An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically.
+//For Optimal Approach, we will use Disjoint Set (Union-Find) data structure to dynamically manage the connected components as we add land to the grid.
+vector<int> numIslands2(int m,int n,vector<pair<int,int>>& positions){
+    DisjointSet ds(m*n);
+    vector<vector<int>> grid(m,vector<int>(n,0));
+    vector<int> ans;
+    int count=0;
+    vector<int> delRow={-1,0,1,0};
+    vector<int> delCol={0,1,0,-1};  
+    for(auto pos:positions){
+        int row=pos.first;
+        int col=pos.second;
+        if(grid[row][col]==1){
+            ans.push_back(count);
+            continue;
+        }
+        grid[row][col]=1;
+        count++;
+        int node=row*n+col;
+        for(int i=0;i<4;i++){
+            int nRow=row+delRow[i];
+            int nCol=col+delCol[i];
+            if(nRow>=0 && nRow<m && nCol>=0 && nCol<n && grid[nRow][nCol]==1){
+                int adjNode=nRow*n+nCol;
+                if(ds.findUPar(node)!=ds.findUPar(adjNode)){
+                    ds.unionBySize(node,adjNode);
+                    count--;
+                }
+            }
+        }
+        ans.push_back(count);
+    }
+    return ans;
+} // TC=O(K * alpha(N)) SC=O(M*N) where K is the number of positions and M*N is the total number of cells.
 int main(){
     vector<vector<string>> accounts={
         {"John","J1@gmail.com","J2@gmail.com"},
@@ -101,5 +137,12 @@ int main(){
         }
         cout<<endl;
     }
+    int m=3,n=3;
+    vector<pair<int,int>> positions={{0,0},{0,1},{1,2},{2,1},{1,1}};
+    vector<int> islandCounts=numIslands2(m,n,positions);
+    for(auto count:islandCounts){
+        cout<<count<<" ";
+    }
+    cout<<endl;
     return 0;
 }
