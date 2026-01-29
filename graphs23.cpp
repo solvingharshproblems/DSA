@@ -95,15 +95,42 @@ int largestIsland(vector<vector<int>>& grid){
     }
     return maxIslandSize;
 } // TC=O(N*N * alpha(N*N)) SC=O(N*N) where N is the size of the grid.
+//Problem 2: Most Stones Removed with Same Row or Column
+//You are given an array stones where stones[i] = [xi, yi] represents the location of the ith stone. A stone can be removed if it shares either the same row or the same column as another stone that has not been removed. Return the largest possible number of stones that can be removed.
+//For Optimal Approach, we will use Disjoint Set (Union-Find) data structure to dynamically manage the connected components as we remove stones.
+int removeStones(vector<vector<int>>& stones){
+    int n=stones.size();
+    DisjointSet ds(2*n);
+    for(auto stone:stones){
+        int row=stone[0];
+        int col=stone[1]+n; 
+        ds.unionBySize(row,col);
+    }
+    unordered_set<int> uniqueParents;
+    for(int i=0;i<n;i++){
+        int parent=ds.findUPar(stones[i][0]);
+        uniqueParents.insert(parent);
+    }
+    return n-uniqueParents.size();
+} // TC=O(N * alpha(2N)) SC=O(2N) where N is the number of stones.
 int main(){
     int n=5;
     vector<vector<int>> grid={
-        {1, 0, 1, 1, 0},
-        {1, 0, 0, 1, 1},
-        {0, 1, 1, 0, 0},
-        {1, 1, 0, 1, 1},
-        {0, 0, 1, 1, 0}
+        {1,0,1,1,0},
+        {1,0,0,1,1},
+        {0,1,1,0,0},
+        {1,1,0,1,1},
+        {0,0,1,1,0}
     };
     cout<<largestIsland(grid)<<endl;
+    vector<vector<int>> stones={
+        {0,0},
+        {0,1},
+        {1,0},
+        {1,2},
+        {2,1},
+        {2,2}
+    };
+    cout<<removeStones(stones)<<endl;
     return 0;
 }
