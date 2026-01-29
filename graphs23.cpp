@@ -99,19 +99,28 @@ int largestIsland(vector<vector<int>>& grid){
 //You are given an array stones where stones[i] = [xi, yi] represents the location of the ith stone. A stone can be removed if it shares either the same row or the same column as another stone that has not been removed. Return the largest possible number of stones that can be removed.
 //For Optimal Approach, we will use Disjoint Set (Union-Find) data structure to dynamically manage the connected components as we remove stones.
 int removeStones(vector<vector<int>>& stones){
-    int n=stones.size();
-    DisjointSet ds(2*n);
+    int maxRow=0;
+    int maxCol=0;
     for(auto stone:stones){
-        int row=stone[0];
-        int col=stone[1]+n; 
-        ds.unionBySize(row,col);
+        maxRow=max(maxRow,stone[0]);
+        maxCol=max(maxCol,stone[1]);
     }
-    unordered_set<int> uniqueParents;
-    for(int i=0;i<n;i++){
-        int parent=ds.findUPar(stones[i][0]);
-        uniqueParents.insert(parent);
+    DisjointSet ds(maxRow+maxCol+2);
+    unordered_map<int,int> uniqueParents;
+    for(auto stone:stones){
+        int nodeRow=stone[0];
+        int nodeCol=stone[1]+maxRow+1;
+        ds.unionBySize(nodeRow,nodeCol);
+        uniqueParents[nodeRow]=1;
+        uniqueParents[nodeCol]=1;
     }
-    return n-uniqueParents.size();
+    int count=0;
+    for(auto stone:uniqueParents){
+        if(ds.findUPar(stone.first)==stone.first){
+            count++;
+        }
+    }
+    return stones.size()-count;
 } // TC=O(N * alpha(2N)) SC=O(2N) where N is the number of stones.
 int main(){
     int n=5;
