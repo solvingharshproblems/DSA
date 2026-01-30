@@ -57,9 +57,59 @@ int KosarajuSCC(int V,vector<vector<int>>& edges){
     }
     return sccCount;
 } // TC=O(V+E) SC=O(V+E) where V is the number of vertices and E is the number of edges.
+//Problem 2: Bridges in an Undirected Graph - Using Tarjan's Algorithm
+//A bridge is an edge in an undirected graph whose removal increases the number of connected components
+//In Tarjan's Algorithm, we will use 2 arrays to keep track of discovery times and the lowest points reachable from each vertex.
+//If the lowest point reachable from a neighbor is greater than the discovery time of the current vertex, then the edge between them is a bridge.
+void tarjanDFS(int u,int parent,vector<vector<int>>& adj,vector<int>& disc,vector<int>& low,vector<bool>& visited,vector<vector<int>>& bridges,int& time){
+    visited[u]=true;
+    disc[u]=low[u]=time++;
+    for(auto v:adj[u]){
+        if(v==parent) continue;
+        if(!visited[v]){
+            tarjanDFS(v,u,adj,disc,low,visited,bridges,time);
+            low[u]=min(low[u],low[v]);
+            if(low[v]>disc[u]){
+                bridges.push_back({u,v});
+            }
+        } else {
+            low[u]=min(low[u],disc[v]);
+        }
+    }
+}
+vector<vector<int>> criticalConnections(int n,vector<vector<int>>& connections){
+    vector<vector<int>> adj(n);
+    for(auto conn:connections){
+        adj[conn[0]].push_back(conn[1]);
+        adj[conn[1]].push_back(conn[0]);
+    }
+    vector<int> disc(n,-1);
+    vector<int> low(n,-1);
+    vector<bool> visited(n,false);
+    vector<vector<int>> bridges;
+    int time=0;
+    tarjanDFS(0,-1,adj,disc,low,visited,bridges,time);
+    for(int i=0;i<n;i++){
+        if(!visited[i]){
+            tarjanDFS(i,-1,adj,disc,low,visited,bridges,time);
+        }
+    }
+    for(int i=0;i<n;i++){
+        if(!visited[i]){
+            tarjanDFS(i,-1,adj,disc,low,visited,bridges,time);
+        }
+    }
+    return bridges;
+} // TC=O(V+E) SC=O(V+E) 
 int main(){
     int V=5;
     vector<vector<int>> edges={{0,1},{1,2},{2,0},{1,3},{3,4}};
     cout<<"Number of Strongly Connected Components: "<<KosarajuSCC(V,edges)<<endl;  
+    vector<vector<int>> connections={{0,1},{1,2},{2,0},{1,3},{3,4}};
+    vector<vector<int>> bridges=criticalConnections(5,connections);
+    cout<<"Bridges in the graph:"<<endl;
+    for(auto bridge:bridges){
+        cout<<bridge[0]<<" - "<<bridge[1]<<endl;
+    }
     return 0;
 }
