@@ -101,6 +101,50 @@ vector<vector<int>> criticalConnections(int n,vector<vector<int>>& connections){
     }
     return bridges;
 } // TC=O(V+E) SC=O(V+E) 
+//Problem 3: Articulation Points in an Undirected Graph
+//An articulation point (or cut vertex) is a vertex which, when removed along with its associated edges, increases the number of connected components in the graph.
+//In Tarjan's Algorithm for articulation points, we will use similar approach as bridges but with additional conditions to identify articulation points.
+void DFSAP(int u,int parent,vector<vector<int>>& adj,vector<int>& disc,vector<int>& low,vector<bool>& visited,unordered_set<int>& apSet,int& time){
+    visited[u]=true;
+    disc[u]=low[u]=time++;
+    int children=0;
+    for(auto v:adj[u]){
+        if(v==parent){ 
+            continue;
+        }
+        if(!visited[v]){
+            children++;
+            DFSAP(v,u,adj,disc,low,visited,apSet,time);
+            low[u]=min(low[u],low[v]);
+            if(parent!=-1 && low[v]>=disc[u]){
+                apSet.insert(u);
+            }
+        } else {
+            low[u]=min(low[u],disc[v]);
+        }
+    }
+    if(parent==-1 && children>1){
+        apSet.insert(u);
+    }
+}
+vector<int> articulationPoints(int n,vector<vector<int>>& connections){
+    vector<vector<int>> adj(n);
+    for(auto conn:connections){
+        adj[conn[0]].push_back(conn[1]);
+        adj[conn[1]].push_back(conn[0]);
+    }
+    vector<int> disc(n,-1);
+    vector<int> low(n,-1);
+    vector<bool> visited(n,false);
+    unordered_set<int> apSet;
+    int time=0;
+    for(int i=0;i<n;i++){
+        if(!visited[i]){
+            DFSAP(i,-1,adj,disc,low,visited,apSet,time);
+        }
+    }
+    return vector<int>(apSet.begin(),apSet.end());
+} // TC=O(V+E) SC=O(V+E)
 int main(){
     int V=5;
     vector<vector<int>> edges={{0,1},{1,2},{2,0},{1,3},{3,4}};
@@ -111,5 +155,11 @@ int main(){
     for(auto bridge:bridges){
         cout<<bridge[0]<<" - "<<bridge[1]<<endl;
     }
+    vector<int> articulationPts=articulationPoints(5,connections);
+    cout<<"Articulation Points in the graph:"<<endl;
+    for(auto ap:articulationPts){
+        cout<<ap<<" ";
+    }
+    cout<<endl;
     return 0;
 }
