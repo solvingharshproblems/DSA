@@ -65,14 +65,17 @@ void tarjanDFS(int u,int parent,vector<vector<int>>& adj,vector<int>& disc,vecto
     visited[u]=true;
     disc[u]=low[u]=time++;
     for(auto v:adj[u]){
-        if(v==parent) continue;
+        if(v==parent){ 
+            continue;
+        }
         if(!visited[v]){
             tarjanDFS(v,u,adj,disc,low,visited,bridges,time);
             low[u]=min(low[u],low[v]);
             if(low[v]>disc[u]){
                 bridges.push_back({u,v});
             }
-        } else {
+        } 
+        else{
             low[u]=min(low[u],disc[v]);
         }
     }
@@ -119,7 +122,8 @@ void DFSAP(int u,int parent,vector<vector<int>>& adj,vector<int>& disc,vector<in
             if(parent!=-1 && low[v]>=disc[u]){
                 apSet.insert(u);
             }
-        } else {
+        } 
+        else{
             low[u]=min(low[u],disc[v]);
         }
     }
