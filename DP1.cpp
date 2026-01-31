@@ -45,6 +45,27 @@ int fibSpaceOpt(int n){
     }
     return c;
 } // TC=O(N) SC=O(1)
+//Problem 4: Climb Stairs
+//You are climbing a staircase. It takes n steps to reach the top. Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?
+//For Optimal Approach, we will use memoization to store the computed number of ways to climb stairs.
+//Shortcut Trick to apply on the all Dynamic Programming Problems:
+//Step 1: Try to represent the problem in terms of index.
+//Step 2: Try to find the relation between the current index and previous indices.
+//Step 3: If the problem says, count all ways, then sum up all the ways . If the problem says, find the minimum/maximum, then take min/max accordingly.
+int climbStairs(int n){
+    if(n<=1){
+        return 1;
+    }
+    int a=1; // Ways to climb 0 stairs
+    int b=1; // Ways to climb 1 stair
+    int c;
+    for(int i=2;i<=n;i++){
+        c=a+b; // Ways to climb n stairs = Ways to climb (n-1) stairs + Ways to climb (n-2) stairs
+        a=b; // Update ways to climb (n-2) stairs
+        b=c; // Update ways to climb (n-1) stairs
+    }
+    return c;
+} // TC=O(N) SC=O(1) 
 int main(){
     int n;
     cout<<"Enter a number to find its Fibonacci: ";
@@ -52,5 +73,9 @@ int main(){
     cout<<"Fibonacci of "<<n<<" is: "<<fib(n)<<endl;
     cout<<"Fibonacci of "<<n<<" using Tabulation is: "<<fibTab(n)<<endl;
     cout<<"Fibonacci of "<<n<<" using Space Optimization is: "<<fibSpaceOpt(n)<<endl;
+    int stairs;
+    cout<<"Enter number of stairs to climb: ";
+    cin>>stairs;
+    cout<<"Number of ways to climb "<<stairs<<" stairs is: "<<climbStairs(stairs)<<endl;
     return 0;
 }
