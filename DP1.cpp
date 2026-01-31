@@ -29,11 +29,28 @@ int fibTab(int n){
     }
     return dp[n];
 } // TC=O(N) SC=O(N)
+//Space Optimization: We can optimize the space used in the tabulation method by storing only the last two computed values.
+//Problem 3: Fibonacci Number using Space Optimization
+int fibSpaceOpt(int n){
+    if(n<=1){ 
+        return n; // Base case
+    }
+    int a=0; // F(0)
+    int b=1; // F(1)
+    int c;
+    for(int i=2;i<=n;i++){
+        c=a+b; // F(n) = F(n-1) + F(n-2)
+        a=b; // Update F(n-2)
+        b=c; // Update F(n-1)
+    }
+    return c;
+} // TC=O(N) SC=O(1)
 int main(){
     int n;
     cout<<"Enter a number to find its Fibonacci: ";
     cin>>n;
     cout<<"Fibonacci of "<<n<<" is: "<<fib(n)<<endl;
     cout<<"Fibonacci of "<<n<<" using Tabulation is: "<<fibTab(n)<<endl;
+    cout<<"Fibonacci of "<<n<<" using Space Optimization is: "<<fibSpaceOpt(n)<<endl;
     return 0;
 }
