@@ -15,10 +15,25 @@ int fib(int n){
     dp[n]=fib(n-1)+fib(n-2); // Compute and store the Fibonacci number
     return dp[n];
 } // TC=O(N) SC=O(N) 
+//Tabulation: we solve the problem in a bottom-up manner by solving all related sub-problems first and using their results to build on and arrive at solutions to bigger sub-problems.
+//Problem 2: Fibonacci Number using Tabulation
+int fibTab(int n){
+    if(n<=1){ 
+        return n; // Base case
+    }
+    vector<int> dp(n+1,0); 
+    dp[0]=0;
+    dp[1]=1;
+    for(int i=2;i<=n;i++){
+        dp[i]=dp[i-1]+dp[i-2]; // Build the dp array in a bottom-up manner
+    }
+    return dp[n];
+} // TC=O(N) SC=O(N)
 int main(){
     int n;
     cout<<"Enter a number to find its Fibonacci: ";
     cin>>n;
     cout<<"Fibonacci of "<<n<<" is: "<<fib(n)<<endl;
+    cout<<"Fibonacci of "<<n<<" using Tabulation is: "<<fibTab(n)<<endl;
     return 0;
 }
