@@ -45,6 +45,22 @@ int frogJumpSpaceOpt(int n,vector<int>& heights){
     }
     return prev1;
 } // TC=O(N) SC=O(1)
+//Problem 2: Frog Jump with K jumps
+//A frog is at the bottom of a staircase with n steps. The frog can jump anywhere from 1 to k steps at a time. 
+//Write a function to calculate the minimum cost for the frog to reach the top of the staircase.
+//For Optimal Approach, we will use memoization to store the computed minimum cost to reach each step.
+int frogJumpKSteps(int n,vector<int>& heights,int k){
+    vector<int> dp(n+1,INT_MAX);
+    dp[0]=0;
+    for(int i=1;i<=n;i++){
+        for(int j=1;j<=k;j++){
+            if(i-j>=0){
+                dp[i]=min(dp[i],dp[i-j]+abs(heights[i]-heights[i-j]));
+            }
+        }
+    }   
+    return dp[n];
+} // TC=O(N*K) SC=O(N)
 int main(){
     int n;
     cin>>n;
@@ -55,5 +71,9 @@ int main(){
     cout<<"Number of ways the frog can reach the top: "<<frogJump(n,heights)<<endl;
     cout<<"Number of ways the frog can reach the top using DP: "<<frogJumpDP(n,heights)<<endl;
     cout<<"Number of ways the frog can reach the top using Space Optimization: "<<frogJumpSpaceOpt(n,heights)<<endl;
+    int k;
+    cout<<"Enter the maximum steps the frog can jump: ";
+    cin>>k;
+    cout<<"Minimum cost for the frog to reach the top with "<<k<<" jumps: "<<frogJumpKSteps(n,heights,k)<<endl;
     return 0;
 }
