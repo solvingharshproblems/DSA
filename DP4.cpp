@@ -110,6 +110,10 @@ int uniquePathsBetter(int m,int n){
     return DFS3(m,n,0,0,dp);
 } // TC=O(M*N) SC=O(M*N)+O(M+N)
 //For Optimal Approach, we will use tabulation to iteratively compute the number of unique paths to each cell.
+//Note: Steps to convert memoization to tabulation:
+//1. Declare base cases
+//2. Express all states in terms of loops
+//3. Copy the recurrence relation
 int uniquePathsOptimal(int m,int n){
     vector<vector<int>> dp(n,vector<int>(m,0));
     for(int i=0;i<n;i++){
