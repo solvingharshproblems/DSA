@@ -73,6 +73,65 @@ int ninjaTrainingOptimal(vector<vector<int>>& points){
     }
     return prev[3];
 } // TC=O(N*4*3) SC=O(4)
+//Problem 2: Grid Unique Paths
+//A robot is located at the top-left corner of a m x n grid (marked 'Start').
+//The robot can only move either down or right at any point in time.
+//The robot is trying to reach the bottom-right corner of the grid (marked 'Finish').
+//How many possible unique paths are there?
+//For Brute Force Approach, we can use recursion to explore all possible paths from the start to the finish.
+int DFS2(int n,int m,int i,int j){
+    if(i==n-1 && j==m-1){
+        return 1;
+    }
+    if(i>=n || j>=m){
+        return 0;
+    }
+    return DFS2(n,m,i+1,j)+DFS2(n,m,i,j+1);
+}
+int uniquePathsBruteForce(int m,int n){
+    return DFS2(n,m,0,0);
+} // TC=O(2^(M+N)) SC=O(M+N)
+//For Better Approach, we can use memoization to store the computed number of unique paths to each cell.
+int DFS3(int m,int n,int i,int j,vector<vector<int>>& dp){
+    if(i==n-1 && j==m-1){
+        return 1;
+    }
+    if(i>=n || j>=m){
+        return 0;
+    }
+    if(dp[i][j]!=-1){
+        return dp[i][j];
+    }
+    dp[i][j]=DFS3(m,n,i+1,j,dp)+DFS3(m,n,i,j+1,dp);
+    return dp[i][j];
+}
+int uniquePathsBetter(int m,int n){
+    vector<vector<int>> dp(n,vector<int>(m,-1));
+    return DFS3(m,n,0,0,dp);
+} // TC=O(M*N) SC=O(M*N)+O(M+N)
+//For Optimal Approach, we will use tabulation to iteratively compute the number of unique paths to each cell.
+int uniquePathsOptimal(int m,int n){
+    vector<vector<int>> dp(n,vector<int>(m,0));
+    for(int i=0;i<n;i++){
+        for(int j=0;j<m;j++){
+            if(i==0 && j==0){
+                dp[i][j]=1;
+            }
+            else{   
+                int up=0;
+                int left=0;
+                if(i>0){
+                    up=dp[i-1][j];
+                }
+                if(j>0){
+                    left=dp[i][j-1];
+                }
+                dp[i][j]=up+left;
+            }
+        }
+    }
+    return dp[n-1][m-1];
+} // TC=O(M*N) SC=O(M*N)
 int main(){
     int n;
     cout<<"Enter number of days: ";
@@ -88,5 +147,9 @@ int main(){
     cout<<ninjaTrainingBruteForce(points)<<endl;
     cout<<ninjaTrainingBetter(points)<<endl;
     cout<<ninjaTrainingOptimal(points)<<endl;
+    int x=4, y=3;
+    cout<<"Number of unique paths in a "<<x<<"x"<<y<<" grid: "<<uniquePathsBruteForce(x,y)<<endl;
+    cout<<"Number of unique paths in a "<<x<<"x"<<y<<" grid: "<<uniquePathsBetter(x,y)<<endl;
+    cout<<"Number of unique paths in a "<<x<<"x"<<y<<" grid: "<<uniquePathsOptimal(x,y)<<endl;
     return 0;
 }
