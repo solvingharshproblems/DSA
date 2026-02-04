@@ -59,11 +59,55 @@ int uniquePathsOptimal(int m,int n,vector<vector<int>>& obstacleGrid){
     }
     return dp[n-1][m-1];
 } // TC=O(M*N) SC=O(M*N)
+//Problem 2: Minimum Path Sum
+//Given a m x n grid filled with non-negative numbers, find a path from top left to bottom right which minimizes the sum of all numbers along its path.
+//For Brute Force Approach, we can use recursion to explore all possible paths from the start to the finish.
+int DFS3(int m,int n,int i,int j,vector<vector<int>>& grid){
+    if(i==n-1 && j==m-1){
+        return grid[i][j];
+    }
+    if(i>=n || j>=m){
+        return 1e9;
+    }
+    int down=grid[i][j]+DFS3(m,n,i+1,j,grid);
+    int right=grid[i][j]+DFS3(m,n,i,j+1,grid);
+    return min(down,right);
+}
+int minPathSumBruteForce(int m,int n,vector<vector<int>>& grid){
+    return DFS3(m,n,0,0,grid);
+} // TC=O(2^(M+N)) SC=O(M+N)
+//For Optimal Approach, we will use tabulation to iteratively build the solution.
+int minPathSumOptimal(int m,int n,vector<vector<int>>& grid){
+    vector<vector<int>> dp(n,vector<int>(m,0));
+    for(int i=0;i<n;i++){
+        for(int j=0;j<m;j++){
+            if(i==0 && j==0){
+                dp[i][j]=grid[i][j];
+            }
+            else{   
+                int up=1e9;
+                int left=1e9;
+                if(i>0){
+                    up=dp[i-1][j];
+                }
+                if(j>0){    
+                    left=dp[i][j-1];
+                }
+                dp[i][j]=grid[i][j]+min(up,left);
+            }
+        }
+    }
+    return dp[n-1][m-1];
+} // TC=O(M*N) SC=O(M*N)
 int main(){
     int m=3,n=7;
     vector<vector<int>> obstacleGrid(n, vector<int>(m, 0)); // Assuming no obstacles for now
     cout<<"Unique Paths: "<<uniquePathsBruteForce(m,n,obstacleGrid)<<endl; 
     cout<<"Unique Paths: "<<uniquePathsOptimal(m,n,obstacleGrid)<<endl; 
     cout<<"Unique Paths: "<<uniquePathsOptimal(m,n,obstacleGrid)<<endl;    
+    int x=3,y=3;
+    vector<vector<int>> grid={{1,3,1},{1,5,1},{4,2,1}};
+    cout<<"Minimum Path Sum: "<<minPathSumBruteForce(x,y,grid)<<endl;
+    cout<<"Minimum Path Sum: "<<minPathSumOptimal(x,y,grid)<<endl;
     return 0;
 }
