@@ -47,11 +47,83 @@ int minimumTotalOptimal(vector<vector<int>>& triangle) {
     }
     return dp[0];
 } // TC=O(N^2) SC=O(N)
+//Problem 2: Minimum/Maximum Falling Path Sum
+//Given an n x n array of integers matrix, return the minimum sum of any falling path through matrix.
+//For Brute Force Approach, we can use recursion to explore all possible paths from the top to the bottom of the matrix.
+int DFS3(int i,int j,vector<vector<int>>& matrix){
+    if(i==matrix.size()-1){
+        return matrix[i][j];
+    }
+    int down=matrix[i][j]+DFS3(i+1,j,matrix);
+    int diagonal=matrix[i][j]+DFS3(i+1,j+1,matrix);
+    int diagonal2=matrix[i][j]+DFS3(i+1,j-1,matrix);
+    return min(down,min(diagonal,diagonal2));
+}
+int minFallingPathSumBruteForce(vector<vector<int>>& matrix) {
+    int n=matrix.size();
+    int minSum=1e9;
+    for(int j=0;j<n;j++){
+        minSum=min(minSum,DFS3(0,j,matrix));
+    }
+    return minSum;
+} // TC=O(3^N) SC=O(N)
+//For Better Approach, we can use memoization to store the results of subproblems.
+int DFS4(int i,int j,vector<vector<int>>& matrix,vector<vector<int>>& dp){
+    if(i==matrix.size()-1){
+        return matrix[i][j];
+    }
+    if(dp[i][j]!=-1){
+        return dp[i][j];
+    }
+    int down=matrix[i][j]+DFS4(i+1,j,matrix,dp);
+    int diagonal=matrix[i][j]+DFS4(i+1,j+1,matrix,dp);
+    int diagonal2=matrix[i][j]+DFS4(i+1,j-1,matrix,dp);
+    dp[i][j]=min(down,min(diagonal,diagonal2));
+    return dp[i][j];
+}
+int minFallingPathSumBetter(vector<vector<int>>& matrix) {
+    int n=matrix.size();
+    vector<vector<int>> dp(n,vector<int>(n,-1));
+    int minSum=1e9;
+    for(int j=0;j<n;j++){
+        minSum=min(minSum,DFS4(0,j,matrix,dp));
+    }
+    return minSum;
+} // TC=O(N^2) SC=O(N^2)+O(N)
+//For Optimal Approach, we will use tabulation to fill the dp table iteratively.
+int minFallingPathSumOptimal(vector<vector<int>>& matrix) {
+    int n=matrix.size();
+    vector<vector<int>> dp(n,vector<int>(n,0));
+    for(int i=n-1;i>=0;i--){
+        for(int j=0;j<n;j++){
+            if(i==n-1){
+                dp[i][j]=matrix[i][j];
+            }
+            else{
+                int down=matrix[i][j]+dp[i+1][j];
+                int diagonal=matrix[i][j]+((j+1<n)?dp[i+1][j+1]:1e9);
+                int diagonal2=matrix[i][j]+((j-1>=0)?dp[i+1][j-1]:1e9);
+                dp[i][j]=min(down,min(diagonal,diagonal2));
+            }
+        }
+    }
+    int minSum=1e9;
+    for(int j=0;j<n;j++){
+        minSum=min(minSum,dp[0][j]);
+    }
+    return minSum;
+} // TC=O(N^2) SC=O(N^2)
 int main(){
     int n=4;
     vector<vector<int>> triangle={{2},{3,4},{6,5,7},{4,1,8,3}};
     cout<<minimumTotalBruteForce(triangle)<<endl;
     cout<<minimumTotalBetter(triangle)<<endl;
     cout<<minimumTotalOptimal(triangle)<<endl;
+    int x=2,y=2;
+    vector<vector<int>> grid(n,vector<int>(x,0));
+    grid={{-19,57},{-40,-5}};
+    cout<<"Minimum Falling Path Sum: "<<minFallingPathSumBruteForce(grid)<<endl;
+    cout<<"Minimum Falling Path Sum: "<<minFallingPathSumBetter(grid)<<endl;
+    cout<<"Minimum Falling Path Sum: "<<minFallingPathSumOptimal(grid)<<endl;
     return 0;
 }
