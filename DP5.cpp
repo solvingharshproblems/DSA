@@ -76,6 +76,26 @@ int DFS3(int m,int n,int i,int j,vector<vector<int>>& grid){
 int minPathSumBruteForce(int m,int n,vector<vector<int>>& grid){
     return DFS3(m,n,0,0,grid);
 } // TC=O(2^(M+N)) SC=O(M+N)
+//For Better Approach, we will use memoization to store the results of subproblems.
+int DFS4(int m,int n,int i,int j,vector<vector<int>>& grid){
+    vector<vector<int>> dp(n,vector<int>(m,-1));
+    if(i==n-1 && j==m-1){
+        return grid[i][j];
+    }
+    if(i>=n || j>=m){
+        return 1e9;
+    }
+    if(dp[i][j]!=-1){
+        return dp[i][j];
+    }
+    int down=grid[i][j]+DFS4(m,n,i+1,j,grid);
+    int right=grid[i][j]+DFS4(m,n,i,j+1,grid);
+    dp[i][j]=min(down,right);
+    return dp[i][j];
+} 
+int minPathSumBetter(int m,int n,vector<vector<int>>& grid){
+    return DFS4(m,n,0,0,grid);
+} // TC=O(M*N) SC=O(M*N)+O(M+N)
 //For Optimal Approach, we will use tabulation to iteratively build the solution.
 int minPathSumOptimal(int m,int n,vector<vector<int>>& grid){
     vector<vector<int>> dp(n,vector<int>(m,0));
@@ -108,6 +128,7 @@ int main(){
     int x=3,y=3;
     vector<vector<int>> grid={{1,3,1},{1,5,1},{4,2,1}};
     cout<<"Minimum Path Sum: "<<minPathSumBruteForce(x,y,grid)<<endl;
+    cout<<"Minimum Path Sum: "<<minPathSumBetter(x,y,grid)<<endl;
     cout<<"Minimum Path Sum: "<<minPathSumOptimal(x,y,grid)<<endl;
     return 0;
 }
