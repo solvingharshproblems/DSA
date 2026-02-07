@@ -118,11 +118,105 @@ int maximumChocolatesOptimal(vector<vector<int>>& grid){
     }
     return dp[0][0][m-1];
 } // TC=O(N*M*M*9) SC=O(N*M*M)
+//Problem 2: Subset/Subsequence Sum Equal to Target
+//For Brute Force Approach, we can use recursion to explore all possible subsets.
+int DFS3(int index,int target,vector<int>& arr){
+    if(index==0){
+        if(target==0 && arr[0]==0){
+            return 2;
+        }
+        if(target==0 || target==arr[0]){
+            return 1;
+        }
+        return 0;
+    }
+    int notTake=DFS3(index-1,target,arr);
+    int take=0;
+    if(arr[index]<=target){
+        take=DFS3(index-1,target-arr[index],arr);    
+    }
+    return take+notTake;
+}
+bool subsetSumToKBruteForce(int n,int k,vector<int>& arr){
+    return DFS3(n-1,k,arr)>0;
+} // TC=O(2^N) SC=O(N)
+//For Better Approach, we can use memoization to store the results of subproblems.
+int DFS4(int index,int target,vector<int>& arr,vector<vector<int>>& dp){
+    if(index==0){
+        if(target==0 && arr[0]==0){
+            return 2;
+        }
+        if(target==0 || target==arr[0]){
+            return 1;
+        }
+        return 0;
+    }
+    if(dp[index][target]!=-1){
+        return dp[index][target];
+    }
+    int notTake=DFS4(index-1,target,arr,dp);
+    int take=0;
+    if(arr[index]<=target){
+        take=DFS4(index-1,target-arr[index],arr,dp);    
+    }
+    dp[index][target]=take+notTake;
+    return dp[index][target];
+}
+bool subsetSumToKBetter(int n,int k,vector<int>& arr){
+    vector<vector<int>> dp(n,vector<int>(k+1,-1));
+    return DFS4(n-1,k,arr,dp)>0;
+} // TC=O(N*K) SC=O(N*K)+O(N)
+//For Optimal Approach, we will use tabulation to fill the dp table iteratively.
+bool subsetSumToKOptimal(int n,int k,vector<int>& arr){
+    vector<vector<int>> dp(n,vector<int>(k+1,0));
+    for(int t=0;t<=k;t++){
+        if(t==0 && arr[0]==0){  
+            dp[0][t]=2;
+        }
+        else if(t==0 || t==arr[0]){
+            dp[0][t]=1;
+        }
+        else{
+            dp[0][t]=0;
+        }
+    }
+    for(int index=1;index<n;index++){
+        for(int target=0;target<=k;target++){
+            int notTake=dp[index-1][target];
+            int take=0;
+            if(arr[index]<=target){
+                take=dp[index-1][target-arr[index]];    
+            }
+            dp[index][target]=take+notTake;
+        }
+    }
+    return dp[n-1][k]>0;
+} // TC=O(N*K) SC=O(N*K)
 int main(){
     int n=3,m=4;
     vector<vector<int>> grid={{2,3,1,2},{3,4,2,2},{5,6,3,5}};
     cout<<maximumChocolatesBruteForce(grid)<<endl;
     cout<<maximumChocolatesBetter(grid)<<endl;
     cout<<maximumChocolatesOptimal(grid)<<endl;
+    int target=5;
+    vector<int> arr={2,3,5};
+    if(subsetSumToKBruteForce(n,target,arr)){
+        cout<<"True"<<endl;
+    }
+    else{
+        cout<<"False"<<endl;
+    }
+    if(subsetSumToKBetter(n,target,arr)){
+        cout<<"True"<<endl;
+    }
+    else{
+        cout<<"False"<<endl;
+    }
+    if(subsetSumToKOptimal(n,target,arr)){
+        cout<<"True"<<endl;
+    }
+    else{
+        cout<<"False"<<endl;
+    }
     return 0;
 }
