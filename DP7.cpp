@@ -192,6 +192,33 @@ bool subsetSumToKOptimal(int n,int k,vector<int>& arr){
     }
     return dp[n-1][k]>0;
 } // TC=O(N*K) SC=O(N*K)
+//For Space Optimized Approach, we can optimize the space used in the tabulation method.
+bool subsetSumToKSpaceOptimized(int n,int k,vector<int>& arr){
+    vector<int> prev(k+1,0),curr(k+1,0);
+    for(int t=0;t<=k;t++){
+        if(t==0 && arr[0]==0){  
+            prev[t]=2;
+        }
+        else if(t==0 || t==arr[0]){
+            prev[t]=1;
+        }
+        else{
+            prev[t]=0;
+        }
+    }
+    for(int index=1;index<n;index++){
+        for(int target=0;target<=k;target++){
+            int notTake=prev[target];
+            int take=0;
+            if(arr[index]<=target){
+                take=prev[target-arr[index]];    
+            }
+            curr[target]=take+notTake;
+        }
+        prev=curr;
+    }
+    return prev[k]>0;
+} // TC=O(N*K) SC=O(K)
 int main(){
     int n=3,m=4;
     vector<vector<int>> grid={{2,3,1,2},{3,4,2,2},{5,6,3,5}};
@@ -213,6 +240,12 @@ int main(){
         cout<<"False"<<endl;
     }
     if(subsetSumToKOptimal(n,target,arr)){
+        cout<<"True"<<endl;
+    }
+    else{
+        cout<<"False"<<endl;
+    }
+    if(subsetSumToKSpaceOptimized(n,target,arr)){
         cout<<"True"<<endl;
     }
     else{
