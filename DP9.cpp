@@ -98,6 +98,80 @@ int countSubsetsSpaceOptimized(vector<int>& arr,int target){
     }
     return prev[target];
 } // TC=O(N*K) SC=O(K)
+//Problem 2: Count Partitions with a Given Difference
+//This is a modification of the previous problem. We can use the same approach but with a different target.
+//For Brute Force Approach, we can use recursion to explore all possible subsets.
+int DFS3(int i,int target,vector<int>& arr,int totalSum){
+    if(i==arr.size()){
+        return abs(target-(totalSum-target));
+    }
+    int take=DFS3(i+1,target+arr[i],arr,totalSum);
+    int notTake=DFS3(i+1,target,arr,totalSum);
+    return min(take, notTake);
+}
+int countPartitionsBruteForce(vector<int>& arr,int d){
+    int n=arr.size();
+    int totalSum=0;
+    for(int num:arr){
+        totalSum+=num;
+    }   
+    if(totalSum-d<0 || (totalSum-d)%2!=0){
+        return 0;
+    }
+    int target=(totalSum-d)/2;
+    return countSubsets(arr,target);
+} // TC=O(2^N) SC=O(N)
+//For Better Approach, we can use memoization to store the results of subproblems.
+int DFS4(int i,int target,vector<int>& arr,int totalSum,vector<vector<int>>& dp){
+    if(i==arr.size()){
+        return abs(target-(totalSum-target));
+    }
+    if(dp[i][target]!=-1){
+        return dp[i][target];
+    }
+    int take=DFS4(i+1,target+arr[i],arr,totalSum,dp);
+    int notTake=DFS4(i+1,target,arr,totalSum,dp);
+    dp[i][target]=min(take, notTake);
+    return dp[i][target];
+}
+int countPartitionsBetter(vector<int>& arr,int d){
+    int n=arr.size();
+    int totalSum=0;
+    for(int num:arr){
+        totalSum+=num;
+    }
+    if(totalSum-d<0 || (totalSum-d)%2!=0){
+        return 0;
+    }
+    int target=(totalSum-d)/2;
+    return countSubsets(arr,target);
+} // TC=O(N*K) SC=O(N*K)+O(N)
+//For Optimal Approach, we will use tabulation to fill the dp table iteratively.
+int countPartitionsOptimal(vector<int>& arr,int d){
+    int n=arr.size();
+    int totalSum=0; 
+    for(int num:arr){
+        totalSum+=num;
+    }
+    if(totalSum-d<0 || (totalSum-d)%2!=0){
+        return 0;   
+    }
+    int target=(totalSum-d)/2;
+    return countSubsets(arr,target);    
+} // TC=O(N*K) SC=O(N*K)
+//For Space Optimized Approach, we will optimize the space used in the tabulation method.
+int countPartitionsSpaceOptimized(vector<int>& arr,int d){
+    int n=arr.size();
+    int totalSum=0;
+    for(int num:arr){
+        totalSum+=num;
+    }
+    if(totalSum-d<0 || (totalSum-d)%2!=0){
+        return 0;
+    }
+    int target=(totalSum-d)/2;
+    return countSubsetsSpaceOptimized(arr,target);
+} // TC=O(N*K) SC=O(K)
 int main(void){
     int n=4;
     vector<int> arr={1,2,3,3};
@@ -106,4 +180,9 @@ int main(void){
     cout<<countSubsetsBetter(arr,target)<<endl;
     cout<<countSubsetsOptimal(arr,target)<<endl;
     cout<<countSubsetsSpaceOptimized(arr,target)<<endl;
+    int d=3;
+    cout<<countPartitionsBruteForce(arr,d)<<endl;
+    cout<<countPartitionsBetter(arr,d)<<endl;
+    cout<<countPartitionsOptimal(arr,d)<<endl;
+    cout<<countPartitionsSpaceOptimized(arr,d)<<endl;
 }
