@@ -1,15 +1,9 @@
-int robSpaceOpt(vector<int>& nums){
-    int n=nums.size();
-    if(n==0){
-        return 0;
+int n=coins.size();
+    vector<int> dp(amount+1,0);
+    dp[0]=1;
+    for(int i=0;i<n;i++){
+        for(int j=coins[i];j<=amount;j++){
+            dp[j]+=dp[j-coins[i]];
+        }
     }
-    int a=nums[0];
-    int b=max(nums[0],nums[1]);
-    int c;
-    for(int i=2;i<n;i++){
-        c=max(nums[i]+a,b);
-        a=b;
-        b=c;
-    }
-    return c;
-}
+    return dp[amount];
