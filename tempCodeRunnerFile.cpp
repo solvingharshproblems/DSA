@@ -1,9 +1,15 @@
-int n=coins.size();
-    vector<int> dp(amount+1,0);
-    dp[0]=1;
-    for(int i=0;i<n;i++){
-        for(int j=coins[i];j<=amount;j++){
-            dp[j]+=dp[j-coins[i]];
-        }
+int DFS(vector<int>& weights,vector<int>& values,int W,int n,int i){
+    if(i>=n || W<=0){
+        return 0;
     }
-    return dp[amount];
+    int exclude=DFS(weights,values,W,n,i+1);
+    int include=0;
+    if(weights[i]<=W){
+        include=values[i]+DFS(weights,values,W-weights[i],n,i); 
+    }
+    return max(include,exclude);
+} 
+int knapsackBruteForce(vector<int>& weights,vector<int>& values,int W){
+    int n=weights.size();
+    return DFS(weights,values,W,n,0);
+} // TC=O(2^W) SC=O(W)
