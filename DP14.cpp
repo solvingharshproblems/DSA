@@ -188,11 +188,99 @@ int minInsertionsSpaceOptimized(string s){
     }
     return prev[s.size()-1];
 } // TC=O(N*N) SC=O(N)
+//Problem 4: Minimum Insertions/Deletions to Convert String A to String B
+//For Brute Force Approach, we can use recursion by checking if the characters at the current indices are the same and if not,
+//we can either insert a character in string A or delete a character from string A and recursively check for the remaining substrings.
+int DFS5(string text1,string text2,int i,int j){
+    if(i==text1.size()){
+        return text2.size()-j;
+    }
+    if(j==text2.size()){
+        return text1.size()-i;
+    }
+    if(text1[i]==text2[j]){
+        return DFS5(text1,text2,i+1,j+1);
+    }
+    return 1+min(DFS5(text1,text2,i+1,j),DFS5(text1,text2,i,j+1));
+}
+int minInsertionsDeletionsBruteForce(string text1,string text2){
+    return DFS5(text1,text2,0,0);
+} // TC=O(2^(M+N)) SC=O(M+N)
+//For Better Approach, we can use memoization to store the results of previously computed subproblems and avoid redundant calculations.
+int DFS6(string text1,string text2,int i,int j,vector<vector<int>>& dp){
+    if(i==text1.size()){
+        return text2.size()-j;
+    }
+    if(j==text2.size()){
+        return text1.size()-i;
+    }
+    if(dp[i][j]!=-1){
+        return dp[i][j];
+    }
+    if(text1[i]==text2[j]){
+        dp[i][j]=DFS6(text1,text2,i+1,j+1,dp);
+    }
+    else{
+        dp[i][j]=1+min(DFS6(text1,text2,i+1,j,dp),DFS6(text1,text2,i,j+1,dp));
+    }
+    return dp[i][j];
+}
+int minInsertionsDeletionsBetter(string text1,string text2){
+    vector<vector<int>> dp(text1.size(),vector<int>(text2.size(),-1));
+    return DFS6(text1,text2,0,0,dp);
+} // TC=O(M*N) SC=O(M*N)+O(M+N)
+//For Optimal Approach, we will use tabulation to fill a 2D array where dp[i][j] represents the minimum insertions/deletions needed to convert the substring text1[0...i-1] to text2[0...j-1].
+int minInsertionsDeletionsOptimal(string text1,string text2){
+    vector<vector<int>> dp(text1.size()+1,vector<int>(text2.size()+1,0));
+    for(int i=0;i<=text1.size();i++){
+        for(int j=0;j<=text2.size();j++){
+            if(i==0){
+                dp[i][j]=j;
+            }
+            else if(j==0){
+                dp[i][j]=i;
+            }
+            else if(text1[i-1]==text2[j-1]){
+                dp[i][j]=dp[i-1][j-1];
+            }
+            else{
+                dp[i][j]=1+min(dp[i-1][j],dp[i][j-1]);
+            }
+        }
+    }
+    return dp[text1.size()][text2.size()];
+} // TC=O(M*N) SC=O(M*N)
+//For Space Optimized Approach, we will optimize by using two 1D arrays to store the results of the previous and current rows of the dp table, but we will need to keep track of the indices to reconstruct the minimum insertions/deletions needed.
+int minInsertionsDeletionsSpaceOptimized(string text1,string text2){
+    vector<int> prev(text2.size()+1,0),curr(text2.size()+1,0);
+    for(int i=0;i<=text1.size();i++){
+        for(int j=0;j<=text2.size();j++){
+            if(i==0){
+                curr[j]=j;
+            }
+            else if(j==0){
+                curr[j]=i;
+            }
+            else if(text1[i-1]==text2[j-1]){
+                curr[j]=prev[j-1];
+            }
+            else{
+                curr[j]=1+min(prev[j],curr[j-1]);
+            }
+        }
+        prev=curr;
+    }
+    return prev[text2.size()];
+} // TC=O(M*N) SC=O(N)
 int main(){
     string s1="abcjklp",s2="acjkp";
     cout<<longestCommonSubstringBruteForce(s1,s2)<<endl; 
     cout<<longestCommonSubstringOptimal(s1,s2)<<endl;
     cout<<longestCommonSubstringSpaceOptimized(s1,s2)<<endl;
+    cout<<minInsertionsDeletionsBruteForce(s1,s2)<<endl;
+    cout<<minInsertionsDeletionsBetter(s1,s2)<<endl;
+    cout<<minInsertionsDeletionsOptimal(s1,s2)<<endl;
+    cout<<minInsertionsDeletionsSpaceOptimized(s1,s2)<<endl;
     string s="bbbab";
     cout<<longestPalindromeSubsequenceBruteForce(s)<<endl;
     cout<<longestPalindromeSubsequenceBetter(s)<<endl;
