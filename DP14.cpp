@@ -122,7 +122,72 @@ int longestPalindromeSubsequenceSpaceOptimized(string s){
     }
     return prev[s.size()-1];
 } // TC=O(N*N) SC=O(N)
-
+//Problem 3: Minimum Insertions to Make String Palindrome
+//For Brute Force Approach, we can use recursion by checking if the characters at the current indices are the same and if not, 
+//we can either insert a character at the left or right end and recursively check for the remaining substring.
+int DFS3(string s,int i,int j){
+    if(i>1){
+        return 0;
+    }
+    if(s[i]==s[j]){
+        return DFS3(s,i+1,j-1);
+    }
+    return 1+min(DFS3(s,i+1,j),DFS3(s,i,j-1));
+}
+int minInsertionsBruteForce(string s){
+    return DFS3(s,0,s.size()-1);
+} // TC=O(2^N) SC=O(N)
+//For Better Approach, we can use memoization to store the results of previously computed subproblems and avoid redundant calculations.
+int DFS4(string s,int i,int j,vector<vector<int>>& dp){
+    if(i>1){
+        return 0;
+    }
+    if(dp[i][j]!=-1){
+        return dp[i][j];    
+    }
+    if(s[i]==s[j]){
+        dp[i][j]=DFS4(s,i+1,j-1,dp);
+    }
+    else{
+        dp[i][j]=1+min(DFS4(s,i+1,j,dp),DFS4(s,i,j-1,dp));
+    }
+    return dp[i][j];
+}
+int minInsertionsBetter(string s){
+    vector<vector<int>> dp(s.size(),vector<int>(s.size(),-1));
+    return DFS4(s,0,s.size()-1,dp);
+} // TC=O(N*N) SC=O(N*N)+O(N)
+//For Optimal Approach, we will use tabulation to fill a 2D array where dp[i][j] represents the minimum insertions needed to make the substring s[i...j] a palindrome.
+int minInsertionsOptimal(string s){
+    vector<vector<int>> dp(s.size(),vector<int>(s.size(),0));
+    for(int i=s.size()-1;i>=0;i--){
+        for(int j=i+1;j<s.size();j++){
+            if(s[i]==s[j]){
+                dp[i][j]=dp[i+1][j-1];
+            }
+            else{
+                dp[i][j]=1+min(dp[i+1][j],dp[i][j-1]);
+            }
+        }
+    }
+    return dp[0][s.size()-1];
+} // TC=O(N*N) SC=O(N*N)
+//For Space Optimized Approach, we will optimize by using two 1D arrays to store the results of the previous and current rows of the dp table, but we will need to keep track of the indices to reconstruct the minimum insertions needed.
+int minInsertionsSpaceOptimized(string s){
+    vector<int> prev(s.size(),0),curr(s.size(),0);
+    for(int i=s.size()-1;i>=0;i--){
+        for(int j=i+1;j<s.size();j++){
+            if(s[i]==s[j]){
+                curr[j]=prev[j-1];
+            }
+            else{
+                curr[j]=1+min(prev[j],curr[j-1]);
+            }
+        }
+        prev=curr;
+    }
+    return prev[s.size()-1];
+} // TC=O(N*N) SC=O(N)
 int main(){
     string s1="abcjklp",s2="acjkp";
     cout<<longestCommonSubstringBruteForce(s1,s2)<<endl; 
@@ -133,5 +198,9 @@ int main(){
     cout<<longestPalindromeSubsequenceBetter(s)<<endl;
     cout<<longestPalindromeSubsequenceOptimal(s)<<endl;
     cout<<longestPalindromeSubsequenceSpaceOptimized(s)<<endl;
+    cout<<minInsertionsBruteForce(s)<<endl;
+    cout<<minInsertionsBetter(s)<<endl;
+    cout<<minInsertionsOptimal(s)<<endl;
+    cout<<minInsertionsSpaceOptimized(s)<<endl; 
     return 0;
 }
