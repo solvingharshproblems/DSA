@@ -59,6 +59,69 @@ int maxProfit(vector<int>& prices) {
     }
     return profit;
 } // TC=O(N) SC=O(1)
+//Problem 2: Buy and Sell Stock - III
+//You can complete at most two transactions. However, you must sell the stock before you buy again.
+//For Brute Force Approach, we can use recursion to find all possible combinations of buying and selling the stock with at most two transactions and return the maximum profit.
+int DFS3(vector<int>& prices,int i,bool canBuy,int transactions){
+    if(i==prices.size()){
+        return 0;
+    }
+    if(canBuy){
+        if(transactions<2){
+            return max(-prices[i]+DFS3(prices,i+1,false,transactions),DFS3(prices,i+1,true,transactions));
+        }
+        return DFS3(prices,i+1,true,transactions);
+    }
+    return max(prices[i]+DFS3(prices,i+1,true,transactions+1),DFS3(prices,i+1,false,transactions));
+}
+int maxProfit3BruteForce(vector<int>& prices){
+    return DFS3(prices,0,true,0);
+} // TC=O(2^N) SC=O(N)
+//For Better Approach, we can use memoization to store the results of previously computed subproblems and avoid redundant calculations.
+int DFS4(vector<int>& prices,int i,bool canBuy,int transactions,vector<vector<int>>& dp){
+    if(i==prices.size()){
+        return 0;
+    }
+    if(dp[i][canBuy*3+transactions]!=-1){
+        return dp[i][canBuy*3+transactions];
+    }
+    if(canBuy){
+        if(transactions<2){
+            dp[i][canBuy*3+transactions]=max(-prices[i]+DFS4(prices,i+1,false,transactions,dp),DFS4(prices,i+1,true,transactions,dp));
+            return dp[i][canBuy*3+transactions];
+        }
+        dp[i][canBuy*3+transactions]=DFS4(prices,i+1,true,transactions,dp);
+        return dp[i][canBuy*3+transactions];
+    }
+    dp[i][canBuy*3+transactions]=max(prices[i]+DFS4(prices,i+1,true,transactions+1,dp),DFS4(prices,i+1,false,transactions,dp));
+    return dp[i][canBuy*3+transactions];
+}
+int maxProfit3Better(vector<int>& prices){
+    vector<vector<int>> dp(prices.size(),vector<int>(6,-1));
+    return DFS4(prices,0,true,0,dp);
+} // TC=O(N) SC=O(N)+O(N*6)
+//For Optimal Approach, we will use tabulation to fill a 2D array where dp[i][canBuy*3+transactions] represents the maximum profit that can be achieved from day i to the end of the prices array, given whether we can buy or not and the number of transactions completed.
+int maxProfit3Optimal(vector<int>& prices){
+    vector<vector<int>> dp(prices.size()+1,vector<int>(6,0));
+    for(int i=prices.size()-1;i>=0;i--){
+        for(int canBuy=0;canBuy<=1;canBuy++){   
+            for(int transactions=0;transactions<3;transactions++){
+                if(canBuy){
+                    dp[i][canBuy*3+transactions]=max(-prices[i]+dp[i+1][0*3+transactions],dp[i+1][1*3+transactions]);
+                }
+                else{
+                    if(transactions<2){
+                            dp[i][canBuy*3+transactions]=max(prices[i]+dp[i+1][1*3+(transactions+1)],dp[i+1][0*3+transactions]);
+                    }
+                    else{
+                        dp[i][canBuy*3+transactions]=dp[i+1][0*3+transactions];
+                    }
+                }
+            }
+        }
+    }
+    return dp[0][1*3+0];
+} // TC=O(N) SC=O(N*6)
 int main(){
     int n=5;
     vector<int> prices={7,1,5,3,6,4};
@@ -66,5 +129,8 @@ int main(){
     cout<<"Maximum profit that can be achieved from the given stock prices: "<<maxProfit2Better(prices)<<endl;
     cout<<"Maximum profit that can be achieved from the given stock prices: "<<maxProfit2Optimal(prices)<<endl;
     cout<<"Maximum profit that can be achieved from the given stock prices: "<<maxProfit(prices)<<endl;
+    cout<<"Maximum profit that can be achieved from the given stock prices with at most two transactions: "<<maxProfit3BruteForce(prices)<<endl;
+    cout<<"Maximum profit that can be achieved from the given stock prices with at most two transactions: "<<maxProfit3Better(prices)<<endl;
+    cout<<"Maximum profit that can be achieved from the given stock prices with at most two transactions: "<<maxProfit3Optimal(prices)<<endl;
     return 0;
 }
