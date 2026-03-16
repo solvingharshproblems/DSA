@@ -62,11 +62,65 @@ int maxProfitOptimal(vector<int>& prices,int k){
     }
     return dp[0][1*3+0];
 } // TC=O(N*2*k) SC=O(N*2*k)
+//Problem 2: Buy and Sell Stock - V
+//You can complete as many transactions as you like with cooldown. However, you must sell the stock before you buy again and after you sell your stock, you cannot buy stock on the next day (i.e., cooldown one day).
+//For Brute Force Approach, we can use recursion to find all possible combinations of buying and selling the stock with cooldown and return the maximum profit.
+int DFS3(vector<int>& prices,int i,bool canBuy){
+    if(i>=prices.size()){
+        return 0;
+    }
+    if(canBuy){
+        return max(-prices[i]+DFS3(prices,i+1,false),DFS3(prices,i+1,true));
+    }
+    else{
+        return max(prices[i]+DFS3(prices,i+2,true),DFS3(prices,i+1,false));
+    }
+}
+int maxProfitCooldownBruteForce(vector<int>& prices){
+    return DFS3(prices,0,true);
+} // TC=O(2^N) SC=O(N)
+//For Better Approach, we can use memoization to store the results of previously computed subproblems and avoid redundant calculations.
+int DFS4(vector<int>& prices,int i,bool canBuy,vector<vector<int>>& dp){
+    if(i>=prices.size()){
+        return 0;
+    }
+    if(dp[i][canBuy]!=-1){
+        return dp[i][canBuy];
+    }
+    if(canBuy){
+        dp[i][canBuy]=max(-prices[i]+DFS4(prices,i+1,false,dp),DFS4(prices,i+1,true,dp));
+        return dp[i][canBuy];
+    }
+    dp[i][canBuy]=max(prices[i]+DFS4(prices,i+2,true,dp),DFS4(prices,i+1,false,dp));
+    return dp[i][canBuy];
+}
+int maxProfitCooldownBetter(vector<int>& prices){
+    vector<vector<int>> dp(prices.size(),vector<int>(2,-1));
+    return DFS4(prices,0,true,dp);
+} // TC=O(N*2) SC=O(N*2)+O(N*2)
+//For Optimal Approach, we will use tabulation to fill a dp table iteratively based on the recursive relation defined in the DFS function.
+int maxProfitCooldownOptimal(vector<int>& prices){
+    vector<vector<int>> dp(prices.size()+2,vector<int>(2,0));
+    for(int i=prices.size()-1;i>=0;i--){
+        for(int canBuy=0;canBuy<=1;canBuy++){
+            if(canBuy){
+                dp[i][canBuy]=max(-prices[i]+dp[i+1][0],dp[i+1][1]);
+            }
+            else{
+                dp[i][canBuy]=max(prices[i]+dp[i+2][1],dp[i+1][0]);
+            }
+        }
+    }
+    return dp[0][1];
+} // TC=O(N*2) SC=O(N*2)
 int main(){
     int n=3,k=2;
     vector<int> prices={2,4,1};
     cout<<maxProfitBruteForce(prices,k)<<endl;
     cout<<maxProfitBetter(prices,k)<<endl;
     cout<<maxProfitOptimal(prices,k)<<endl;
+    cout<<maxProfitCooldownBruteForce(prices)<<endl;
+    cout<<maxProfitCooldownBetter(prices)<<endl;
+    cout<<maxProfitCooldownOptimal(prices)<<endl;
     return 0;
 }
