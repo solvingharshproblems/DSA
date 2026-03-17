@@ -52,11 +52,42 @@ int lengthOfLISOptimal(vector<int>& nums){
     }
     return dp[0][0];
 } // TC=O(N*2001) SC=O(N*2001)
+//Problem 2: Printing LIS
+//Here we will use the same approach as the optimal approach of the previous problem but we will also store the indices of the elements in the longest increasing subsequence and print them at the end.
+void printLIS(vector<int>& nums){
+    vector<int> dp(nums.size(),1),hash(nums.size());
+    int maxLen=1,lastIndex=0;
+    for(int i=0;i<nums.size();i++){
+        hash[i]=i;
+        for(int j=0;j<i;j++){
+            if(nums[i]>nums[j] && dp[i]<dp[j]+1){
+                dp[i]=dp[j]+1;
+                hash[i]=j;
+            }
+        }
+        if(dp[i]>maxLen){
+            maxLen=dp[i];
+            lastIndex=i;
+        }
+    }
+    vector<int> lis;
+    lis.push_back(nums[lastIndex]);
+    while(hash[lastIndex]!=lastIndex){
+        lastIndex=hash[lastIndex];
+        lis.push_back(nums[lastIndex]);
+    }
+    reverse(lis.begin(),lis.end());
+    for(int i=0;i<lis.size();i++){
+        cout<<lis[i]<<" ";
+    }
+    cout<<endl;
+}
 int main(){
     int n=6;
     vector<int> nums={10,9,2,5,3,7,101,18};
     cout<<lengthOfLISBruteForce(nums)<<endl;
     cout<<lengthOfLISBetter(nums)<<endl;
     cout<<lengthOfLISOptimal(nums)<<endl;
+    printLIS(nums);
     return 0;
 }
