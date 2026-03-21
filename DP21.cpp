@@ -28,9 +28,40 @@ int longestBitonicSubsequence(vector<int>& nums){
     }
     return maxLen;
 } // TC=O(n^2) SC=O(n)
+//Problem 2: Number of LIS
+//For Optimal Approach, we will just modify the previous approach of finding the longest increasing subsequence to also count the number of longest increasing subsequences.
+int findNumberOfLIS(vector<int>& nums){
+    int n=nums.size();
+    vector<int>dp(n,1),count(n,1);
+    int countLIS=0,maxLen=1;
+    for(int i=0;i<n;i++){
+        for(int j=0;j<i;j++){
+            if(nums[i]>nums[j]){
+                if(dp[i]<dp[j]+1){
+                    dp[i]=dp[j]+1;
+                    count[i]=count[j];
+                }
+                else if(dp[i]==dp[j]+1){
+                    count[i]+=count[j];
+                }
+            }
+        }        
+        if(dp[i]>maxLen){
+            maxLen=dp[i];
+            countLIS=count[i];
+        }
+        else if(dp[i]==maxLen){
+            countLIS+=count[i];
+        }
+    }
+    return countLIS;
+} // TC=O(n^2) SC=O(n)
 int main() {
     int n=5;
     vector<int> nums={1,11,2,10,4};
     cout<<longestBitonicSubsequence(nums)<<endl;
+    int n2=5;
+    vector<int> nums2={1,3,5,4,7};
+    cout<<findNumberOfLIS(nums2)<<endl;
     return 0;
 }
