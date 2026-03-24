@@ -143,6 +143,73 @@ int parseBoolExprOptimal(string expression){
     }
     return dp[0][n-1];
 } //TC=O(N^3) SC=O(N^2)
+//Problem 2: Palindrome Partitioning II
+//Given a string s, partition s such that every substring of the partition is a palindrome. Return the minimum cuts needed for a palindrome partitioning of s.
+//For Brute Force Approach, we can use recursion to find all possible combinations of partitioning the string and return the minimum cuts needed for a palindrome partitioning of s.
+bool isPalindrome(string s,int i,int j){
+    while(i<j){
+        if(s[i]!=s[j]){
+            return false;
+        }
+        i++;
+        j--;
+    }
+    return true;
+}
+int DFS3(string s,int i,int j){
+    if(i>=j || isPalindrome(s,i,j)){
+        return 0;
+    }
+    int res=INT_MAX;
+    for(int k=i;k<j;k++){
+        res=min(res,1+DFS3(s,i,k)+DFS3(s,k+1,j));
+    }
+    return res;
+}
+int minCutBruteForce(string s){
+    int n=s.size();
+    return DFS3(s,0,n-1);
+} //TC=O(2^N) SC=O(N)
+//For Better Approach, we can use memoization to store the results of previously computed subproblems and avoid redundant calculations.
+int DFS4(string s,int i,int j,vector<vector<int>> &dp){
+    if(i>=j || isPalindrome(s,i,j)){
+        return 0;
+    }
+    if(dp[i][j]!=-1){
+        return dp[i][j];
+    }   
+    int res=INT_MAX;
+    for(int k=i;k<j;k++){
+        res=min(res,1+DFS4(s,i,k,dp)+DFS4(s,k+1,j,dp));
+    }
+    dp[i][j]=res;
+    return res;
+}
+int minCutBetter(string s){
+    int n=s.size(); 
+    vector<vector<int>> dp(n,vector<int>(n,-1));
+    return DFS4(s,0,n-1,dp);
+} //TC=O(N^3) SC=O(N^2)+O(N)
+//For Optimal Approach, we will use tabulation to fill a dp table iteratively based on the recursive relation defined in the DFS function.
+int minCutOptimal(string s){    
+    int n=s.size();
+    vector<vector<int>> dp(n,vector<int>(n,0));
+    for(int i=n-1;i>=0;i--){
+        for(int j=i;j<n;j++){
+            if(i>=j || isPalindrome(s,i,j)){
+                dp[i][j]=0;
+            }
+            else{
+                int res=INT_MAX;
+                for(int k=i;k<j;k++){
+                    res=min(res,1+dp[i][k]+dp[k+1][j]);
+                }
+                dp[i][j]=res;
+            }
+        }
+    }
+    return dp[0][n-1];
+} //TC=O(N^3) SC=O(N^2)
 int main(){
     string expression="&(|(f))";
     if(parseBoolExprBruteForce(expression)){
@@ -163,5 +230,9 @@ int main(){
     else{
         cout<<"False"<<endl;
     }
+    string s="bababcbadcede";
+    cout<<minCutBruteForce(s)<<endl;
+    cout<<minCutBetter(s)<<endl;
+    cout<<minCutOptimal(s)<<endl;
     return 0;
 }
