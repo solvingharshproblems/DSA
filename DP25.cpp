@@ -58,6 +58,53 @@ int maxSumAfterPartitioningOptimal(vector<int>& arr,int k){
     }
     return dp[0];
 } //TC=O(N*K) SC=O(N)
+//Problem 2: Maximum Rectangle Area with all 1's in a Binary Matrix
+//For Optimal Approach, we will use largest rectangle in histogram approach for each row of the matrix to find the maximum rectangle area with all 1's in the binary matrix.
+int largestRectangleInHistogramOptimal(vector<int>& arr){
+    stack<int> s;
+    int n=arr.size();
+    int maxArea=0;
+    for(int i=0;i<=n;i++){
+        while(!s.empty() && (i==n || arr[s.top()]>=(i<n ? arr[i]:0))){
+           int height=arr[s.top()];
+            s.pop();
+            int width;
+            if(s.empty()){
+                width=i; 
+            }
+            else{
+                width=i-s.top()-1;
+            }
+            maxArea=max(maxArea,height*width);
+        }
+        s.push(i);
+    }
+    return maxArea;
+}
+int maximalRectangleOptimal(vector<vector<char>>& matrix) {
+    if(matrix.empty() || matrix[0].empty()){
+        return 0;
+    }
+    int n=matrix.size();
+    int m=matrix[0].size();
+    int maxArea=0;
+    vector<vector<int>> prefixSum(n, vector<int>(m,0));
+    for(int j=0;j<m;j++){
+        int sum=0;
+        for(int i=0;i<n;i++){
+            int val=matrix[i][j]-'0';
+            sum+=val;
+            if(val==0){
+                sum=0;
+            }
+            prefixSum[i][j]=sum;
+        }
+    }
+    for(int i=0;i<n;i++){
+        maxArea=max(maxArea,largestRectangleInHistogramOptimal(prefixSum[i]));
+    }
+    return maxArea;
+} //TC=O(M*N) SC=O(M*N)
 int main(){
     int n=7;
     vector<int> arr={1,15,7,9,2,5,10};
@@ -65,5 +112,7 @@ int main(){
     cout<<maxSumAfterPartitioningBruteForce(arr,k)<<endl;
     cout<<maxSumAfterPartitioningBetter(arr,k)<<endl;
     cout<<maxSumAfterPartitioningOptimal(arr,k)<<endl;
+    vector<vector<char>> matrix={{'1','0','1','0','0'},{'1','0','1','1','1'},{'1','1','1','1','1'},{'1','0','0','1','0'}};
+    cout<<maximalRectangleOptimal(matrix)<<endl;
     return 0;
 }
