@@ -105,6 +105,30 @@ int maximalRectangleOptimal(vector<vector<char>>& matrix) {
     }
     return maxArea;
 } //TC=O(M*N) SC=O(M*N)
+//Problem 3: Count Number of Square Submatrices with All Ones
+//For Optimal Approach, we will use dynamic programming to count the number of square submatrices with all ones in the binary matrix.
+int countSquaresOptimal(vector<vector<int>>& matrix){
+    if(matrix.empty() || matrix[0].empty()){
+        return 0;
+    }
+    int m=matrix.size(),n=matrix[0].size();
+    int count=0;
+    vector<vector<int>> dp(m,vector<int>(n,0));
+    for(int i=0;i<m;i++){
+        for(int j=0;j<n;j++){
+            if(matrix[i][j]==1){
+                if(i==0 || j==0){
+                    dp[i][j]=1;
+                }
+                else{
+                    dp[i][j]=1+min({dp[i-1][j],dp[i][j-1],dp[i-1][j-1]});
+                }
+                count+=dp[i][j];
+            }
+        }
+    }
+    return count;
+}
 int main(){
     int n=7;
     vector<int> arr={1,15,7,9,2,5,10};
@@ -114,5 +138,7 @@ int main(){
     cout<<maxSumAfterPartitioningOptimal(arr,k)<<endl;
     vector<vector<char>> matrix={{'1','0','1','0','0'},{'1','0','1','1','1'},{'1','1','1','1','1'},{'1','0','0','1','0'}};
     cout<<maximalRectangleOptimal(matrix)<<endl;
+    vector<vector<int>> matrix2={{0,1,1,1},{1,1,1,1},{0,1,1,1}};
+    cout<<countSquaresOptimal(matrix2)<<endl;
     return 0;
 }
