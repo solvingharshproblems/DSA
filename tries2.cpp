@@ -18,7 +18,7 @@ struct Node{
     }
 };
 class Trie{
-private:
+public:
     Node* root;
 public: 
     Trie(){
@@ -81,8 +81,28 @@ string completeString(int n,vector<string> &words){
     }
     return ans;
 } //TC=O(N*L) SC=O(N*L) where L is the average length of the words in the array
+//Problem 2: Number of Distinct Substrings in a String
+//For Optimal Approach, we will use Trie Data Structure. We will insert all the substrings of the string in the Trie and then we will count the number of nodes in the Trie.
+// The number of nodes in the Trie will be equal to the number of distinct substrings in the string.
+int countDistinctSubstrings(string s){
+    Trie trie;
+    int count=0;
+    for(int i=0;i<s.size();i++){
+        Node* node=trie.root;
+        for(int j=i;j<s.size();j++){
+            if(!node->containsKey(s[j])){
+                node->put(s[j],new Node());
+                count++;
+            }
+            node=node->get(s[j]);
+        }
+    }
+    return count;
+} //TC=O(N^2) SC=O(N^2) 
 int main(){
     vector<string> words={"n","ni","nin","ninj","ninja","ninga"};
     cout<<completeString(words.size(),words)<<endl;
+    string s="ababa";
+    cout<<countDistinctSubstrings(s)<<endl;
     return 0;
 }
