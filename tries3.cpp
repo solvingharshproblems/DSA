@@ -86,8 +86,49 @@ int findMaximumXOR(vector<int>& nums) {
     }
     return maxXOR;
 }
+// TC=O(N*32) SC=O(N*32)
+//Problem 2: Maximum ZOR with an Element from an Array
+//For Optimal Approach, we will insert all the numbers in the Trie and then we will check for each number.
+//If we can find a number in the Trie which can give us maximum XOR value or not. 
+//We will also check if the number is less than or equal to the given limit or not. 
+//If it is less than or equal to the given limit then we will update our answer. 
+vector<int> maximizeXor(vector<int>& nums, vector<vector<int>>& queries) {
+    sort(nums.begin(),nums.end());
+    Trie trie;
+    vector<int> ans(queries.size());
+    vector<pair<int,pair<int,int>>> offlineQueries;
+    int index=0,i=0,n=nums.size();
+    for(int j=0;j<queries.size();j++){
+        int x=queries[j][0];
+        int m=queries[j][1];
+        offlineQueries.push_back({m,{x,j}});
+    }
+    sort(offlineQueries.begin(),offlineQueries.end());
+    for(auto &q:offlineQueries){
+        int m=q.first;
+        int x=q.second.first;
+        int idx=q.second.second;
+        while(i<n && nums[i]<=m){
+            trie.insert(nums[i]);
+            i++;
+        }
+        if(i==0){
+            ans[idx]=-1;
+        }
+        else{
+            ans[idx]=trie.getMaxXOR(x);
+        }
+    }
+    return ans;
+}
 int main(){
     vector<int> nums={3,10,5,25,2,8};
     cout<<findMaximumXOR(nums)<<endl;
+    vector<vector<int>> queries={{3,1},{1,3},{5,6}};
+    vector<int> nums2={0,1,2,3,4};
+    vector<int> ans=maximizeXor(nums2,queries);
+    for(auto x:ans){
+        cout<<x<<" ";
+    }
     return 0;
 }
