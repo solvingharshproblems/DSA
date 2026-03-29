@@ -28,6 +28,12 @@ int binaryToDecimal(string s){
     return res;
 } // TC=O(n) SC=O(1)
 //Problem 3: AND OR XOR NOT Shift operators
+//Problem 4: Swap two numbers using bit manipulation
+void swap(int &a,int &b){
+    a=a^b;
+    b=a^b;
+    a=a^b;
+} // TC=O(1) SC=O(1)
 int main(){
     cout<<decimalToBinary(10)<<endl;
     cout<<binaryToDecimal("1010")<<endl;
@@ -39,5 +45,7 @@ int main(){
     cout<<(~a)<<endl; // NOT
     cout<<(a<<1)<<endl; // Left shift
     cout<<(a>>1)<<endl; // Right shift
+    swap(a,b);
+    cout<<a<<" "<<b<<endl; // Swapped values
     return 0;
 }
