@@ -27,8 +27,17 @@ int binaryToDecimal(string s){
     }
     return res;
 } // TC=O(n) SC=O(1)
+//Problem 3: AND OR XOR NOT Shift operators
 int main(){
     cout<<decimalToBinary(10)<<endl;
     cout<<binaryToDecimal("1010")<<endl;
+    int a=5; // 0101
+    int b=3; // 0011
+    cout<<(a&b)<<endl; // AND
+    cout<<(a|b)<<endl; // OR
+    cout<<(a^b)<<endl; // XOR
+    cout<<(~a)<<endl; // NOT
+    cout<<(a<<1)<<endl; // Left shift
+    cout<<(a>>1)<<endl; // Right shift
     return 0;
 }
