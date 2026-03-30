@@ -42,6 +42,25 @@ int singleNumber(vector<int>& nums){
     }
     return result; 
 } // TC=O(N) SC=O(1)
+//Problem 4: Single Number - II
+//Given a non-empty array of integers, every element appears three times except for one. Find that single one.
+//For Optimal Approach, we will use bit manipulation to count the number of times each bit is set across all numbers. 
+//We will then take the count of each bit modulo 3 to find the bits of the single number.
+int singleNumberII(vector<int>& nums){
+    int result=0;
+    for(int i=0;i<32;i++){
+        int count=0;
+        for(int num:nums){
+            if(num & (1<<i)){
+                count++;
+            }
+        }
+        if(count%3){
+            result|=(1<<i);
+        }
+    }
+    return result;
+} // TC=O(N) SC=O(1)
 int main(){
     int a=29;
     int b=15;
@@ -58,5 +77,7 @@ int main(){
     }
     vector<int> arr={2,2,1};
     cout<<"Single Number is: "<<singleNumber(arr)<<endl;
+    vector<int> arr2={0,1,0,1,0,1,99};
+    cout<<"Single Number is: "<<singleNumberII(arr2)<<endl;
     return 0;
 }
