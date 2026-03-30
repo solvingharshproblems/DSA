@@ -32,6 +32,16 @@ vector<vector<int>> powerSet(vector<int>& nums){
     }
     return result;
 } // TC=O(N*2^N) SC=O(N*2^N)
+//Problem 3: Single Number - I
+//Given a non-empty array of integers, every element appears twice except for one. Find that single one.
+//For Optimal Approach, we will use the XOR operator to find the single number.
+int singleNumber(vector<int>& nums){
+    int result=0;
+    for(int num:nums){
+        result^=num; 
+    }
+    return result; 
+} // TC=O(N) SC=O(1)
 int main(){
     int a=29;
     int b=15;
@@ -46,5 +56,7 @@ int main(){
         }
         cout<<"}"<<endl;
     }
+    vector<int> arr={2,2,1};
+    cout<<"Single Number is: "<<singleNumber(arr)<<endl;
     return 0;
 }
